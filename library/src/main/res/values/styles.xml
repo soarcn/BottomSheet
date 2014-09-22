@@ -1,32 +1,44 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources>
+<resources xmlns:tools="http://schemas.android.com/tools">
 
-        <style name="dialog_tran" parent="android:style/Theme.Dialog">
-            <item name="android:windowFrame">@null</item>
-            <item name="android:windowNoTitle">true</item>
-            <item name="android:windowBackground">@android:color/transparent</item>
-            <item name="android:windowIsFloating">true</item>
-            <item name="android:windowContentOverlay">@null</item>
-            <item name="android:windowIsTranslucent">true</item>
-            <item name="android:backgroundDimEnabled">false</item>
-            <item name="android:backgroundDimAmount">0.4</item>
-        </style>
-        <style name="dialog_untran" parent="dialog_tran">
-            <item name="android:backgroundDimEnabled">true</item>
-        </style>
-        <style name="dialog_btn">
-            <item name="android:layout_width">0dp</item>
-            <item name="android:layout_height">wrap_content</item>
-            <item name="android:minHeight">36dp</item>
-            <item name="android:layout_weight">1</item>
-            <item name="android:layout_marginBottom">10dp</item>
-            <item name="android:textColor">#ffffff</item>
-            <item name="android:gravity">center</item>
-        </style>
+    <style name="BottomSheet" />
+
+    <style name="BottomSheet.Dialog" parent="android:style/Theme.Dialog">
+        <item name="android:windowFrame">@null</item>
+        <item name="android:windowNoTitle">true</item>
+        <item name="android:windowBackground">@android:color/transparent</item>
+        <item name="android:windowIsFloating">true</item>
+        <item name="android:windowContentOverlay">@null</item>
+        <item name="android:windowIsTranslucent">true</item>
+        <item name="android:backgroundDimAmount">0.4</item>
+        <item name="android:backgroundDimEnabled">true</item>
+        <item name="android:windowAnimationStyle">@style/BottomSheet.Animation</item>
+    </style>
+
+    <style name="Text"/>
+
+    <style name="Text.Headline">
+        <item name="android:textSize">20sp</item>
+        <item name="android:fontFamily" tools:ignore="NewApi">sans-serif</item>
+        <item name="android:textStyle">normal</item>
+        <item name="android:textColor">#8A000000</item>
+    </style>
+
+    <style name="Text.Title">
+        <item name="android:textSize">20sp</item>
+        <item name="android:textStyle">normal</item>
+        <item name="android:textColor">#DD000000</item>
+        <item name="android:fontFamily" tools:ignore="NewApi">sans-serif-medium</item>
+    </style>
+
+    <style name="Text.Subhead">
+        <item name="android:textSize">16sp</item>
+        <item name="android:textStyle">normal</item>
+        <item name="android:textColor">#DD000000</item>
+        <item name="android:fontFamily" tools:ignore="NewApi">sans-serif</item>
+    </style>
 
 
-
-    <style name="BottomSheet"/>
 
     <style name="BottomSheet.Title">
         <item name="android:singleLine">true</item>
@@ -34,12 +46,13 @@
         <item name="android:layout_marginLeft">16dp</item>
         <item name="android:layout_width">fill_parent</item>
         <item name="android:layout_height">wrap_content</item>
+        <item name="android:textAppearance">@style/Text.Headline</item>
     </style>
 
     <style name="BottomSheet.List">
         <item name="android:listSelector">@drawable/bs_list_selector</item>
         <item name="android:drawSelectorOnTop">true</item>
-        <item name="android:layoutAnimation">@anim/bs_list_layout_anim</item>
+        <item name="android:layoutAnimation">@anim/bs_list_layout_anim_in</item>
     </style>
 
     <style name="BottomSheet.List.Item">
@@ -57,11 +70,13 @@
 
     <style name="BottomSheet.List.Item.Title">
         <item name="android:layout_marginLeft">16dp</item>
+        <item name="android:textAppearance">@style/Text.Title</item>
     </style>
 
     <style name="BottomSheet.List.Divider">
-        <item name="android:layout_height">1dp</item>
+        <item name="android:layout_height">wrap_content</item>
         <item name="android:layout_width">fill_parent</item>
+        <item name="android:minHeight">1dp</item>
         <item name="android:background">@color/divider_color</item>
         <item name="android:layout_marginTop">7dp</item>
         <item name="android:layout_marginBottom">8dp</item>
@@ -75,6 +90,7 @@
     <style name="BottomSheet.Grid.Item.Title">
         <item name="android:singleLine">true</item>
         <item name="android:textSize">16sp</item>
+        <item name="android:textAppearance">@style/Text.Subhead</item>
     </style>
 
     <style name="BottomSheet.Grid"></style>
@@ -82,6 +98,12 @@
     <style name="BottomSheet.Grid.Item">
         <item name="android:minHeight">80dp</item>
         <item name="android:gravity">center_horizontal</item>
+    </style>
+
+    <style name="BottomSheet.Animation">
+        <item name="android:windowEnterAnimation">@anim/dock_bottom_enter</item>
+        <item name="android:windowExitAnimation">@anim/dock_bottom_exit</item>
+
     </style>
 
 

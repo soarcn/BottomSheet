@@ -17,11 +17,12 @@
         android:id="@+id/bottom_sheet_title"
         android:visibility="gone"
         style="@style/BottomSheet.Title"
+        android:gravity="center_vertical"
         />
 
     <GridView
         android:layout_width="match_parent"
-        android:layout_height="250dp"
+        android:layout_height="wrap_content"
         android:id="@+id/bottom_sheet_gridview"
         android:numColumns="1"
         android:fadingEdge="none"

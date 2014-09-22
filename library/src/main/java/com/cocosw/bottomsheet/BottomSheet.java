@@ -11,17 +11,19 @@ import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.ViewTreeObserver;
 import android.view.WindowManager;
+import android.view.animation.AccelerateInterpolator;
 import android.view.animation.AlphaAnimation;
 import android.view.animation.Animation;
 import android.view.animation.AnimationSet;
+import android.view.animation.DecelerateInterpolator;
 import android.view.animation.TranslateAnimation;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.BaseAdapter;
 import android.widget.GridView;
 import android.widget.ImageView;
-import android.widget.ListAdapter;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -29,8 +31,7 @@ import android.widget.Toast;
 import org.xmlpull.v1.XmlPullParser;
 
 import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
+
 
 /**
  * Project: gradle
@@ -54,13 +55,6 @@ public class BottomSheet extends Dialog implements DialogInterface, AdapterView.
         super(context, theme);
     }
 
-    public void setTitle(CharSequence title) {
-        if (title!=null) {
-            this.title.setVisibility(View.VISIBLE);
-            this.title.setText(title);
-        }
-    }
-
     private void init(Context context) {
 
         mDialogView = View.inflate(context, R.layout.bottom_sheet_dialog, null);
@@ -69,16 +63,10 @@ public class BottomSheet extends Dialog implements DialogInterface, AdapterView.
         this.setOnShowListener(new OnShowListener() {
             @Override
             public void onShow(DialogInterface dialogInterface) {
-                mDialogView.startAnimation(snackIn());
                 list.startLayoutAnimation();
             }
         });
-        setOnDismissListener(new OnDismissListener() {
-            @Override
-            public void onDismiss(DialogInterface dialog) {
-                mDialogView.startAnimation(snackOut());
-            }
-        });
+
 
         title = (TextView) mDialogView.findViewById(R.id.bottom_sheet_title);
         if (builder.title!=null) {
@@ -116,6 +104,16 @@ public class BottomSheet extends Dialog implements DialogInterface, AdapterView.
             }
 
             @Override
+            public boolean isEnabled(int position) {
+                return getItemViewType(position)==0;
+            }
+
+            @Override
+            public boolean areAllItemsEnabled() {
+                return false;
+            }
+
+            @Override
             public int getItemViewType(int position) {
                 return getItem(position).divider?1:0;
             }
@@ -123,28 +121,37 @@ public class BottomSheet extends Dialog implements DialogInterface, AdapterView.
             @Override
             public View getView(int position, View convertView, ViewGroup parent) {
                 ViewHolder holder;
+                if (getItemViewType(position) == 0) {
+                    if (convertView == null) {
+                        LayoutInflater inflater = (LayoutInflater) getContext()
+                                .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+                        if (builder.grid)
+                            convertView = inflater.inflate(R.layout.grid_entry, null);
+                        else
+                            convertView = inflater.inflate(R.layout.list_entry, null);
+                        holder = new ViewHolder();
+                        holder.title = (TextView) convertView.findViewById(R.id.bs_list_title);
+                        holder.image = (ImageView) convertView.findViewById(R.id.bs_list_image);
+                        convertView.setTag(holder);
+                    } else {
+                        holder = (ViewHolder) convertView.getTag();
+                    }
 
-                if (convertView == null) {
-                    LayoutInflater inflater = (LayoutInflater) getContext()
-                            .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-                    if (builder.grid)
-                        convertView = inflater.inflate(R.layout.grid_entry, null);
-                    else
-                        convertView = inflater.inflate(R.layout.list_entry, null);
-                    holder = new ViewHolder();
-                    holder.title = (TextView) convertView.findViewById(R.id.bs_list_title);
-                    holder.image = (ImageView) convertView.findViewById(R.id.bs_list_image);
-                    convertView.setTag(holder);
+                    MenuItem item = getItem(position);
+
+                    holder.title.setText(item.text);
+                    holder.image.setImageDrawable(item.icon);
+
+                    return convertView;
                 } else {
-                    holder = (ViewHolder) convertView.getTag();
+                    if (convertView==null) {
+                        LayoutInflater inflater = (LayoutInflater) getContext()
+                                .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+                        convertView = inflater.inflate(R.layout.list_divider, null);
+                        convertView.setVisibility(View.VISIBLE);
+                    }
+                    return convertView;
                 }
-
-                MenuItem item = getItem(position);
-
-                holder.title.setText(item.text);
-                holder.image.setImageDrawable(item.icon);
-
-                return convertView;
             }
 
             class ViewHolder {
@@ -154,7 +161,19 @@ public class BottomSheet extends Dialog implements DialogInterface, AdapterView.
         };
         list.setAdapter(adapter);
         list.setOnItemClickListener(this);
+
+        list.getViewTreeObserver().addOnGlobalLayoutListener( new ViewTreeObserver.OnGlobalLayoutListener()
+        {
+            @Override
+            public void onGlobalLayout()
+            {
+                list.getViewTreeObserver().removeGlobalOnLayoutListener( this );
+                View lastChild = list.getChildAt( list.getChildCount() - 1 );
+                list.setLayoutParams( new LinearLayout.LayoutParams( LinearLayout.LayoutParams.FILL_PARENT, lastChild.getBottom() ) );
+            }
+        });
     }
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -166,44 +185,28 @@ public class BottomSheet extends Dialog implements DialogInterface, AdapterView.
         getWindow().setAttributes(params);
     }
 
-    private static Animation snackIn() {
-        AnimationSet mInAnimationSet = new AnimationSet(false);
-
-        TranslateAnimation mSlideInAnimation = new TranslateAnimation(
-                TranslateAnimation.RELATIVE_TO_PARENT, 0.0f,
-                TranslateAnimation.RELATIVE_TO_PARENT, 0.0f,
-                TranslateAnimation.RELATIVE_TO_SELF, 1.0f,
-                TranslateAnimation.RELATIVE_TO_SELF, 0.0f);
-
-        AlphaAnimation mFadeInAnimation = new AlphaAnimation(0.0f, 1.0f);
-
-        mInAnimationSet.addAnimation(mSlideInAnimation);
-        mInAnimationSet.addAnimation(mFadeInAnimation);
-        mInAnimationSet.setDuration(200);
-        return mInAnimationSet;
+    private static Animation inFromBottomQuickAnimation() {
+        final TranslateAnimation translateanimation = new TranslateAnimation(2,
+                0F, 2, 0F, 2, 1F, 2, 0F);
+        translateanimation.setDuration(200L);
+        translateanimation.setInterpolator(new DecelerateInterpolator());
+        return translateanimation;
     }
 
-    private static Animation snackOut() {
-        AnimationSet mOutAnimationSet = new AnimationSet(false);
-
-        TranslateAnimation mSlideOutAnimation = new TranslateAnimation(
-                TranslateAnimation.RELATIVE_TO_PARENT, 0.0f,
-                TranslateAnimation.RELATIVE_TO_PARENT, 0.0f,
-                TranslateAnimation.RELATIVE_TO_SELF, 0.0f,
-                TranslateAnimation.RELATIVE_TO_SELF, 1.0f);
-
-        AlphaAnimation mFadeOutAnimation = new AlphaAnimation(1.0f, 0.0f);
-
-        mOutAnimationSet.addAnimation(mSlideOutAnimation);
-        mOutAnimationSet.addAnimation(mFadeOutAnimation);
-        mOutAnimationSet.setDuration(500);
-        return mOutAnimationSet;
+    private static Animation outToBottomQuickAnimation() {
+        final TranslateAnimation translateanimation = new TranslateAnimation(2,
+                0F, 2, 0F, 2, 0F, 2, 1F);
+        translateanimation.setDuration(200L);
+        translateanimation.setInterpolator(new AccelerateInterpolator());
+        return translateanimation;
     }
 
 
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-        Toast.makeText(getContext(),adapter.getItem(position).toString(),Toast.LENGTH_SHORT).show();
+        if (builder.listener!=null) {
+            builder.listener.onClick(BottomSheet.this,((MenuItem)adapter.getItem(position)).id);
+        }
         dismiss();
     }
 
@@ -244,6 +247,7 @@ public class BottomSheet extends Dialog implements DialogInterface, AdapterView.
         private ArrayList<MenuItem> menuItems = new ArrayList<MenuItem>();
         private CharSequence title;
         private boolean grid;
+        private OnClickListener listener;
 
         public Builder(Activity activity) {
             this.activity = activity;
@@ -287,7 +291,7 @@ public class BottomSheet extends Dialog implements DialogInterface, AdapterView.
             }
         }
 
-        public Builder item(MenuItem item) {
+        private Builder item(MenuItem item) {
             menuItems.add(item);
             return this;
         }
@@ -314,6 +318,11 @@ public class BottomSheet extends Dialog implements DialogInterface, AdapterView.
             return this;
         }
 
+        public Builder listener(OnClickListener listener) {
+            this.listener = listener;
+            return this;
+        }
+
         private CharSequence resourceIdToString(String text){
             if(!text.contains("@")){
                 return text;
@@ -323,8 +332,8 @@ public class BottomSheet extends Dialog implements DialogInterface, AdapterView.
             }
         }
 
-        public void show(boolean anim) {
-            BottomSheet dialog = new BottomSheet(activity, R.style.dialog_untran);
+        private void show(boolean anim) {
+            BottomSheet dialog = new BottomSheet(activity, R.style.BottomSheet_Dialog);
             dialog.setBuilder(this);
             dialog.init(activity);
             dialog.show();
@@ -334,8 +343,13 @@ public class BottomSheet extends Dialog implements DialogInterface, AdapterView.
             show(true);
         }
 
-        public Builder grid() {
+        private void showgrid() {
             this.grid = true;
+            show();
+        }
+
+        public Builder title(CharSequence s) {
+             title = s;
             return this;
         }
     }

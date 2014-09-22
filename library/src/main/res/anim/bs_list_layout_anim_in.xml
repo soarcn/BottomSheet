@@ -2,4 +2,4 @@
 
 <layoutAnimation xmlns:android="http://schemas.android.com/apk/res/android"
     android:delay="30%"
-    android:animation="@anim/bs_anim_translate" />
+    android:animation="@anim/dock_bottom_enter" />
