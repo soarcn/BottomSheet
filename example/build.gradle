@@ -1,0 +1,18 @@
+apply from: 'https://raw.githubusercontent.com/soarcn/gradle/master/android.gradle'
+
+dependencies {
+    compile project(':library')
+    compile 'com.cocosw:query:+'
+}
+
+android {
+
+    defaultConfig {
+        minSdkVersion 9
+    }
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_7
+        targetCompatibility JavaVersion.VERSION_1_7
+    }
+}
