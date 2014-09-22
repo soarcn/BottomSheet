@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:id="@+id/share" android:title="@string/share" />
+    <item android:id="@+id/upload" android:title="@string/upload" />
+    <item android:id="@+id/call" android:title="@string/call"/>
+    <item android:id="@+id/help" android:title="@string/help"/>
+</menu>

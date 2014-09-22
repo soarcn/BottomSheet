@@ -7,6 +7,7 @@ import android.support.v7.app.ActionBarActivity;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.ListAdapter;
 
 import com.cocosw.bottomsheet.BottomSheet;
 import com.cocosw.query.CocoQuery;
@@ -41,30 +42,40 @@ public class ListAcitivty extends ActionBarActivity implements AdapterView.OnIte
     public void onItemClick(AdapterView<?> parent, View view, final int position, long id) {
         switch (action) {
             case 0:
-                new BottomSheet.Builder(this).title("To "+adapter.getItem(position)).xml(R.menu.list).listener(new DialogInterface.OnClickListener() {
+                new BottomSheet.Builder(this).title("To "+adapter.getItem(position)).sheet(R.menu.list).listener(new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        switch (which) {
-                            case R.id.share:
-                                q.toast("Share to " + adapter.getItem(position));
-                                break;
-                            case R.id.upload:
-                                q.toast("Upload for " + adapter.getItem(position));
-                                break;
-                            case R.id.call:
-                                q.toast("Call to " + adapter.getItem(position));
-                                break;
-                            case R.id.help:
-                                q.toast("Help me!");
-                                break;
-                        }
+                        ListAcitivty.this.onClick(adapter.getItem(position),which);
                     }
                 }).show();
                 break;
             case 1:
+                new BottomSheet.Builder(this).sheet(R.menu.noicon).listener(new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        ListAcitivty.this.onClick(adapter.getItem(position),which);
+                    }
+                }).show();
                 break;
             case 2:
 
+                break;
+        }
+    }
+
+    public void onClick(String name, int which) {
+        switch (which) {
+            case R.id.share:
+                q.toast("Share to " + name);
+                break;
+            case R.id.upload:
+                q.toast("Upload for " + name);
+                break;
+            case R.id.call:
+                q.toast("Call to " + name);
+                break;
+            case R.id.help:
+                q.toast("Help me!");
                 break;
         }
     }
