@@ -7,6 +7,7 @@ import android.content.DialogInterface;
 import android.content.res.XmlResourceParser;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -56,7 +57,7 @@ public class BottomSheet extends Dialog implements DialogInterface, AdapterView.
     }
 
     private void init(Context context) {
-
+        setCanceledOnTouchOutside(true);
         mDialogView = View.inflate(context, R.layout.bottom_sheet_dialog, null);
         setContentView(mDialogView);
 
@@ -140,7 +141,12 @@ public class BottomSheet extends Dialog implements DialogInterface, AdapterView.
                     MenuItem item = getItem(position);
 
                     holder.title.setText(item.text);
-                    holder.image.setImageDrawable(item.icon);
+                    if (item.icon==null)
+                        holder.image.setVisibility(View.GONE);
+                    else {
+                        holder.image.setVisibility(View.VISIBLE);
+                        holder.image.setImageDrawable(item.icon);
+                    }
 
                     return convertView;
                 } else {
@@ -169,7 +175,7 @@ public class BottomSheet extends Dialog implements DialogInterface, AdapterView.
             {
                 list.getViewTreeObserver().removeGlobalOnLayoutListener( this );
                 View lastChild = list.getChildAt( list.getChildCount() - 1 );
-                list.setLayoutParams( new LinearLayout.LayoutParams( LinearLayout.LayoutParams.FILL_PARENT, lastChild.getBottom() ) );
+                list.setLayoutParams( new LinearLayout.LayoutParams( LinearLayout.LayoutParams.MATCH_PARENT, lastChild.getBottom() ) );
             }
         });
     }
@@ -184,23 +190,6 @@ public class BottomSheet extends Dialog implements DialogInterface, AdapterView.
         params.gravity = Gravity.BOTTOM;
         getWindow().setAttributes(params);
     }
-
-    private static Animation inFromBottomQuickAnimation() {
-        final TranslateAnimation translateanimation = new TranslateAnimation(2,
-                0F, 2, 0F, 2, 1F, 2, 0F);
-        translateanimation.setDuration(200L);
-        translateanimation.setInterpolator(new DecelerateInterpolator());
-        return translateanimation;
-    }
-
-    private static Animation outToBottomQuickAnimation() {
-        final TranslateAnimation translateanimation = new TranslateAnimation(2,
-                0F, 2, 0F, 2, 0F, 2, 1F);
-        translateanimation.setDuration(200L);
-        translateanimation.setInterpolator(new AccelerateInterpolator());
-        return translateanimation;
-    }
-
 
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
@@ -253,7 +242,7 @@ public class BottomSheet extends Dialog implements DialogInterface, AdapterView.
             this.activity = activity;
         }
 
-        public Builder xml(int xmlRes) {
+        public Builder sheet(int xmlRes) {
             parseXml(xmlRes);
             return this;
         }
@@ -274,7 +263,8 @@ public class BottomSheet extends Dialog implements DialogInterface, AdapterView.
                             MenuItem item = new MenuItem();
                             item.id = Integer.valueOf(resId.replace("@", ""));
                             item.text = resourceIdToString(textId);
-                            item.icon = activity.getResources().getDrawable(Integer.valueOf(iconId.replace("@", "")));
+                            if (!TextUtils.isEmpty(iconId))
+                                item.icon = activity.getResources().getDrawable(Integer.valueOf(iconId.replace("@", "")));
 
                             menuItems.add(item);
                         } else
@@ -296,13 +286,23 @@ public class BottomSheet extends Dialog implements DialogInterface, AdapterView.
             return this;
         }
 
-        public Builder item(int id,int icon,int text) {
+        public Builder sheet(int id,int icon,int text) {
             item(new MenuItem(id, activity.getText(text), activity.getResources().getDrawable(icon)));
             return this;
         }
 
-        public Builder item(int id,Drawable icon,CharSequence text) {
+        public Builder sheet(int id,Drawable icon,CharSequence text) {
             item(new MenuItem(id,text,icon));
+            return this;
+        }
+
+        public Builder sheet(int id,int text) {
+            item(new MenuItem(id, activity.getText(text), null));
+            return this;
+        }
+
+        public Builder sheet(int id,CharSequence text) {
+            item(new MenuItem(id,text,null));
             return this;
         }
 
