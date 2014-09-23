@@ -1,5 +1,6 @@
 package com.cocosw.bottomsheet;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.Dialog;
 import android.content.Context;
@@ -14,20 +15,12 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
 import android.view.WindowManager;
-import android.view.animation.AccelerateInterpolator;
-import android.view.animation.AlphaAnimation;
-import android.view.animation.Animation;
-import android.view.animation.AnimationSet;
-import android.view.animation.DecelerateInterpolator;
-import android.view.animation.TranslateAnimation;
 import android.widget.AdapterView;
 import android.widget.BaseAdapter;
 import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
-
 
 import org.xmlpull.v1.XmlPullParser;
 
@@ -48,11 +41,11 @@ public class BottomSheet extends Dialog implements DialogInterface, AdapterView.
     private Builder builder;
 
 
-    private BottomSheet(Context context) {
-        super(context);
+    public BottomSheet(Context context) {
+        super(context,R.style.BottomSheet_Dialog);
     }
 
-    private BottomSheet(Context context, int theme) {
+    public BottomSheet(Context context, int theme) {
         super(context, theme);
     }
 
@@ -70,7 +63,7 @@ public class BottomSheet extends Dialog implements DialogInterface, AdapterView.
 
 
         title = (TextView) mDialogView.findViewById(R.id.bottom_sheet_title);
-        if (builder.title!=null) {
+        if (builder.title != null) {
             title.setVisibility(View.VISIBLE);
             title.setText(builder.title);
         }
@@ -106,7 +99,7 @@ public class BottomSheet extends Dialog implements DialogInterface, AdapterView.
 
             @Override
             public boolean isEnabled(int position) {
-                return getItemViewType(position)==0;
+                return getItemViewType(position) == 0;
             }
 
             @Override
@@ -116,7 +109,7 @@ public class BottomSheet extends Dialog implements DialogInterface, AdapterView.
 
             @Override
             public int getItemViewType(int position) {
-                return getItem(position).divider?1:0;
+                return getItem(position).divider ? 1 : 0;
             }
 
             @Override
@@ -141,7 +134,7 @@ public class BottomSheet extends Dialog implements DialogInterface, AdapterView.
                     MenuItem item = getItem(position);
 
                     holder.title.setText(item.text);
-                    if (item.icon==null)
+                    if (item.icon == null)
                         holder.image.setVisibility(View.GONE);
                     else {
                         holder.image.setVisibility(View.VISIBLE);
@@ -150,7 +143,7 @@ public class BottomSheet extends Dialog implements DialogInterface, AdapterView.
 
                     return convertView;
                 } else {
-                    if (convertView==null) {
+                    if (convertView == null) {
                         LayoutInflater inflater = (LayoutInflater) getContext()
                                 .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
                         convertView = inflater.inflate(R.layout.list_divider, null);
@@ -168,14 +161,12 @@ public class BottomSheet extends Dialog implements DialogInterface, AdapterView.
         list.setAdapter(adapter);
         list.setOnItemClickListener(this);
 
-        list.getViewTreeObserver().addOnGlobalLayoutListener( new ViewTreeObserver.OnGlobalLayoutListener()
-        {
+        list.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
             @Override
-            public void onGlobalLayout()
-            {
-                list.getViewTreeObserver().removeGlobalOnLayoutListener( this );
-                View lastChild = list.getChildAt( list.getChildCount() - 1 );
-                list.setLayoutParams( new LinearLayout.LayoutParams( LinearLayout.LayoutParams.MATCH_PARENT, lastChild.getBottom()+lastChild.getPaddingBottom() ) );
+            public void onGlobalLayout() {
+                list.getViewTreeObserver().removeGlobalOnLayoutListener(this);
+                View lastChild = list.getChildAt(list.getChildCount() - 1);
+                list.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, lastChild.getBottom() + lastChild.getPaddingBottom()));
             }
         });
     }
@@ -187,15 +178,17 @@ public class BottomSheet extends Dialog implements DialogInterface, AdapterView.
         init(getContext());
         WindowManager.LayoutParams params = getWindow().getAttributes();
         params.height = ViewGroup.LayoutParams.WRAP_CONTENT;
-        params.width  = ViewGroup.LayoutParams.MATCH_PARENT;
+        params.width = ViewGroup.LayoutParams.MATCH_PARENT;
         params.gravity = Gravity.BOTTOM;
         getWindow().setAttributes(params);
     }
 
+
+
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-        if (builder.listener!=null) {
-            builder.listener.onClick(BottomSheet.this,((MenuItem)adapter.getItem(position)).id);
+        if (builder.listener != null) {
+            builder.listener.onClick(BottomSheet.this, ((MenuItem) adapter.getItem(position)).id);
         }
         dismiss();
     }
@@ -214,7 +207,7 @@ public class BottomSheet extends Dialog implements DialogInterface, AdapterView.
         private MenuItem() {
         }
 
-        private MenuItem(int id,CharSequence text,Drawable icon) {
+        private MenuItem(int id, CharSequence text, Drawable icon) {
             this.id = id;
             this.text = text;
             this.icon = icon;
@@ -233,15 +226,15 @@ public class BottomSheet extends Dialog implements DialogInterface, AdapterView.
 
     public static class Builder {
 
-        private final Activity activity;
+        private final Context context;
         private ArrayList<MenuItem> menuItems = new ArrayList<MenuItem>();
         private CharSequence title;
         private boolean grid;
         private OnClickListener listener;
         private boolean dark;
 
-        public Builder(Activity activity) {
-            this.activity = activity;
+        public Builder(Context context) {
+            this.context = context;
         }
 
         public Builder sheet(int xmlRes) {
@@ -249,15 +242,15 @@ public class BottomSheet extends Dialog implements DialogInterface, AdapterView.
             return this;
         }
 
-        private void parseXml(int menu){
-            try{
-                XmlResourceParser xpp = activity.getResources().getXml(menu);
+        private void parseXml(int menu) {
+            try {
+                XmlResourceParser xpp = context.getResources().getXml(menu);
                 xpp.next();
                 int eventType = xpp.getEventType();
-                while(eventType != XmlPullParser.END_DOCUMENT){
-                    if(eventType == XmlPullParser.START_TAG){
+                while (eventType != XmlPullParser.END_DOCUMENT) {
+                    if (eventType == XmlPullParser.START_TAG) {
                         String elemName = xpp.getName();
-                        if(elemName.equals("item")){
+                        if (elemName.equals("item")) {
                             String textId = xpp.getAttributeValue("http://schemas.android.com/apk/res/android", "title");
                             String iconId = xpp.getAttributeValue("http://schemas.android.com/apk/res/android", "icon");
                             String resId = xpp.getAttributeValue("http://schemas.android.com/apk/res/android", "id");
@@ -266,11 +259,10 @@ public class BottomSheet extends Dialog implements DialogInterface, AdapterView.
                             item.id = Integer.valueOf(resId.replace("@", ""));
                             item.text = resourceIdToString(textId);
                             if (!TextUtils.isEmpty(iconId))
-                                item.icon = activity.getResources().getDrawable(Integer.valueOf(iconId.replace("@", "")));
+                                item.icon = context.getResources().getDrawable(Integer.valueOf(iconId.replace("@", "")));
 
                             menuItems.add(item);
-                        } else
-                        if(elemName.equals("divider")) {
+                        } else if (elemName.equals("divider")) {
                             MenuItem item = new MenuItem();
                             item.divider = true;
                             menuItems.add(item);
@@ -278,7 +270,7 @@ public class BottomSheet extends Dialog implements DialogInterface, AdapterView.
                     }
                     eventType = xpp.next();
                 }
-            } catch(Exception e){
+            } catch (Exception e) {
                 e.printStackTrace();
             }
         }
@@ -288,28 +280,28 @@ public class BottomSheet extends Dialog implements DialogInterface, AdapterView.
             return this;
         }
 
-        public Builder sheet(int id,int icon,int text) {
-            item(new MenuItem(id, activity.getText(text), activity.getResources().getDrawable(icon)));
+        public Builder sheet(int id, int icon, int text) {
+            item(new MenuItem(id, context.getText(text), context.getResources().getDrawable(icon)));
             return this;
         }
 
-        public Builder sheet(int id,Drawable icon,CharSequence text) {
-            item(new MenuItem(id,text,icon));
+        public Builder sheet(int id, Drawable icon, CharSequence text) {
+            item(new MenuItem(id, text, icon));
             return this;
         }
 
-        public Builder sheet(int id,int text) {
-            item(new MenuItem(id, activity.getText(text), null));
+        public Builder sheet(int id, int text) {
+            item(new MenuItem(id, context.getText(text), null));
             return this;
         }
 
-        public Builder sheet(int id,CharSequence text) {
-            item(new MenuItem(id,text,null));
+        public Builder sheet(int id, CharSequence text) {
+            item(new MenuItem(id, text, null));
             return this;
         }
 
         public Builder title(int titleRes) {
-            title = activity.getText(titleRes);
+            title = context.getText(titleRes);
             return this;
         }
 
@@ -325,12 +317,12 @@ public class BottomSheet extends Dialog implements DialogInterface, AdapterView.
             return this;
         }
 
-        private CharSequence resourceIdToString(String text){
-            if(!text.contains("@")){
+        private CharSequence resourceIdToString(String text) {
+            if (!text.contains("@")) {
                 return text;
             } else {
                 String id = text.replace("@", "");
-                return activity.getResources().getText(Integer.valueOf(id));
+                return context.getResources().getText(Integer.valueOf(id));
             }
         }
 
@@ -339,15 +331,11 @@ public class BottomSheet extends Dialog implements DialogInterface, AdapterView.
             return this;
         }
 
-        private void show(boolean anim) {
-            BottomSheet dialog = new BottomSheet(activity, dark?R.style.BottomSheet_Dialog_Dark:R.style.BottomSheet_Dialog);
-            dialog.setBuilder(this);
-         //   dialog.init(activity);
-            dialog.show();
-        }
 
-        public void show() {
-            show(true);
+        public BottomSheet show() {
+            BottomSheet dialog = create();
+            dialog.show();
+            return dialog;
         }
 
         private void showgrid() {
@@ -355,13 +343,18 @@ public class BottomSheet extends Dialog implements DialogInterface, AdapterView.
             show();
         }
 
+        @SuppressLint("Override")
+        public BottomSheet create() {
+            BottomSheet dialog = new BottomSheet(context, dark ? R.style.BottomSheet_Dialog_Dark : R.style.BottomSheet_Dialog);
+            dialog.setBuilder(this);
+            return dialog;
+        }
+
         public Builder title(CharSequence s) {
-             title = s;
+            title = s;
             return this;
         }
     }
-
-
 
 
 }
