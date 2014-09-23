@@ -10,6 +10,7 @@ import android.os.Bundle;
 import android.support.annotation.DrawableRes;
 import android.support.annotation.MenuRes;
 import android.support.annotation.StringRes;
+import android.support.annotation.StyleRes;
 import android.text.TextUtils;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -252,6 +253,7 @@ public class BottomSheet extends Dialog implements DialogInterface {
     public static class Builder {
 
         private final Context context;
+        private int theme;
         private ArrayList<MenuItem> menuItems = new ArrayList<MenuItem>();
         private CharSequence title;
         private boolean grid;
@@ -264,7 +266,17 @@ public class BottomSheet extends Dialog implements DialogInterface {
          * @param context A Context for built BottomSheet.
          */
         public Builder(Context context) {
+            this(context,R.style.BottomSheet_Dialog);
+        }
+
+        /**
+         * Constructor using a context for this builder and the {@link com.cocosw.bottomsheet.BottomSheet} it creates with given style
+         *
+         * @param context A Context for built BottomSheet.
+         */
+        public Builder(Context context, @StyleRes int theme) {
             this.context = context;
+            this.theme = theme;
         }
 
         /**
@@ -413,7 +425,7 @@ public class BottomSheet extends Dialog implements DialogInterface {
          * @return This Builder object to allow for chaining of calls to set methods
          */
         public Builder darkTheme() {
-            dark = true;
+            theme = R.style.BottomSheet_Dialog_Dark;
             return this;
         }
 
@@ -444,7 +456,7 @@ public class BottomSheet extends Dialog implements DialogInterface {
          */
         @SuppressLint("Override")
         public BottomSheet create() {
-            BottomSheet dialog = new BottomSheet(context, dark ? R.style.BottomSheet_Dialog_Dark : R.style.BottomSheet_Dialog);
+            BottomSheet dialog = new BottomSheet(context, theme);
             dialog.setBuilder(this);
             return dialog;
         }

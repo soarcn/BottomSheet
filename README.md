@@ -7,11 +7,10 @@ https://www.google.com/design/spec/components/bottom-sheets.html
 
 This library works on android 2.1+
 
-Under heavy development, methods would change at any moment without notice, please do not use it in productive enviorment now.
-
 ![Sample](https://github.com/soarcn/BottomSheet/blob/master/art/image.png?raw=true)
 ![Sample](https://github.com/soarcn/BottomSheet/blob/master/art/image1.png?raw=true)
 ![Sample](https://github.com/soarcn/BottomSheet/blob/master/art/image2.png?raw=true)
+![Sample](https://github.com/soarcn/BottomSheet/blob/master/art/image3.png?raw=true)
 
 How to use this library
 =======
@@ -56,6 +55,27 @@ new BottomSheet.Builder(this).title("title").sheet(R.menu.list).listener(new Dia
 ```
 - You can also add action items in builder.
 
+
+Style
+========
+
+- Invoke darkTheme() to show build-in dark theme
+- Define your style in your application, and call bottomsheet by using new BottomSheet.Builder(this,R.style.BottomSheet_StyleDialog)....
+
+```xml
+    <style name="BottomSheet.StyleDialog" parent="BottomSheet.Dialog">
+        <item name="android:backgroundDimAmount">0.5</item>
+        <item name="android:windowAnimationStyle">@style/BottomSheet.Animation</item>
+        <item name="android:textColorPrimary">#DDffffff</item>
+        <item name="android:textColorSecondary">#8Affffff</item>
+        <item name="android:textColorHint">#42ffffff</item>
+        <item name="dialogBackground">@color/abc_search_url_text_normal</item>
+        <item name="listSelector">@drawable/abc_list_selector_holo_light</item>
+        <item name="drawSelectorOnTop">false</item>
+        <item name="dividerColor">@color/abc_search_url_text_pressed</item>
+    </style>
+```
+
 Contribute
 =======
 
@@ -64,7 +84,6 @@ Contribute
 TODO
 =======
 - (support) DialogFragment
-- Grid view
 - Style/animation tweaking
 - L style support
 - Style customization
