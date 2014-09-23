@@ -8,7 +8,6 @@ import android.content.res.XmlResourceParser;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.annotation.DrawableRes;
-import android.support.annotation.IdRes;
 import android.support.annotation.MenuRes;
 import android.support.annotation.StringRes;
 import android.text.TextUtils;
@@ -141,9 +140,9 @@ public class BottomSheet extends Dialog implements DialogInterface {
                         LayoutInflater inflater = (LayoutInflater) getContext()
                                 .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
                         if (builder.grid)
-                            convertView = inflater.inflate(R.layout.grid_entry, null);
+                            convertView = inflater.inflate(R.layout.bs_grid_entry, null);
                         else
-                            convertView = inflater.inflate(R.layout.list_entry, null);
+                            convertView = inflater.inflate(R.layout.bs_list_entry, null);
                         holder = new ViewHolder();
                         holder.title = (TextView) convertView.findViewById(R.id.bs_list_title);
                         holder.image = (ImageView) convertView.findViewById(R.id.bs_list_image);
@@ -167,7 +166,7 @@ public class BottomSheet extends Dialog implements DialogInterface {
                     if (convertView == null) {
                         LayoutInflater inflater = (LayoutInflater) getContext()
                                 .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-                        convertView = inflater.inflate(R.layout.list_divider, null);
+                        convertView = inflater.inflate(R.layout.bs_list_divider, null);
                         convertView.setVisibility(View.VISIBLE);
                     }
                     return convertView;
