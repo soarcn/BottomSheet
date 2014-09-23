@@ -18,9 +18,9 @@ How to use this library
 - Download this library, import to your IDE (eclipse...) as a library project.
 - Using Gradle (will be available soon)
 
-    ```groovy
+```groovy
     compile 'com.cocosw:bottomsheet:0.+@aar' 
-    ```
+```
 
 API
 =======
@@ -41,7 +41,7 @@ API
 - Call it just like you call a dialog
 
 ```java
-new BottomSheet.Builder(this).title("title").xml(R.menu.list).listener(new DialogInterface.OnClickListener() {
+new BottomSheet.Builder(this).title("title").sheet(R.menu.list).listener(new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         switch (which) {
@@ -62,9 +62,8 @@ Contribute
 
 TODO
 =======
-- Screen rotation
+- (support) DialogFragment
 - Grid view
-- Uploading to centre repository
 - Style/animation tweaking
 - L style support
 - Style customization
