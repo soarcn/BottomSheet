@@ -1,17 +1,16 @@
 BottomSheet
 =======
 
-Bottom Sheets
-
 One way to present a set of actions to a user is with bottom sheets, a sheet of paper that slides up from the bottom edge of the screen. Bottom sheets offer flexibility in the display of clear and simple actions that do not need explanation.
 
-[url|https://www.google.com/design/spec/components/bottom-sheets.html]
+https://www.google.com/design/spec/components/bottom-sheets.html
 
-This library works on android 2.1+ (not verify yet)
+This library works on android 2.1+
 
 Under heavy development, methods would change at any moment without notice, please do not use it in productive enviorment now.
 
 ![Sample](https://github.com/soarcn/BottomSheet/blob/master/art/image.png?raw=true)
+![Sample](https://github.com/soarcn/BottomSheet/blob/master/art/image1.png?raw=true)
 
 How to use this library
 =======
@@ -23,11 +22,23 @@ How to use this library
     compile 'com.cocosw:bottomsheet:0.+@aar' 
     ```
 
-
 API
 =======
 
 - Define actions in menu xml
+
+```xml
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:id="@+id/share" android:title="@string/share" android:icon="@drawable/perm_group_messages"/>
+    <item android:id="@+id/upload" android:title="@string/upload" android:icon="@drawable/perm_group_system_clock"/>
+    <item android:id="@+id/call" android:title="@string/call" android:icon="@drawable/perm_group_phone_calls"/>
+    <divider/>
+    <item android:id="@+id/help" android:title="@string/help" android:icon="@drawable/perm_group_system_tools"/>
+</menu>
+
+```
+
+- Call it just like you call a dialog
 
 ```java
 new BottomSheet.Builder(this).title("title").xml(R.menu.list).listener(new DialogInterface.OnClickListener() {
@@ -52,7 +63,6 @@ Contribute
 TODO
 =======
 - Screen rotation
-- Dark theme
 - Grid view
 - Uploading to centre repository
 - Style/animation tweaking

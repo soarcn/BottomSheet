@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <declare-styleable name="BottomSheet">
+        <attr name="dialogBackground" format="color|reference" />
+        <attr name="listSelector" format="color|reference" />
+        <attr name="drawSelectorOnTop" format="boolean" />
+        <attr name="dividerColor" format="color|reference" />
+    </declare-styleable>
+
+</resources>

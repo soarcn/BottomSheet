@@ -175,7 +175,7 @@ public class BottomSheet extends Dialog implements DialogInterface, AdapterView.
             {
                 list.getViewTreeObserver().removeGlobalOnLayoutListener( this );
                 View lastChild = list.getChildAt( list.getChildCount() - 1 );
-                list.setLayoutParams( new LinearLayout.LayoutParams( LinearLayout.LayoutParams.MATCH_PARENT, lastChild.getBottom() ) );
+                list.setLayoutParams( new LinearLayout.LayoutParams( LinearLayout.LayoutParams.MATCH_PARENT, lastChild.getBottom()+lastChild.getPaddingBottom() ) );
             }
         });
     }
@@ -184,6 +184,7 @@ public class BottomSheet extends Dialog implements DialogInterface, AdapterView.
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        init(getContext());
         WindowManager.LayoutParams params = getWindow().getAttributes();
         params.height = ViewGroup.LayoutParams.WRAP_CONTENT;
         params.width  = ViewGroup.LayoutParams.MATCH_PARENT;
@@ -237,6 +238,7 @@ public class BottomSheet extends Dialog implements DialogInterface, AdapterView.
         private CharSequence title;
         private boolean grid;
         private OnClickListener listener;
+        private boolean dark;
 
         public Builder(Activity activity) {
             this.activity = activity;
@@ -332,10 +334,15 @@ public class BottomSheet extends Dialog implements DialogInterface, AdapterView.
             }
         }
 
+        public Builder darkTheme() {
+            dark = true;
+            return this;
+        }
+
         private void show(boolean anim) {
-            BottomSheet dialog = new BottomSheet(activity, R.style.BottomSheet_Dialog);
+            BottomSheet dialog = new BottomSheet(activity, dark?R.style.BottomSheet_Dialog_Dark:R.style.BottomSheet_Dialog);
             dialog.setBuilder(this);
-            dialog.init(activity);
+         //   dialog.init(activity);
             dialog.show();
         }
 

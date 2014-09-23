@@ -10,9 +10,23 @@
         <item name="android:windowIsFloating">true</item>
         <item name="android:windowContentOverlay">@null</item>
         <item name="android:windowIsTranslucent">true</item>
-        <item name="android:backgroundDimAmount">0.2</item>
+        <item name="android:backgroundDimAmount">0.3</item>
         <item name="android:backgroundDimEnabled">true</item>
         <item name="android:windowAnimationStyle">@style/BottomSheet.Animation</item>
+        <item name="android:textColorPrimary">#DD000000</item>
+        <item name="android:textColorSecondary">#8A000000</item>
+        <item name="dialogBackground">@android:color/background_light</item>
+        <item name="listSelector">@drawable/bs_list_selector</item>
+        <item name="drawSelectorOnTop">false</item>
+        <item name="dividerColor">@color/divider_color</item>
+    </style>
+
+    <style name="BottomSheet.Dialog.Dark" parent="BottomSheet.Dialog">
+        <item name="android:textColorPrimary">#DDffffff</item>
+        <item name="android:textColorSecondary">#8Affffff</item>
+        <item name="dialogBackground">@android:color/background_dark</item>
+        <item name="dividerColor">@color/dark_divider_color</item>
+        <item name="listSelector">@drawable/bs_list_dark_selector</item>
     </style>
 
     <style name="Text"/>
@@ -21,24 +35,22 @@
         <item name="android:textSize">20sp</item>
         <item name="android:fontFamily" tools:ignore="NewApi">sans-serif</item>
         <item name="android:textStyle">normal</item>
-        <item name="android:textColor">#8A000000</item>
+        <item name="android:textColor">?android:textColorSecondary</item>
     </style>
 
     <style name="Text.Title">
         <item name="android:textSize">20sp</item>
         <item name="android:textStyle">normal</item>
-        <item name="android:textColor">#DD000000</item>
+        <item name="android:textColor">?android:textColorPrimary</item>
         <item name="android:fontFamily" tools:ignore="NewApi">sans-serif-medium</item>
     </style>
 
     <style name="Text.Subhead">
         <item name="android:textSize">16sp</item>
         <item name="android:textStyle">normal</item>
-        <item name="android:textColor">#DD000000</item>
+        <item name="android:textColor">?android:textColorPrimary</item>
         <item name="android:fontFamily" tools:ignore="NewApi">sans-serif</item>
     </style>
-
-
 
     <style name="BottomSheet.Title">
         <item name="android:singleLine">true</item>
@@ -47,11 +59,12 @@
         <item name="android:layout_width">fill_parent</item>
         <item name="android:layout_height">wrap_content</item>
         <item name="android:textAppearance">@style/Text.Headline</item>
+        <item name="android:gravity">center_vertical</item>
     </style>
 
     <style name="BottomSheet.List">
-        <item name="android:listSelector">@drawable/bs_list_selector</item>
-        <item name="android:drawSelectorOnTop">true</item>
+        <item name="android:listSelector">?listSelector</item>
+        <item name="android:drawSelectorOnTop">?drawSelectorOnTop</item>
         <item name="android:layoutAnimation">@anim/bs_list_layout_anim_in</item>
     </style>
 
@@ -77,7 +90,7 @@
         <item name="android:layout_height">wrap_content</item>
         <item name="android:layout_width">fill_parent</item>
         <item name="android:minHeight">1dp</item>
-        <item name="android:background">@color/divider_color</item>
+        <item name="android:background">?dividerColor</item>
         <item name="android:layout_marginTop">7dp</item>
         <item name="android:layout_marginBottom">8dp</item>
     </style>
@@ -108,4 +121,5 @@
 
 
     <color name="divider_color">#44000000</color>
+    <color name="dark_divider_color">#44ffffff</color>
 </resources>

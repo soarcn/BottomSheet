@@ -4,11 +4,11 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:orientation="vertical" android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="@android:color/background_light"
+    android:background="?dialogBackground"
     android:paddingBottom="8dp">
 
     <View
-        android:background="@color/divider_color"
+        android:background="?dividerColor"
         android:layout_width="fill_parent"
         android:layout_height="1dp"
         android:layout_marginBottom="8dp"/>
@@ -17,7 +17,6 @@
         android:id="@+id/bottom_sheet_title"
         android:visibility="gone"
         style="@style/BottomSheet.Title"
-        android:gravity="center_vertical"
         />
 
     <GridView
