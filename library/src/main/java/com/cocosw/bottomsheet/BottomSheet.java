@@ -1,13 +1,16 @@
 package com.cocosw.bottomsheet;
 
 import android.annotation.SuppressLint;
-import android.app.Activity;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.res.XmlResourceParser;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.support.annotation.DrawableRes;
+import android.support.annotation.IdRes;
+import android.support.annotation.MenuRes;
+import android.support.annotation.StringRes;
 import android.text.TextUtils;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -28,10 +31,14 @@ import java.util.ArrayList;
 
 
 /**
- * Project: gradle
+ * One way to present a set of actions to a user is with bottom sheets, a sheet of paper that slides up from the bottom edge of the screen. Bottom sheets offer flexibility in the display of clear and simple actions that do not need explanation.
+ *
+ * https://www.google.com/design/spec/components/bottom-sheets.html
+ *
+ * Project: BottomSheet
  * Created by LiaoKai(soarcn) on 2014/9/21.
  */
-public class BottomSheet extends Dialog implements DialogInterface, AdapterView.OnItemClickListener {
+public class BottomSheet extends Dialog implements DialogInterface {
 
     private View mDialogView;
     private TextView title;
@@ -159,7 +166,15 @@ public class BottomSheet extends Dialog implements DialogInterface, AdapterView.
             }
         };
         list.setAdapter(adapter);
-        list.setOnItemClickListener(this);
+        list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                if (builder.listener != null) {
+                    builder.listener.onClick(BottomSheet.this, ((MenuItem) adapter.getItem(position)).id);
+                }
+                dismiss();
+            }
+        });
 
         list.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
             @Override
@@ -183,21 +198,14 @@ public class BottomSheet extends Dialog implements DialogInterface, AdapterView.
         getWindow().setAttributes(params);
     }
 
-
-
-    @Override
-    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-        if (builder.listener != null) {
-            builder.listener.onClick(BottomSheet.this, ((MenuItem) adapter.getItem(position)).id);
-        }
-        dismiss();
-    }
-
     private void setBuilder(Builder builder) {
         this.builder = builder;
     }
 
 
+    /**
+     * MenuItem
+     */
     private static class MenuItem {
         private int id;
         private CharSequence text;
@@ -224,6 +232,9 @@ public class BottomSheet extends Dialog implements DialogInterface, AdapterView.
         }
     }
 
+    /***
+     *  Constructor using a context for this builder and the {@link com.cocosw.bottomsheet.BottomSheet} it creates.
+     */
     public static class Builder {
 
         private final Context context;
@@ -233,11 +244,22 @@ public class BottomSheet extends Dialog implements DialogInterface, AdapterView.
         private OnClickListener listener;
         private boolean dark;
 
+        /**
+         * Constructor using a context for this builder and the {@link com.cocosw.bottomsheet.BottomSheet} it creates.
+         *
+         * @param context A Context for built BottomSheet.
+         */
         public Builder(Context context) {
             this.context = context;
         }
 
-        public Builder sheet(int xmlRes) {
+        /**
+         * Set menu resources as list item to display in BottomSheet
+         *
+         * @param xmlRes menu resource id
+         * @return This Builder object to allow for chaining of calls to set methods
+         */
+        public Builder sheet(@MenuRes int xmlRes) {
             parseXml(xmlRes);
             return this;
         }
@@ -280,31 +302,71 @@ public class BottomSheet extends Dialog implements DialogInterface, AdapterView.
             return this;
         }
 
-        public Builder sheet(int id, int icon, int text) {
-            item(new MenuItem(id, context.getText(text), context.getResources().getDrawable(icon)));
+        /**
+         * Add one item into BottomSheet
+         *
+         * @param id ID of item
+         * @param iconRes icon resource
+         * @param textRes text resource
+         * @return This Builder object to allow for chaining of calls to set methods
+         */
+        public Builder sheet(int id, @DrawableRes int iconRes, @StringRes int textRes) {
+            item(new MenuItem(id, context.getText(textRes), context.getResources().getDrawable(iconRes)));
             return this;
         }
 
+        /**
+         * Add one item into BottomSheet
+         *
+         * @param id ID of item
+         * @param icon icon
+         * @param text text
+         * @return This Builder object to allow for chaining of calls to set methods
+         */
         public Builder sheet(int id, Drawable icon, CharSequence text) {
             item(new MenuItem(id, text, icon));
             return this;
         }
 
-        public Builder sheet(int id, int text) {
-            item(new MenuItem(id, context.getText(text), null));
+        /**
+         * Add one item without icon into BottomSheet
+         *
+         * @param id ID of item
+         * @param textRes text resource
+         * @return This Builder object to allow for chaining of calls to set methods
+         */
+        public Builder sheet(int id, @StringRes int textRes) {
+            item(new MenuItem(id, context.getText(textRes), null));
             return this;
         }
 
+        /**
+         * Add one item without icon into BottomSheet
+         *
+         * @param id ID of item
+         * @param text text
+         * @return This Builder object to allow for chaining of calls to set methods
+         */
         public Builder sheet(int id, CharSequence text) {
             item(new MenuItem(id, text, null));
             return this;
         }
 
-        public Builder title(int titleRes) {
+        /**
+         * Set title for BottomSheet
+         * @param titleRes title for BottomSheet
+         * @return This Builder object to allow for chaining of calls to set methods
+         */
+        public Builder title(@StringRes int titleRes) {
             title = context.getText(titleRes);
             return this;
         }
 
+        /**
+         * Add a divider in to the list
+         *
+         * @return This Builder object to allow for chaining of calls to set methods
+         */
         public Builder divider() {
             MenuItem item = new MenuItem();
             item.divider = true;
@@ -312,6 +374,12 @@ public class BottomSheet extends Dialog implements DialogInterface, AdapterView.
             return this;
         }
 
+        /**
+         * Set OnclickListener for BottomSheet
+         *
+         * @param listener OnclickListener for BottomSheet
+         * @return This Builder object to allow for chaining of calls to set methods
+         */
         public Builder listener(OnClickListener listener) {
             this.listener = listener;
             return this;
@@ -326,23 +394,40 @@ public class BottomSheet extends Dialog implements DialogInterface, AdapterView.
             }
         }
 
+        /**
+         * Show BottomSheet in dark color theme looking
+         * @return This Builder object to allow for chaining of calls to set methods
+         */
         public Builder darkTheme() {
             dark = true;
             return this;
         }
 
 
+        /**
+         * Show BottomSheet
+         * @return This Builder object to allow for chaining of calls to set methods
+         */
         public BottomSheet show() {
             BottomSheet dialog = create();
             dialog.show();
             return dialog;
         }
 
-        private void showgrid() {
+        /**
+         * Show items in grid instead of list
+         *
+         * @return This Builder object to allow for chaining of calls to set methods
+         */
+        private Builder grid() {
             this.grid = true;
-            show();
+            return this;
         }
 
+        /**
+         * Create a BottomSheet but not show it
+         * @return This Builder object to allow for chaining of calls to set methods
+         */
         @SuppressLint("Override")
         public BottomSheet create() {
             BottomSheet dialog = new BottomSheet(context, dark ? R.style.BottomSheet_Dialog_Dark : R.style.BottomSheet_Dialog);
@@ -350,8 +435,14 @@ public class BottomSheet extends Dialog implements DialogInterface, AdapterView.
             return dialog;
         }
 
-        public Builder title(CharSequence s) {
-            title = s;
+        /**
+         * Set title for BottomSheet
+         *
+         * @param title title for BottomSheet
+         * @return This Builder object to allow for chaining of calls to set methods
+         */
+        public Builder title(CharSequence title) {
+            this.title = title;
             return this;
         }
     }
