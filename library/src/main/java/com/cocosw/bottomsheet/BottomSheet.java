@@ -28,6 +28,7 @@ import android.widget.TextView;
 import org.xmlpull.v1.XmlPullParser;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 
 
 /**
@@ -46,7 +47,6 @@ public class BottomSheet extends Dialog implements DialogInterface {
     private ArrayList<MenuItem> menuItem;
     private BaseAdapter adapter;
     private Builder builder;
-
 
     public BottomSheet(Context context) {
         super(context,R.style.BottomSheet_Dialog);
@@ -78,10 +78,24 @@ public class BottomSheet extends Dialog implements DialogInterface {
         list = (GridView) mDialogView.findViewById(R.id.bottom_sheet_gridview);
 
         if (builder.grid) {
-            list.setNumColumns(3);
+            list.setNumColumns(context.getResources().getInteger(R.integer.bs_grid_colum));
         }
 
         menuItem = builder.menuItems;
+        // Grid mode do not support divider, we will remove them all here
+        if (builder.grid) {
+            Iterator<MenuItem> i = menuItem.iterator();
+            while (i.hasNext()) {
+                MenuItem item = i.next();
+                if (item.divider)
+                    i.remove();
+                else if (item.icon==null) {
+                    throw new IllegalArgumentException("You should set icon for each items in grid style");
+                }
+            }
+        //    list.setPadding(R.dimen.bs_grid_left_padding,R.dimen.bs_grid_top_padding,R.dimen.bs_grid_right_padding,R.dimen.bs_grid_bottom_padding);
+        }
+
         adapter = new BaseAdapter() {
 
             @Override
@@ -181,7 +195,8 @@ public class BottomSheet extends Dialog implements DialogInterface {
             public void onGlobalLayout() {
                 list.getViewTreeObserver().removeGlobalOnLayoutListener(this);
                 View lastChild = list.getChildAt(list.getChildCount() - 1);
-                list.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, lastChild.getBottom() + lastChild.getPaddingBottom()));
+                if (lastChild!=null)
+                    list.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, lastChild.getBottom() + lastChild.getPaddingBottom()));
             }
         });
     }
@@ -419,7 +434,7 @@ public class BottomSheet extends Dialog implements DialogInterface {
          *
          * @return This Builder object to allow for chaining of calls to set methods
          */
-        private Builder grid() {
+        public Builder grid() {
             this.grid = true;
             return this;
         }
