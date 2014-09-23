@@ -11,6 +11,7 @@ Under heavy development, methods would change at any moment without notice, plea
 
 ![Sample](https://github.com/soarcn/BottomSheet/blob/master/art/image.png?raw=true)
 ![Sample](https://github.com/soarcn/BottomSheet/blob/master/art/image1.png?raw=true)
+![Sample](https://github.com/soarcn/BottomSheet/blob/master/art/image2.png?raw=true)
 
 How to use this library
 =======
