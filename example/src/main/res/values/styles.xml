@@ -5,4 +5,8 @@
         <!-- Customize your theme here. -->
     </style>
 
+    <style name="DarkTheme" parent="Theme.AppCompat">
+
+    </style>
+
 </resources>

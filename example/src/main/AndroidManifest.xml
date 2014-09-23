@@ -11,6 +11,7 @@
             </intent-filter>
         </activity>
         <activity android:name=".ListAcitivty"/>
+
         </application>
 </manifest>
 
