@@ -1,8 +1,10 @@
 package com.cocosw.bottomsheet.example;
 
 import android.app.Activity;
+import android.app.Dialog;
 import android.content.DialogInterface;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.v7.app.ActionBarActivity;
 import android.view.MenuItem;
 import android.view.View;
@@ -22,6 +24,7 @@ public class ListAcitivty extends ActionBarActivity implements AdapterView.OnIte
     private CocoQuery q;
     private int action;
     private ArrayAdapter<String> adapter;
+    private BottomSheet sheet;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,6 +45,7 @@ public class ListAcitivty extends ActionBarActivity implements AdapterView.OnIte
 
     }
 
+
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         if (item.getItemId()==android.R.id.home)
@@ -51,33 +55,40 @@ public class ListAcitivty extends ActionBarActivity implements AdapterView.OnIte
 
     @Override
     public void onItemClick(AdapterView<?> parent, View view, final int position, long id) {
+        showDialog(position);
+    }
+
+    @Nullable
+    @Override
+    protected Dialog onCreateDialog(final int position, Bundle args) {
         switch (action) {
             case 0:
-                new BottomSheet.Builder(this).title("To "+adapter.getItem(position)).sheet(R.menu.list).listener(new DialogInterface.OnClickListener() {
+                sheet = new BottomSheet.Builder(this).title("To "+adapter.getItem(position)).sheet(R.menu.list).listener(new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         ListAcitivty.this.onClick(adapter.getItem(position),which);
                     }
-                }).show();
+                }).create();
                 break;
             case 1:
-                new BottomSheet.Builder(this).sheet(R.menu.noicon).listener(new DialogInterface.OnClickListener() {
+                sheet = new BottomSheet.Builder(this).sheet(R.menu.noicon).listener(new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         ListAcitivty.this.onClick(adapter.getItem(position), which);
                     }
-                }).show();
+                }).create();
                 break;
 
             case 2:
-                new BottomSheet.Builder(this).darkTheme().title("To " + adapter.getItem(position)).sheet(R.menu.list).listener(new DialogInterface.OnClickListener() {
+                sheet = new BottomSheet.Builder(this).darkTheme().title("To " + adapter.getItem(position)).sheet(R.menu.list).listener(new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         ListAcitivty.this.onClick(adapter.getItem(position),which);
                     }
-                }).show();
+                }).create();
                 break;
         }
+        return sheet;
     }
 
     public void onClick(String name, int which) {
