@@ -75,6 +75,13 @@ Style
         <item name="dividerColor">@color/abc_search_url_text_pressed</item>
     </style>
 ```
+- Set bottomesheet style in your activity theme
+
+```xml
+    <style name="StyleTheme" parent="Theme.AppCompat">
+        <item name="bottomSheetStyle">@style/BottomSheet.StyleDialog</item>
+    </style>
+```
 
 Contribute
 =======
@@ -85,8 +92,6 @@ TODO
 =======
 - (support) DialogFragment
 - Style/animation tweaking
-- L style support
-- Style customization
 
 
 License
