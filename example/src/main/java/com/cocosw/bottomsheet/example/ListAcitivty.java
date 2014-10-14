@@ -26,8 +26,8 @@ public class ListAcitivty extends ActionBarActivity implements AdapterView.OnIte
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        if (getIntent().getBooleanExtra("dark",false)) {
-            setTheme(R.style.DarkTheme);
+        if (getIntent().getBooleanExtra("style",false)) {
+            setTheme(R.style.StyleTheme);
         }
         super.onCreate(savedInstanceState);
         setContentView(R.layout.ui_main);
@@ -102,7 +102,14 @@ public class ListAcitivty extends ActionBarActivity implements AdapterView.OnIte
                     }
                 }).create();
                 break;
-
+            case 5:
+                sheet = new BottomSheet.Builder(this).title("To "+adapter.getItem(position)).sheet(R.menu.list).listener(new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        ListAcitivty.this.onClick(adapter.getItem(position),which);
+                    }
+                }).create();
+                break;
         }
         return sheet;
     }

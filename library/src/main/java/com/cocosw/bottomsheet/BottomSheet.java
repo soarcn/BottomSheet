@@ -4,6 +4,7 @@ import android.annotation.SuppressLint;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.res.TypedArray;
 import android.content.res.XmlResourceParser;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
@@ -273,7 +274,9 @@ public class BottomSheet extends Dialog implements DialogInterface {
          * @param context A Context for built BottomSheet.
          */
         public Builder(Context context) {
-            this(context,R.style.BottomSheet_Dialog);
+            this.context = context;
+            TypedArray ta = context.getTheme().obtainStyledAttributes(new int[]{R.attr.bottomSheetStyle});
+            this.theme = ta.getResourceId(0, R.style.BottomSheet_Dialog);
         }
 
         /**

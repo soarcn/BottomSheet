@@ -24,9 +24,9 @@ public class Main extends ActionBarActivity implements AdapterView.OnItemClickLi
         setContentView(R.layout.ui_main);
         CocoQuery q = new CocoQuery(this);
 
-        String[] items = new String[]{"From Xml","Without Icon","Dark Theme","Grid","Style","Style from Theme(TBD)","FullScreen (TBD)"};
+        String[] items = new String[]{"From Xml", "Without Icon", "Dark Theme", "Grid", "Style", "Style from Theme", "FullScreen (TBD)"};
         q.id(R.id.listView)
-                .adapter(adapter = new ArrayAdapter<>(this,android.R.layout.simple_list_item_1,android.R.id.text1,items))
+                .adapter(adapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, android.R.id.text1, items))
                 .itemClicked(this);
     }
 
@@ -34,10 +34,10 @@ public class Main extends ActionBarActivity implements AdapterView.OnItemClickLi
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
         Intent intent = new Intent(this, ListAcitivty.class).setFlags(position).putExtra("title", adapter.getItem(position));
-        if (position==2) {
-            intent.putExtra("dark",true);
+        if (position == 5) {
+            intent.putExtra("style", true);
         }
-          startActivity(intent);
+        startActivity(intent);
     }
 
 }
