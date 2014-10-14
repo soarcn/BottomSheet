@@ -1,6 +1,5 @@
 package com.cocosw.bottomsheet.example;
 
-import android.app.Activity;
 import android.app.Dialog;
 import android.content.DialogInterface;
 import android.os.Bundle;
@@ -10,7 +9,6 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.ListAdapter;
 
 import com.cocosw.bottomsheet.BottomSheet;
 import com.cocosw.query.CocoQuery;
@@ -53,11 +51,13 @@ public class ListAcitivty extends ActionBarActivity implements AdapterView.OnIte
         return super.onOptionsItemSelected(item);
     }
 
+    @SuppressWarnings("deprecation")
     @Override
     public void onItemClick(AdapterView<?> parent, View view, final int position, long id) {
         showDialog(position);
     }
 
+    @SuppressWarnings("deprecation")
     @Nullable
     @Override
     protected Dialog onCreateDialog(final int position, Bundle args) {
@@ -107,7 +107,7 @@ public class ListAcitivty extends ActionBarActivity implements AdapterView.OnIte
         return sheet;
     }
 
-    public void onClick(String name, int which) {
+    void onClick(String name, int which) {
         switch (which) {
             case R.id.share:
                 q.toast("Share to " + name);

@@ -2,8 +2,8 @@ apply from: 'https://raw.githubusercontent.com/soarcn/gradle/master/android.grad
 
 dependencies {
     compile project(':library')
-    compile 'com.cocosw:query:+'
-    compile 'com.android.support:appcompat-v7:20.+'
+    compile 'com.cocosw:query:0.2.2'
+    compile 'com.android.support:appcompat-v7:20.0.0'
 }
 
 android {

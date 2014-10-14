@@ -6,9 +6,11 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.res.XmlResourceParser;
 import android.graphics.drawable.Drawable;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.DrawableRes;
 import android.support.annotation.MenuRes;
+import android.support.annotation.NonNull;
 import android.support.annotation.StringRes;
 import android.support.annotation.StyleRes;
 import android.text.TextUtils;
@@ -41,8 +43,6 @@ import java.util.Iterator;
  */
 public class BottomSheet extends Dialog implements DialogInterface {
 
-    private View mDialogView;
-    private TextView title;
     private GridView list;
     private ArrayList<MenuItem> menuItem;
     private BaseAdapter adapter;
@@ -52,13 +52,14 @@ public class BottomSheet extends Dialog implements DialogInterface {
         super(context,R.style.BottomSheet_Dialog);
     }
 
+    @SuppressWarnings("WeakerAccess")
     public BottomSheet(Context context, int theme) {
         super(context, theme);
     }
 
     private void init(Context context) {
         setCanceledOnTouchOutside(true);
-        mDialogView = View.inflate(context, R.layout.bottom_sheet_dialog, null);
+        View mDialogView = View.inflate(context, R.layout.bottom_sheet_dialog, null);
         setContentView(mDialogView);
 
         this.setOnShowListener(new OnShowListener() {
@@ -69,7 +70,7 @@ public class BottomSheet extends Dialog implements DialogInterface {
         });
 
 
-        title = (TextView) mDialogView.findViewById(R.id.bottom_sheet_title);
+        TextView title = (TextView) mDialogView.findViewById(R.id.bottom_sheet_title);
         if (builder.title != null) {
             title.setVisibility(View.VISIBLE);
             title.setText(builder.title);
@@ -133,6 +134,7 @@ public class BottomSheet extends Dialog implements DialogInterface {
                 return getItem(position).divider ? 1 : 0;
             }
 
+            @SuppressLint("InflateParams")
             @Override
             public View getView(int position, View convertView, ViewGroup parent) {
                 ViewHolder holder;
@@ -190,10 +192,16 @@ public class BottomSheet extends Dialog implements DialogInterface {
             }
         });
 
+
         list.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
             @Override
             public void onGlobalLayout() {
-                list.getViewTreeObserver().removeGlobalOnLayoutListener(this);
+                if (Build.VERSION.SDK_INT < 16) {
+                    //noinspection deprecation
+                    list.getViewTreeObserver().removeGlobalOnLayoutListener(this);
+                } else {
+                    list.getViewTreeObserver().removeOnGlobalLayoutListener(this);
+                }
                 View lastChild = list.getChildAt(list.getChildCount() - 1);
                 if (lastChild!=null)
                     list.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, lastChild.getBottom() + lastChild.getPaddingBottom()));
@@ -254,11 +262,10 @@ public class BottomSheet extends Dialog implements DialogInterface {
 
         private final Context context;
         private int theme;
-        private ArrayList<MenuItem> menuItems = new ArrayList<MenuItem>();
+        private final ArrayList<MenuItem> menuItems = new ArrayList<>();
         private CharSequence title;
         private boolean grid;
         private OnClickListener listener;
-        private boolean dark;
 
         /**
          * Constructor using a context for this builder and the {@link com.cocosw.bottomsheet.BottomSheet} it creates.
@@ -323,7 +330,8 @@ public class BottomSheet extends Dialog implements DialogInterface {
             }
         }
 
-        private Builder item(MenuItem item) {
+        @SuppressWarnings("UnusedReturnValue")
+        private Builder item(@NonNull MenuItem item) {
             menuItems.add(item);
             return this;
         }
@@ -349,7 +357,7 @@ public class BottomSheet extends Dialog implements DialogInterface {
          * @param text text
          * @return This Builder object to allow for chaining of calls to set methods
          */
-        public Builder sheet(int id, Drawable icon, CharSequence text) {
+        public Builder sheet(int id,@NonNull Drawable icon, @NonNull CharSequence text) {
             item(new MenuItem(id, text, icon));
             return this;
         }
@@ -373,7 +381,7 @@ public class BottomSheet extends Dialog implements DialogInterface {
          * @param text text
          * @return This Builder object to allow for chaining of calls to set methods
          */
-        public Builder sheet(int id, CharSequence text) {
+        public Builder sheet(int id,@NonNull CharSequence text) {
             item(new MenuItem(id, text, null));
             return this;
         }
@@ -406,7 +414,7 @@ public class BottomSheet extends Dialog implements DialogInterface {
          * @param listener OnclickListener for BottomSheet
          * @return This Builder object to allow for chaining of calls to set methods
          */
-        public Builder listener(OnClickListener listener) {
+        public Builder listener(@NonNull OnClickListener listener) {
             this.listener = listener;
             return this;
         }

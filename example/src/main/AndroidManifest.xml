@@ -1,9 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-  package="com.cocosw.bottomsheet.example">
+    xmlns:tools="http://schemas.android.com/tools"
+    package="com.cocosw.bottomsheet.example">
     <application android:icon="@drawable/ic_launcher"
         android:theme="@style/AppTheme"
-        android:label="@string/bottomsheet">
+        android:label="@string/bottomsheet"
+        tools:ignore="AllowBackup">
         <activity android:name=".Main" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

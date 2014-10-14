@@ -5,7 +5,8 @@
     android:orientation="vertical" android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:background="?dialogBackground"
-    android:paddingBottom="8dp">
+    android:paddingBottom="8dp"
+    tools:ignore="Overdraw">
 
     <View
         android:background="?dividerColor"

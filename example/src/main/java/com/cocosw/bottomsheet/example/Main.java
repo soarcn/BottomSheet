@@ -1,6 +1,5 @@
 package com.cocosw.bottomsheet.example;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
@@ -16,7 +15,6 @@ import com.cocosw.query.CocoQuery;
  */
 public class Main extends ActionBarActivity implements AdapterView.OnItemClickListener {
 
-    private CocoQuery q;
     private ArrayAdapter<String> adapter;
 
     @Override
@@ -24,7 +22,7 @@ public class Main extends ActionBarActivity implements AdapterView.OnItemClickLi
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.ui_main);
-        q = new CocoQuery(this);
+        CocoQuery q = new CocoQuery(this);
 
         String[] items = new String[]{"From Xml","Without Icon","Dark Theme","Grid","Style","Style from Theme(TBD)","FullScreen (TBD)"};
         q.id(R.id.listView)
