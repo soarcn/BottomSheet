@@ -94,6 +94,7 @@ public class ListAcitivty extends ActionBarActivity implements AdapterView.OnIte
                         ListAcitivty.this.onClick(adapter.getItem(position),which);
                     }
                 }).grid().create();
+                break;
             case 4:
                 sheet = new BottomSheet.Builder(this,R.style.BottomSheet_StyleDialog).title("To "+adapter.getItem(position)).sheet(R.menu.list).listener(new DialogInterface.OnClickListener() {
                     @Override
