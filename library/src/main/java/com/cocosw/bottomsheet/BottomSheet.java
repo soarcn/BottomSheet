@@ -18,6 +18,9 @@ import android.support.annotation.MenuRes;
 import android.support.annotation.NonNull;
 import android.support.annotation.StringRes;
 import android.support.annotation.StyleRes;
+import android.support.v7.widget.GridLayoutManager;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
 import android.util.DisplayMetrics;
 import android.view.Gravity;
@@ -28,9 +31,6 @@ import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
 import android.view.Window;
 import android.view.WindowManager;
-import android.widget.AdapterView;
-import android.widget.BaseAdapter;
-import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -52,9 +52,9 @@ import java.util.Iterator;
  */
 public class BottomSheet extends Dialog implements DialogInterface {
 
-    private GridView list;
+    private RecyclerView list;
     private ArrayList<MenuItem> menuItem;
-    private BaseAdapter adapter;
+    private RecyclerView.Adapter adapter;
     private Builder builder;
 
     // translucent support
@@ -181,7 +181,7 @@ public class BottomSheet extends Dialog implements DialogInterface {
     }
 
 
-    private void init(Context context) {
+    private void init(final Context context) {
         setCanceledOnTouchOutside(true);
         View mDialogView = View.inflate(context, R.layout.bottom_sheet_dialog, null);
         setContentView(mDialogView);
@@ -203,10 +203,12 @@ public class BottomSheet extends Dialog implements DialogInterface {
             title.setText(builder.title);
         }
 
-        list = (GridView) mDialogView.findViewById(R.id.bottom_sheet_gridview);
+        list = (RecyclerView) mDialogView.findViewById(R.id.bottom_sheet_recyclerview);
 
         if (builder.grid) {
-            list.setNumColumns(context.getResources().getInteger(R.integer.bs_grid_colum));
+            list.setLayoutManager(new GridLayoutManager(context, context.getResources().getInteger(R.integer.bs_grid_colum)));
+        } else {
+            list.setLayoutManager(new LinearLayoutManager(context));
         }
 
         menuItem = builder.menuItems;
@@ -224,101 +226,55 @@ public class BottomSheet extends Dialog implements DialogInterface {
         //    list.setPadding(R.dimen.bs_grid_left_padding,R.dimen.bs_grid_top_padding,R.dimen.bs_grid_right_padding,R.dimen.bs_grid_bottom_padding);
         }
 
-        adapter = new BaseAdapter() {
+        adapter = new RecyclerView.Adapter() {
+
+            private static final int TYPE_DIVIDER = 1;
+            private static final int TYPE_MENUITEM = 0;
 
             @Override
-            public int getCount() {
+            public int getItemCount() {
                 return menuItem.size();
             }
 
             @Override
-            public MenuItem getItem(int position) {
-                return menuItem.get(position);
+            public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup viewGroup, int viewType) {
+                View v;
+                if (viewType == TYPE_DIVIDER) {
+                    v = LayoutInflater.from(context).inflate(R.layout.bs_list_divider, viewGroup, false);
+                    return new DividerViewHolder(v);
+                } else {
+                    if (builder.grid) {
+                        v = LayoutInflater.from(context).inflate(R.layout.bs_grid_entry, viewGroup, false);
+                    } else {
+                        v = LayoutInflater.from(context).inflate(R.layout.bs_list_entry, viewGroup, false);
+                    }
+                    return new MenuItemViewHolder(v, builder.listener);
+                }
             }
 
             @Override
-            public long getItemId(int position) {
-                return position;
-            }
-
-            @Override
-            public int getViewTypeCount() {
-                return 2;
-            }
-
-            @Override
-            public boolean isEnabled(int position) {
-                return getItemViewType(position) == 0;
-            }
-
-            @Override
-            public boolean areAllItemsEnabled() {
-                return false;
+            public void onBindViewHolder(RecyclerView.ViewHolder holder, int i) {
+                MenuItem item = menuItem.get(i);
+                if (holder.getItemViewType() == TYPE_MENUITEM) {
+                    MenuItemViewHolder viewHolder = (MenuItemViewHolder) holder;
+                    viewHolder.title.setText(item.text);
+                    if (item.icon == null)
+                        viewHolder.image.setVisibility(View.GONE);
+                    else {
+                        viewHolder.image.setVisibility(View.VISIBLE);
+                        viewHolder.image.setImageDrawable(item.icon);
+                    }
+                }
             }
 
             @Override
             public int getItemViewType(int position) {
-                return getItem(position).divider ? 1 : 0;
+                return menuItem.get(position).divider ? TYPE_DIVIDER : TYPE_MENUITEM;
             }
 
-            @SuppressLint("InflateParams")
-            @Override
-            public View getView(int position, View convertView, ViewGroup parent) {
-                ViewHolder holder;
-                if (getItemViewType(position) == 0) {
-                    if (convertView == null) {
-                        LayoutInflater inflater = (LayoutInflater) getContext()
-                                .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-                        if (builder.grid)
-                            convertView = inflater.inflate(R.layout.bs_grid_entry, null);
-                        else
-                            convertView = inflater.inflate(R.layout.bs_list_entry, null);
-                        holder = new ViewHolder();
-                        holder.title = (TextView) convertView.findViewById(R.id.bs_list_title);
-                        holder.image = (ImageView) convertView.findViewById(R.id.bs_list_image);
-                        convertView.setTag(holder);
-                    } else {
-                        holder = (ViewHolder) convertView.getTag();
-                    }
-
-                    MenuItem item = getItem(position);
-
-                    holder.title.setText(item.text);
-                    if (item.icon == null)
-                        holder.image.setVisibility(View.GONE);
-                    else {
-                        holder.image.setVisibility(View.VISIBLE);
-                        holder.image.setImageDrawable(item.icon);
-                    }
-
-                    return convertView;
-                } else {
-                    if (convertView == null) {
-                        LayoutInflater inflater = (LayoutInflater) getContext()
-                                .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-                        convertView = inflater.inflate(R.layout.bs_list_divider, null);
-                        convertView.setVisibility(View.VISIBLE);
-                    }
-                    return convertView;
-                }
-            }
-
-            class ViewHolder {
-                private TextView title;
-                private ImageView image;
-            }
         };
-        list.setAdapter(adapter);
-        list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                if (builder.listener != null) {
-                    builder.listener.onClick(BottomSheet.this, ((MenuItem) adapter.getItem(position)).id);
-                }
-                dismiss();
-            }
-        });
 
+        list.setAdapter(adapter);
 
         list.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
             @Override
@@ -334,8 +290,8 @@ public class BottomSheet extends Dialog implements DialogInterface {
                     list.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, lastChild.getBottom() + lastChild.getPaddingBottom()));
             }
         });
-    }
 
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -390,6 +346,34 @@ public class BottomSheet extends Dialog implements DialogInterface {
                     ", icon=" + icon +
                     ", divider=" + divider +
                     '}';
+        }
+    }
+
+    private class MenuItemViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
+        private TextView title;
+        private ImageView image;
+        private DialogInterface.OnClickListener listener;
+
+        public MenuItemViewHolder(View itemView, DialogInterface.OnClickListener onClickListener) {
+            super(itemView);
+            listener = onClickListener;
+            title = (TextView) itemView.findViewById(R.id.bs_list_title);
+            image = (ImageView) itemView.findViewById(R.id.bs_list_image);
+            itemView.setOnClickListener(this);
+        }
+
+        @Override
+        public void onClick(View view) {
+            if (listener != null) {
+                listener.onClick(BottomSheet.this, menuItem.get(getPosition()).id);
+            }
+        }
+    }
+
+    private class DividerViewHolder extends RecyclerView.ViewHolder {
+
+        public DividerViewHolder(View itemView) {
+            super(itemView);
         }
     }
 
