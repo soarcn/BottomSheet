@@ -319,6 +319,9 @@ public class BottomSheet extends Dialog implements DialogInterface {
             }
         });
 
+        if(builder.dismissListener != null){
+            setOnDismissListener(builder.dismissListener);
+        }
 
         list.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
             @Override
@@ -404,6 +407,7 @@ public class BottomSheet extends Dialog implements DialogInterface {
         private CharSequence title;
         private boolean grid;
         private OnClickListener listener;
+        private OnDismissListener dismissListener;
 
         /**
          * Constructor using a context for this builder and the {@link com.cocosw.bottomsheet.BottomSheet} it creates.
@@ -623,6 +627,16 @@ public class BottomSheet extends Dialog implements DialogInterface {
          */
         public Builder title(CharSequence title) {
             this.title = title;
+            return this;
+        }
+
+        /***
+         * Set the OnDismissListener for BottomSheet
+         * @param listener OnDismissListener for Bottom
+         * @return This Builder object to allow for chaining of calls to set methods
+         */
+        public Builder dismissListener(OnDismissListener listener){
+            this.dismissListener = listener;
             return this;
         }
     }
