@@ -92,7 +92,9 @@ TODO
 =======
 - (support) DialogFragment
 - Style/animation tweaking
-
+- Fullscreen mode
+- swipe down to dismiss
+- swipe up to pull up
 
 License
 =======
