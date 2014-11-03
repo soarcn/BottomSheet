@@ -19,6 +19,7 @@
         <item name="listSelector">?colorAccent</item>
         <item name="drawSelectorOnTop">false</item>
         <item name="dividerColor">@color/abc_search_url_text_pressed</item>
+        <item name="numColumns">4</item>
     </style>
 
 </resources>

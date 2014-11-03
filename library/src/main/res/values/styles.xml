@@ -20,6 +20,7 @@
         <item name="listSelector">@drawable/bs_list_selector</item>
         <item name="drawSelectorOnTop">false</item>
         <item name="dividerColor">@color/bs_divider_color</item>
+        <item name="numColumns">@integer/bs_grid_colum</item>
     </style>
 
     <style name="BottomSheet.Dialog.Dark" parent="BottomSheet.Dialog">

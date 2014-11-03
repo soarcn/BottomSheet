@@ -73,6 +73,7 @@ public class BottomSheet extends Dialog implements DialogInterface {
     @SuppressWarnings("WeakerAccess")
     public BottomSheet(Context context, int theme) {
         super(context, theme);
+
         // https://github.com/jgilfelt/SystemBarTint/blob/master/library/src/com/readystatesoftware/systembartint/SystemBarTintManager.java
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
             WindowManager wm = (WindowManager) context.getSystemService(Context.WINDOW_SERVICE);
@@ -205,8 +206,8 @@ public class BottomSheet extends Dialog implements DialogInterface {
 
         list = (GridView) mDialogView.findViewById(R.id.bottom_sheet_gridview);
 
-        if (builder.grid) {
-            list.setNumColumns(context.getResources().getInteger(R.integer.bs_grid_colum));
+        if (!builder.grid) {
+            list.setNumColumns(1);
         }
 
         menuItem = builder.menuItems;
