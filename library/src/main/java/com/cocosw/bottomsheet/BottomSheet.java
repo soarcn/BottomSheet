@@ -635,7 +635,7 @@ public class BottomSheet extends Dialog implements DialogInterface {
          * @param listener OnDismissListener for Bottom
          * @return This Builder object to allow for chaining of calls to set methods
          */
-        public Builder setOnDismissListener(OnDismissListener listener){
+        public Builder setOnDismissListener(@NonNull OnDismissListener listener){
             this.dismissListener = listener;
             return this;
         }
