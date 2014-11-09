@@ -16,7 +16,7 @@ How to use this library
 =======
 
 - Download this library, import to your IDE (eclipse...) as a library project.
-- Using Gradle (will be available soon)
+- Using Gradle
 
 ```groovy
     compile 'com.cocosw:bottomsheet:0.+@aar' 
