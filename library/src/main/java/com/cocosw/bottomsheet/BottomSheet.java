@@ -549,6 +549,7 @@ public class BottomSheet extends Dialog implements DialogInterface {
 
         /**
          * Add a divider in to the list
+         * Be aware divider would not be shown in grid mode
          *
          * @return This Builder object to allow for chaining of calls to set methods
          */
