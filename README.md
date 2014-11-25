@@ -11,6 +11,7 @@ This library works on android 2.1+
 ![Sample](https://github.com/soarcn/BottomSheet/blob/master/art/image1.png?raw=true)
 ![Sample](https://github.com/soarcn/BottomSheet/blob/master/art/image2.png?raw=true)
 ![Sample](https://github.com/soarcn/BottomSheet/blob/master/art/image3.png?raw=true)
+![Sample](https://github.com/soarcn/BottomSheet/blob/master/art/image4.png?raw=true)
 
 How to use this library
 =======
