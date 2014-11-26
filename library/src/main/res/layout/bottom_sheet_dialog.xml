@@ -1,32 +1,40 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<com.cocosw.bottomsheet.ClosableSlidingLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:orientation="vertical" android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:background="?dialogBackground"
-    android:paddingBottom="8dp"
-    tools:ignore="Overdraw">
+     android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:clickable="true"
+    >
 
-    <View
-        android:background="?dividerColor"
-        android:layout_width="fill_parent"
-        android:layout_height="1dp"
-        android:layout_marginBottom="8dp"/>
-
-    <TextView
-        android:id="@+id/bottom_sheet_title"
-        android:visibility="gone"
-        style="@style/BottomSheet.Title"
-        />
-
-    <GridView
+    <LinearLayout
+        android:orientation="vertical"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/bottom_sheet_gridview"
-        android:numColumns="?numColumns"
-        android:fadingEdge="none"
-        style="@style/BottomSheet.List"
-        tools:listitem="@layout/list_entry"
-        />
-</LinearLayout>
+        android:background="?dialogBackground"
+        tools:ignore="Overdraw"
+        android:layout_gravity="bottom"
+        android:paddingBottom="8dp">
+        <View
+            android:background="?dividerColor"
+            android:layout_width="fill_parent"
+            android:layout_height="1dp"
+            android:layout_marginBottom="8dp"/>
+
+        <TextView
+            android:id="@+id/bottom_sheet_title"
+            android:visibility="gone"
+            style="@style/BottomSheet.Title"
+            />
+
+        <GridView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/bottom_sheet_gridview"
+            android:numColumns="?numColumns"
+            android:fadingEdge="none"
+            style="@style/BottomSheet.List"
+            tools:listitem="@layout/bs_grid_entry"
+            />
+    </LinearLayout>
+</com.cocosw.bottomsheet.ClosableSlidingLayout>

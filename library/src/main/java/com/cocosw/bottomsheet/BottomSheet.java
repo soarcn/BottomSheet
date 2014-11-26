@@ -184,8 +184,26 @@ public class BottomSheet extends Dialog implements DialogInterface {
 
     private void init(Context context) {
         setCanceledOnTouchOutside(true);
-        View mDialogView = View.inflate(context, R.layout.bottom_sheet_dialog, null);
+        ClosableSlidingLayout mDialogView = (ClosableSlidingLayout) View.inflate(context, R.layout.bottom_sheet_dialog, null);
         setContentView(mDialogView);
+        mDialogView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dismiss();
+            }
+        });
+        mDialogView.setSlideListener(new ClosableSlidingLayout.SlideListener() {
+            @Override
+            public void onClosed() {
+                BottomSheet.this.dismiss();
+            }
+
+            @Override
+            public void onOpened() {
+
+            }
+        });
+
 
         this.setOnShowListener(new OnShowListener() {
             @Override
@@ -346,7 +364,7 @@ public class BottomSheet extends Dialog implements DialogInterface {
         super.onCreate(savedInstanceState);
         init(getContext());
         WindowManager.LayoutParams params = getWindow().getAttributes();
-        params.height = ViewGroup.LayoutParams.WRAP_CONTENT;
+        params.height = ViewGroup.LayoutParams.MATCH_PARENT;
         params.width = ViewGroup.LayoutParams.MATCH_PARENT;
         params.gravity = Gravity.BOTTOM;
         getWindow().setAttributes(params);
@@ -367,6 +385,8 @@ public class BottomSheet extends Dialog implements DialogInterface {
         win.setFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_NAVIGATION,
                 WindowManager.LayoutParams.FLAG_TRANSLUCENT_NAVIGATION);
     }
+
+
 
     /**
      * MenuItem
