@@ -1,37 +1,37 @@
 <!DOCTYPE html>
 <html>
+
   <head>
     <meta charset='utf-8'>
     <meta http-equiv="X-UA-Compatible" content="chrome=1">
-    <link href='https://fonts.googleapis.com/css?family=Chivo:900' rel='stylesheet' type='text/css'>
-    <link rel="stylesheet" type="text/css" href="stylesheets/stylesheet.css" media="screen">
-    <link rel="stylesheet" type="text/css" href="stylesheets/pygment_trac.css" media="screen">
-    <link rel="stylesheet" type="text/css" href="stylesheets/print.css" media="print">
-    <!--[if lt IE 9]>
-    <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
-    <![endif]-->
-    <title>BottomSheet by soarcn</title>
+    <meta name="description" content="BottomSheet : One way to present a set of actions to a user is with bottom sheets, a sheet of paper that slides up from the bottom edge of the screen. Bottom sheets offer flexibility in the display of clear and simple actions that do not need explanation.">
+
+    <link rel="stylesheet" type="text/css" media="screen" href="stylesheets/stylesheet.css">
+
+    <title>BottomSheet</title>
   </head>
 
   <body>
-    <div id="container">
-      <div class="inner">
 
-        <header>
-          <h1>BottomSheet</h1>
-          <h2>One way to present a set of actions to a user is with bottom sheets, a sheet of paper that slides up from the bottom edge of the screen. Bottom sheets offer flexibility in the display of clear and simple actions that do not need explanation.</h2>
+    <!-- HEADER -->
+    <div id="header_wrap" class="outer">
+        <header class="inner">
+          <a id="forkme_banner" href="https://github.com/soarcn/BottomSheet">View on GitHub</a>
+
+          <h1 id="project_title">BottomSheet</h1>
+          <h2 id="project_tagline">One way to present a set of actions to a user is with bottom sheets, a sheet of paper that slides up from the bottom edge of the screen. Bottom sheets offer flexibility in the display of clear and simple actions that do not need explanation.</h2>
+
+            <section id="downloads">
+              <a class="zip_download_link" href="https://github.com/soarcn/BottomSheet/zipball/master">Download this project as a .zip file</a>
+              <a class="tar_download_link" href="https://github.com/soarcn/BottomSheet/tarball/master">Download this project as a tar.gz file</a>
+            </section>
         </header>
+    </div>
 
-        <section id="downloads" class="clearfix">
-          <a href="https://github.com/soarcn/BottomSheet/zipball/master" id="download-zip" class="button"><span>Download .zip</span></a>
-          <a href="https://github.com/soarcn/BottomSheet/tarball/master" id="download-tar-gz" class="button"><span>Download .tar.gz</span></a>
-          <a href="https://github.com/soarcn/BottomSheet" id="view-on-github" class="button"><span>View on GitHub</span></a>
-        </section>
-
-        <hr>
-
-        <section id="main_content">
-          <h1>
+    <!-- MAIN CONTENT -->
+    <div id="main_content_wrap" class="outer">
+      <section id="main_content" class="inner">
+        <h1>
 <a id="bottomsheet" class="anchor" href="#bottomsheet" aria-hidden="true"><span class="octicon octicon-link"></span></a>BottomSheet</h1>
 
 <p>One way to present a set of actions to a user is with bottom sheets, a sheet of paper that slides up from the bottom edge of the screen. Bottom sheets offer flexibility in the display of clear and simple actions that do not need explanation.</p>
@@ -43,7 +43,8 @@
 <p><img src="https://github.com/soarcn/BottomSheet/blob/master/art/image.png?raw=true" alt="Sample">
 <img src="https://github.com/soarcn/BottomSheet/blob/master/art/image1.png?raw=true" alt="Sample">
 <img src="https://github.com/soarcn/BottomSheet/blob/master/art/image2.png?raw=true" alt="Sample">
-<img src="https://github.com/soarcn/BottomSheet/blob/master/art/image3.png?raw=true" alt="Sample"></p>
+<img src="https://github.com/soarcn/BottomSheet/blob/master/art/image3.png?raw=true" alt="Sample">
+<img src="https://github.com/soarcn/BottomSheet/blob/master/art/image4.png?raw=true" alt="Sample"></p>
 
 <h1>
 <a id="how-to-use-this-library" class="anchor" href="#how-to-use-this-library" aria-hidden="true"><span class="octicon octicon-link"></span></a>How to use this library</h1>
@@ -53,7 +54,7 @@
 <li>Using Gradle</li>
 </ul>
 
-<div class="highlight highlight-groovy"><pre>    compile <span class="s1">'com.cocosw:bottomsheet:0.+@aar'</span> </pre></div>
+<div class="highlight highlight-groovy"><pre>    compile <span class="pl-s1"><span class="pl-pds">'</span>com.cocosw:bottomsheet:0.+@aar<span class="pl-pds">'</span></span> </pre></div>
 
 <h1>
 <a id="api" class="anchor" href="#api" aria-hidden="true"><span class="octicon octicon-link"></span></a>API</h1>
@@ -62,29 +63,29 @@
 <li>Define actions in menu xml</li>
 </ul>
 
-<div class="highlight highlight-xml"><pre>&lt;<span class="nt">menu</span> <span class="na">xmlns</span><span class="na">:</span><span class="na">android</span>=<span class="s2">"http://schemas.android.com/apk/res/android"</span>&gt;
-    &lt;<span class="nt">item</span> <span class="na">android</span><span class="na">:</span><span class="na">id</span>=<span class="s2">"@+id/share"</span> <span class="na">android</span><span class="na">:</span><span class="na">title</span>=<span class="s2">"@string/share"</span> <span class="na">android</span><span class="na">:</span><span class="na">icon</span>=<span class="s2">"@drawable/perm_group_messages"</span>/&gt;
-    &lt;<span class="nt">item</span> <span class="na">android</span><span class="na">:</span><span class="na">id</span>=<span class="s2">"@+id/upload"</span> <span class="na">android</span><span class="na">:</span><span class="na">title</span>=<span class="s2">"@string/upload"</span> <span class="na">android</span><span class="na">:</span><span class="na">icon</span>=<span class="s2">"@drawable/perm_group_system_clock"</span>/&gt;
-    &lt;<span class="nt">item</span> <span class="na">android</span><span class="na">:</span><span class="na">id</span>=<span class="s2">"@+id/call"</span> <span class="na">android</span><span class="na">:</span><span class="na">title</span>=<span class="s2">"@string/call"</span> <span class="na">android</span><span class="na">:</span><span class="na">icon</span>=<span class="s2">"@drawable/perm_group_phone_calls"</span>/&gt;
-    &lt;<span class="nt">divider</span>/&gt;
-    &lt;<span class="nt">item</span> <span class="na">android</span><span class="na">:</span><span class="na">id</span>=<span class="s2">"@+id/help"</span> <span class="na">android</span><span class="na">:</span><span class="na">title</span>=<span class="s2">"@string/help"</span> <span class="na">android</span><span class="na">:</span><span class="na">icon</span>=<span class="s2">"@drawable/perm_group_system_tools"</span>/&gt;
-&lt;/<span class="nt">menu</span>&gt;
+<div class="highlight highlight-xml"><pre>&lt;<span class="pl-ent">menu</span> <span class="pl-e">xmlns</span><span class="pl-e">:</span><span class="pl-e">android</span>=<span class="pl-s1"><span class="pl-pds">"</span>http://schemas.android.com/apk/res/android<span class="pl-pds">"</span></span>&gt;
+    &lt;<span class="pl-ent">item</span> <span class="pl-e">android</span><span class="pl-e">:</span><span class="pl-e">id</span>=<span class="pl-s1"><span class="pl-pds">"</span>@+id/share<span class="pl-pds">"</span></span> <span class="pl-e">android</span><span class="pl-e">:</span><span class="pl-e">title</span>=<span class="pl-s1"><span class="pl-pds">"</span>@string/share<span class="pl-pds">"</span></span> <span class="pl-e">android</span><span class="pl-e">:</span><span class="pl-e">icon</span>=<span class="pl-s1"><span class="pl-pds">"</span>@drawable/perm_group_messages<span class="pl-pds">"</span></span>/&gt;
+    &lt;<span class="pl-ent">item</span> <span class="pl-e">android</span><span class="pl-e">:</span><span class="pl-e">id</span>=<span class="pl-s1"><span class="pl-pds">"</span>@+id/upload<span class="pl-pds">"</span></span> <span class="pl-e">android</span><span class="pl-e">:</span><span class="pl-e">title</span>=<span class="pl-s1"><span class="pl-pds">"</span>@string/upload<span class="pl-pds">"</span></span> <span class="pl-e">android</span><span class="pl-e">:</span><span class="pl-e">icon</span>=<span class="pl-s1"><span class="pl-pds">"</span>@drawable/perm_group_system_clock<span class="pl-pds">"</span></span>/&gt;
+    &lt;<span class="pl-ent">item</span> <span class="pl-e">android</span><span class="pl-e">:</span><span class="pl-e">id</span>=<span class="pl-s1"><span class="pl-pds">"</span>@+id/call<span class="pl-pds">"</span></span> <span class="pl-e">android</span><span class="pl-e">:</span><span class="pl-e">title</span>=<span class="pl-s1"><span class="pl-pds">"</span>@string/call<span class="pl-pds">"</span></span> <span class="pl-e">android</span><span class="pl-e">:</span><span class="pl-e">icon</span>=<span class="pl-s1"><span class="pl-pds">"</span>@drawable/perm_group_phone_calls<span class="pl-pds">"</span></span>/&gt;
+    &lt;<span class="pl-ent">divider</span>/&gt;
+    &lt;<span class="pl-ent">item</span> <span class="pl-e">android</span><span class="pl-e">:</span><span class="pl-e">id</span>=<span class="pl-s1"><span class="pl-pds">"</span>@+id/help<span class="pl-pds">"</span></span> <span class="pl-e">android</span><span class="pl-e">:</span><span class="pl-e">title</span>=<span class="pl-s1"><span class="pl-pds">"</span>@string/help<span class="pl-pds">"</span></span> <span class="pl-e">android</span><span class="pl-e">:</span><span class="pl-e">icon</span>=<span class="pl-s1"><span class="pl-pds">"</span>@drawable/perm_group_system_tools<span class="pl-pds">"</span></span>/&gt;
+&lt;/<span class="pl-ent">menu</span>&gt;
 </pre></div>
 
 <ul>
 <li>Call it just like you call a dialog</li>
 </ul>
 
-<div class="highlight highlight-java"><pre><span class="k">new</span> <span class="kt">BottomSheet</span>.<span class="kt">Builder</span>(<span class="nb">this</span>)<span class="o">.</span>title(<span class="s2">"title"</span>)<span class="o">.</span>sheet(<span class="kt">R</span><span class="o">.</span>menu<span class="o">.</span>list)<span class="o">.</span>listener(<span class="k">new</span> <span class="kt">DialogInterface</span>.<span class="kt">OnClickListener</span>() {
-                    <span class="kt">@Override</span>
-                    <span class="k">public</span> <span class="kt">void</span> <span class="nf">onClick</span>(<span class="kt">DialogInterface</span> <span class="nv">dialog</span>, <span class="kt">int</span> <span class="nv">which</span>) {
-                        <span class="k">switch</span> (which) {
-                            <span class="k">case</span> <span class="kt">R</span><span class="o">.</span>id<span class="o">.</span>help<span class="k">:</span>
-                                q<span class="o">.</span>toast(<span class="s2">"Help me!"</span>);
-                                <span class="k">break</span>;
+<div class="highlight highlight-java"><pre><span class="pl-k">new</span> <span class="pl-stj">BottomSheet</span>.<span class="pl-stj">Builder</span>(<span class="pl-v">this</span>)<span class="pl-k">.</span>title(<span class="pl-s1"><span class="pl-pds">"</span>title<span class="pl-pds">"</span></span>)<span class="pl-k">.</span>sheet(<span class="pl-stj">R</span><span class="pl-k">.</span>menu<span class="pl-k">.</span>list)<span class="pl-k">.</span>listener(<span class="pl-k">new</span> <span class="pl-stj">DialogInterface</span>.<span class="pl-stj">OnClickListener</span>() {
+                    <span class="pl-st">@Override</span>
+                    <span class="pl-s">public</span> <span class="pl-st">void</span> <span class="pl-en">onClick</span>(<span class="pl-stj">DialogInterface</span> <span class="pl-v">dialog</span>, <span class="pl-st">int</span> <span class="pl-v">which</span>) {
+                        <span class="pl-k">switch</span> (which) {
+                            <span class="pl-k">case</span> <span class="pl-stj">R</span><span class="pl-k">.</span>id<span class="pl-k">.</span>help<span class="pl-k">:</span>
+                                q<span class="pl-k">.</span>toast(<span class="pl-s1"><span class="pl-pds">"</span>Help me!<span class="pl-pds">"</span></span>);
+                                <span class="pl-k">break</span>;
                         }
                     }
-                })<span class="o">.</span>show();
+                })<span class="pl-k">.</span>show();
 </pre></div>
 
 <ul>
@@ -99,25 +100,25 @@
 <li>Define your style in your application, and call bottomsheet by using new BottomSheet.Builder(this,R.style.BottomSheet_StyleDialog)....</li>
 </ul>
 
-<div class="highlight highlight-xml"><pre>    &lt;<span class="nt">style</span> <span class="na">name</span>=<span class="s2">"BottomSheet.StyleDialog"</span> <span class="na">parent</span>=<span class="s2">"BottomSheet.Dialog"</span>&gt;
-        &lt;<span class="nt">item</span> <span class="na">name</span>=<span class="s2">"android:backgroundDimAmount"</span>&gt;0.5&lt;/<span class="nt">item</span>&gt;
-        &lt;<span class="nt">item</span> <span class="na">name</span>=<span class="s2">"android:windowAnimationStyle"</span>&gt;@style/BottomSheet.Animation&lt;/<span class="nt">item</span>&gt;
-        &lt;<span class="nt">item</span> <span class="na">name</span>=<span class="s2">"android:textColorPrimary"</span>&gt;#DDffffff&lt;/<span class="nt">item</span>&gt;
-        &lt;<span class="nt">item</span> <span class="na">name</span>=<span class="s2">"android:textColorSecondary"</span>&gt;#8Affffff&lt;/<span class="nt">item</span>&gt;
-        &lt;<span class="nt">item</span> <span class="na">name</span>=<span class="s2">"android:textColorHint"</span>&gt;#42ffffff&lt;/<span class="nt">item</span>&gt;
-        &lt;<span class="nt">item</span> <span class="na">name</span>=<span class="s2">"dialogBackground"</span>&gt;@color/abc_search_url_text_normal&lt;/<span class="nt">item</span>&gt;
-        &lt;<span class="nt">item</span> <span class="na">name</span>=<span class="s2">"listSelector"</span>&gt;@drawable/abc_list_selector_holo_light&lt;/<span class="nt">item</span>&gt;
-        &lt;<span class="nt">item</span> <span class="na">name</span>=<span class="s2">"drawSelectorOnTop"</span>&gt;false&lt;/<span class="nt">item</span>&gt;
-        &lt;<span class="nt">item</span> <span class="na">name</span>=<span class="s2">"dividerColor"</span>&gt;@color/abc_search_url_text_pressed&lt;/<span class="nt">item</span>&gt;
-    &lt;/<span class="nt">style</span>&gt;</pre></div>
+<div class="highlight highlight-xml"><pre>    &lt;<span class="pl-ent">style</span> <span class="pl-e">name</span>=<span class="pl-s1"><span class="pl-pds">"</span>BottomSheet.StyleDialog<span class="pl-pds">"</span></span> <span class="pl-e">parent</span>=<span class="pl-s1"><span class="pl-pds">"</span>BottomSheet.Dialog<span class="pl-pds">"</span></span>&gt;
+        &lt;<span class="pl-ent">item</span> <span class="pl-e">name</span>=<span class="pl-s1"><span class="pl-pds">"</span>android:backgroundDimAmount<span class="pl-pds">"</span></span>&gt;0.5&lt;/<span class="pl-ent">item</span>&gt;
+        &lt;<span class="pl-ent">item</span> <span class="pl-e">name</span>=<span class="pl-s1"><span class="pl-pds">"</span>android:windowAnimationStyle<span class="pl-pds">"</span></span>&gt;@style/BottomSheet.Animation&lt;/<span class="pl-ent">item</span>&gt;
+        &lt;<span class="pl-ent">item</span> <span class="pl-e">name</span>=<span class="pl-s1"><span class="pl-pds">"</span>android:textColorPrimary<span class="pl-pds">"</span></span>&gt;#DDffffff&lt;/<span class="pl-ent">item</span>&gt;
+        &lt;<span class="pl-ent">item</span> <span class="pl-e">name</span>=<span class="pl-s1"><span class="pl-pds">"</span>android:textColorSecondary<span class="pl-pds">"</span></span>&gt;#8Affffff&lt;/<span class="pl-ent">item</span>&gt;
+        &lt;<span class="pl-ent">item</span> <span class="pl-e">name</span>=<span class="pl-s1"><span class="pl-pds">"</span>android:textColorHint<span class="pl-pds">"</span></span>&gt;#42ffffff&lt;/<span class="pl-ent">item</span>&gt;
+        &lt;<span class="pl-ent">item</span> <span class="pl-e">name</span>=<span class="pl-s1"><span class="pl-pds">"</span>dialogBackground<span class="pl-pds">"</span></span>&gt;@color/abc_search_url_text_normal&lt;/<span class="pl-ent">item</span>&gt;
+        &lt;<span class="pl-ent">item</span> <span class="pl-e">name</span>=<span class="pl-s1"><span class="pl-pds">"</span>listSelector<span class="pl-pds">"</span></span>&gt;@drawable/abc_list_selector_holo_light&lt;/<span class="pl-ent">item</span>&gt;
+        &lt;<span class="pl-ent">item</span> <span class="pl-e">name</span>=<span class="pl-s1"><span class="pl-pds">"</span>drawSelectorOnTop<span class="pl-pds">"</span></span>&gt;false&lt;/<span class="pl-ent">item</span>&gt;
+        &lt;<span class="pl-ent">item</span> <span class="pl-e">name</span>=<span class="pl-s1"><span class="pl-pds">"</span>dividerColor<span class="pl-pds">"</span></span>&gt;@color/abc_search_url_text_pressed&lt;/<span class="pl-ent">item</span>&gt;
+    &lt;/<span class="pl-ent">style</span>&gt;</pre></div>
 
 <ul>
 <li>Set bottomesheet style in your activity theme</li>
 </ul>
 
-<div class="highlight highlight-xml"><pre>    &lt;<span class="nt">style</span> <span class="na">name</span>=<span class="s2">"StyleTheme"</span> <span class="na">parent</span>=<span class="s2">"Theme.AppCompat"</span>&gt;
-        &lt;<span class="nt">item</span> <span class="na">name</span>=<span class="s2">"bottomSheetStyle"</span>&gt;@style/BottomSheet.StyleDialog&lt;/<span class="nt">item</span>&gt;
-    &lt;/<span class="nt">style</span>&gt;</pre></div>
+<div class="highlight highlight-xml"><pre>    &lt;<span class="pl-ent">style</span> <span class="pl-e">name</span>=<span class="pl-s1"><span class="pl-pds">"</span>StyleTheme<span class="pl-pds">"</span></span> <span class="pl-e">parent</span>=<span class="pl-s1"><span class="pl-pds">"</span>Theme.AppCompat<span class="pl-pds">"</span></span>&gt;
+        &lt;<span class="pl-ent">item</span> <span class="pl-e">name</span>=<span class="pl-s1"><span class="pl-pds">"</span>bottomSheetStyle<span class="pl-pds">"</span></span>&gt;@style/BottomSheet.StyleDialog&lt;/<span class="pl-ent">item</span>&gt;
+    &lt;/<span class="pl-ent">style</span>&gt;</pre></div>
 
 <h1>
 <a id="contribute" class="anchor" href="#contribute" aria-hidden="true"><span class="octicon octicon-link"></span></a>Contribute</h1>
@@ -154,15 +155,18 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 </code></pre>
-        </section>
-
-        <footer>
-          BottomSheet is maintained by <a href="https://github.com/soarcn">soarcn</a><br>
-          This page was generated by <a href="http://pages.github.com">GitHub Pages</a>. Tactile theme by <a href="https://twitter.com/jasonlong">Jason Long</a>.
-        </footer>
-
-        
-      </div>
+      </section>
     </div>
+
+    <!-- FOOTER  -->
+    <div id="footer_wrap" class="outer">
+      <footer class="inner">
+        <p class="copyright">BottomSheet maintained by <a href="https://github.com/soarcn">soarcn</a></p>
+        <p>Published with <a href="http://pages.github.com">GitHub Pages</a></p>
+      </footer>
+    </div>
+
+    
+
   </body>
 </html>
