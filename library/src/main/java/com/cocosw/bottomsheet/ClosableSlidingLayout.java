@@ -1,7 +1,13 @@
 package com.cocosw.bottomsheet;
 
 import android.annotation.TargetApi;
+import android.gesture.Gesture;
+import android.gesture.GestureUtils;
 import android.os.Build;
+import android.support.v4.view.GestureDetectorCompat;
+import android.support.v4.view.MotionEventCompat;
+import android.support.v4.view.ViewConfigurationCompat;
+import android.view.ViewConfiguration;
 import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 import android.content.Context;
@@ -17,9 +23,11 @@ import android.view.View;
  */
 class ClosableSlidingLayout extends FrameLayout {
 
+    private final float MINVEL;
     private ViewDragHelper mDragHelper;
     private SlideListener mListener;
     private int height;
+    private int top;
 
     public ClosableSlidingLayout(Context context) {
         this(context, null);
@@ -33,6 +41,7 @@ class ClosableSlidingLayout extends FrameLayout {
     public ClosableSlidingLayout(Context context, AttributeSet attrs, int defStyle) {
         super(context, attrs, defStyle);
         mDragHelper = ViewDragHelper.create(this, 1.0f, new ViewDragCallback());
+        MINVEL = getResources().getDisplayMetrics().density*400;
     }
 
     @Override
@@ -40,24 +49,19 @@ class ClosableSlidingLayout extends FrameLayout {
         switch (event.getAction()) {
             case MotionEvent.ACTION_DOWN:
                 height = getChildAt(0).getHeight();
+                top = getChildAt(0).getTop();
                 break;
             case MotionEvent.ACTION_MOVE:
                 mDragHelper.captureChildView(getChildAt(0),0);
                 break;
         }
-        if (mDragHelper.shouldInterceptTouchEvent(event)) {
-            return true;
-        }
-        return super.onInterceptTouchEvent(event);
+        return mDragHelper.shouldInterceptTouchEvent(event) || super.onInterceptTouchEvent(event);
     }
 
     @Override
     public boolean onTouchEvent(MotionEvent event) {
         mDragHelper.processTouchEvent(event);
-        if (!mDragHelper.isViewUnder(getChildAt(0),(int)event.getX(),(int)event.getY())) {
-            dismiss(getChildAt(0));
-        }
-        return true;
+        return super.onTouchEvent(event);
     }
 
     @Override
@@ -75,7 +79,7 @@ class ClosableSlidingLayout extends FrameLayout {
      *Callback
      */
     private class ViewDragCallback extends ViewDragHelper.Callback{
-        private static final int MINVEL = 500;
+
 
         @Override
         public boolean tryCaptureView(View child, int pointerId) {
@@ -90,22 +94,20 @@ class ClosableSlidingLayout extends FrameLayout {
             }
         }
 
-
         @Override
         public void onViewReleased(View releasedChild, float xvel, float yvel) {
             if (yvel > MINVEL) {
                 dismiss(releasedChild);
             } else if (yvel < -MINVEL) {
-                mDragHelper.smoothSlideViewTo(releasedChild, 0, -getHeight());
+             //   mDragHelper.smoothSlideViewTo(releasedChild, 0, -getHeight());
             } else {
-
-                if (releasedChild.getTop() > height / 2) {
+                if (releasedChild.getTop() >= top+height/2) {
                     dismiss(releasedChild);
-                } else if (releasedChild.getLeft() < height / 2) {
-                    mDragHelper
-                            .smoothSlideViewTo(releasedChild, 0, -getHeight());
+//                } else if (releasedChild.getTop() < height / 2) {
+//                    mDragHelper
+//                            .smoothSlideViewTo(releasedChild, 0, -getHeight());
                 } else {
-                    mDragHelper.smoothSlideViewTo(releasedChild, 0, 0);
+                    mDragHelper.smoothSlideViewTo(releasedChild, 0, top);
                 }
             }
             invalidate();
@@ -114,7 +116,7 @@ class ClosableSlidingLayout extends FrameLayout {
 
         @Override
         public int clampViewPositionVertical(View child, int top, int dy) {
-            return top;
+            return Math.max(top, ClosableSlidingLayout.this.top);
         }
     }
 
