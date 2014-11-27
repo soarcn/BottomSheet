@@ -21,6 +21,8 @@
         <item name="drawSelectorOnTop">false</item>
         <item name="dividerColor">@color/bs_divider_color</item>
         <item name="numColumns">@integer/bs_grid_colum</item>
+        <item name="bsListItemTitleTextStyle">@style/Text.Title</item>
+        <item name="bsTitleTextStyle">@style/Text.Headline</item>
     </style>
 
     <style name="BottomSheet.Dialog.Dark" parent="BottomSheet.Dialog">
@@ -69,7 +71,7 @@
         <item name="android:layout_marginRight">16dp</item>
         <item name="android:layout_width">fill_parent</item>
         <item name="android:layout_height">wrap_content</item>
-        <item name="android:textAppearance">@style/Text.Headline</item>
+        <item name="android:textAppearance">?bsTitleTextStyle</item>
         <item name="android:gravity">center_vertical</item>
     </style>
 
@@ -94,7 +96,7 @@
 
     <style name="BottomSheet.List.Item.Title">
         <item name="android:layout_marginLeft">16dp</item>
-        <item name="android:textAppearance">@style/Text.Title</item>
+        <item name="android:textAppearance">?bsListItemTitleTextStyle</item>
     </style>
 
     <style name="BottomSheet.List.Divider">

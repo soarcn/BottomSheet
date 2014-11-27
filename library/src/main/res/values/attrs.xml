@@ -3,6 +3,8 @@
 
     <declare-styleable name="BottomSheet">
         <attr name="bottomSheetStyle" format="reference"/>
+        <attr name="bsListItemTitleTextStyle" format="reference"/>
+        <attr name="bsTitleTextStyle" format="reference"/>
         <attr name="dialogBackground" format="color|reference" />
         <attr name="listSelector" format="color|reference" />
         <attr name="drawSelectorOnTop" format="boolean" />
