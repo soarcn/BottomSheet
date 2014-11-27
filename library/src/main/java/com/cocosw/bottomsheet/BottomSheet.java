@@ -65,6 +65,7 @@ public class BottomSheet extends Dialog implements DialogInterface {
     private String sNavBarOverride;
     private boolean mNavBarAvailable;
     private float mSmallestWidthDp;
+    private ImageView icon;
 
     public BottomSheet(Context context) {
         super(context,R.style.BottomSheet_Dialog);
@@ -220,6 +221,14 @@ public class BottomSheet extends Dialog implements DialogInterface {
         if (builder.title != null) {
             title.setVisibility(View.VISIBLE);
             title.setText(builder.title);
+        }
+
+        icon = (ImageView) mDialogView.findViewById(R.id.bottom_sheet_title_image);
+        if (builder.icon==null)
+            icon.setVisibility(View.GONE);
+        else {
+            icon.setVisibility(View.VISIBLE);
+            icon.setImageDrawable(builder.icon);
         }
 
         list = (GridView) mDialogView.findViewById(R.id.bottom_sheet_gridview);
@@ -429,6 +438,8 @@ public class BottomSheet extends Dialog implements DialogInterface {
         private boolean grid;
         private OnClickListener listener;
         private OnDismissListener dismissListener;
+        private Drawable icon;
+
 
         /**
          * Constructor using a context for this builder and the {@link com.cocosw.bottomsheet.BottomSheet} it creates.
@@ -566,6 +577,27 @@ public class BottomSheet extends Dialog implements DialogInterface {
             title = context.getText(titleRes);
             return this;
         }
+
+        /**
+         * Set title for BottomSheet
+         * @param icon icon for BottomSheet
+         * @return This Builder object to allow for chaining of calls to set methods
+         */
+        public Builder icon(Drawable icon) {
+            this.icon = icon;
+            return this;
+        }
+
+        /**
+         * Set title for BottomSheet
+         * @param iconRes icon resource id for BottomSheet
+         * @return This Builder object to allow for chaining of calls to set methods
+         */
+        public Builder icon(@DrawableRes int iconRes) {
+            this.icon = context.getResources().getDrawable(iconRes);
+            return this;
+        }
+
 
         /**
          * Add a divider in to the list

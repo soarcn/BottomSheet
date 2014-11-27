@@ -7,8 +7,13 @@ import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v4.graphics.drawable.RoundedBitmapDrawable;
+import android.support.v4.graphics.drawable.RoundedBitmapDrawableFactory;
 import android.support.v7.app.ActionBarActivity;
 import android.view.MenuItem;
 import android.view.View;
@@ -64,13 +69,29 @@ public class ListAcitivty extends ActionBarActivity implements AdapterView.OnIte
         showDialog(position);
     }
 
+    private Drawable getRoundedBitmap(int imageId) {
+        Bitmap src = BitmapFactory.decodeResource(getResources(), imageId);
+        Bitmap dst;
+        if (src.getWidth() >= src.getHeight()){
+            dst = Bitmap.createBitmap(src, src.getWidth()/2 - src.getHeight()/2, 0, src.getHeight(), src.getHeight()
+            );
+        }else{
+            dst = Bitmap.createBitmap(src, 0, src.getHeight()/2 - src.getWidth()/2, src.getWidth(), src.getWidth()
+            );
+        }
+        RoundedBitmapDrawable roundedBitmapDrawable = RoundedBitmapDrawableFactory.create(getResources(), dst);
+        roundedBitmapDrawable.setCornerRadius(dst.getWidth() / 2); //设置圆角半径为正方形边长的一半
+        roundedBitmapDrawable.setAntiAlias(true);
+        return roundedBitmapDrawable;
+    }
+
     @SuppressWarnings("deprecation")
     @Nullable
     @Override
     protected Dialog onCreateDialog(final int position, Bundle args) {
         switch (action) {
             case 0:
-                sheet = new BottomSheet.Builder(this).title("To "+adapter.getItem(position)).sheet(R.menu.list).listener(new DialogInterface.OnClickListener() {
+                sheet = new BottomSheet.Builder(this).icon(getRoundedBitmap(R.drawable.ic_launcher)).title("To " + adapter.getItem(position)).sheet(R.menu.list).listener(new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         ListAcitivty.this.onClick(adapter.getItem(position),which);
