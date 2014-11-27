@@ -11,12 +11,12 @@
         android:orientation="vertical"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="?dialogBackground"
+        android:background="?bs_dialogBackground"
         tools:ignore="Overdraw"
         android:layout_gravity="bottom"
         android:paddingBottom="8dp">
         <View
-            android:background="?dividerColor"
+            android:background="?bs_dividerColor"
             android:layout_width="fill_parent"
             android:layout_height="1dp"
             android:layout_marginBottom="8dp"/>
@@ -31,7 +31,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:id="@+id/bottom_sheet_gridview"
-            android:numColumns="?numColumns"
+            android:numColumns="?bs_numColumns"
             android:fadingEdge="none"
             style="@style/BottomSheet.List"
             tools:listitem="@layout/bs_grid_entry"
