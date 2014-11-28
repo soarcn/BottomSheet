@@ -20,6 +20,7 @@ import android.support.annotation.StringRes;
 import android.support.annotation.StyleRes;
 import android.text.TextUtils;
 import android.util.DisplayMetrics;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -52,16 +53,19 @@ import java.util.Iterator;
  */
 public class BottomSheet extends Dialog implements DialogInterface {
 
+    private int mStatusBarHeight;
     private GridView list;
     private ArrayList<MenuItem> menuItem;
     private BaseAdapter adapter;
     private Builder builder;
 
     // translucent support
+    private static final String STATUS_BAR_HEIGHT_RES_NAME = "status_bar_height";
     private static final String NAV_BAR_HEIGHT_RES_NAME = "navigation_bar_height";
     private static final String NAV_BAR_HEIGHT_LANDSCAPE_RES_NAME = "navigation_bar_height_landscape";
     private static final String SHOW_NAV_BAR_RES_NAME = "config_showNavigationBar";
     private boolean mInPortrait;
+    private boolean mStatusBarAvailable = true;
     private String sNavBarOverride;
     private boolean mNavBarAvailable;
     private float mSmallestWidthDp;
@@ -74,7 +78,6 @@ public class BottomSheet extends Dialog implements DialogInterface {
     @SuppressWarnings("WeakerAccess")
     public BottomSheet(Context context, int theme) {
         super(context, theme);
-
         // https://github.com/jgilfelt/SystemBarTint/blob/master/library/src/com/readystatesoftware/systembartint/SystemBarTintManager.java
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
             WindowManager wm = (WindowManager) context.getSystemService(Context.WINDOW_SERVICE);
@@ -93,6 +96,7 @@ public class BottomSheet extends Dialog implements DialogInterface {
                     android.R.attr.windowTranslucentNavigation};
             TypedArray a = context.obtainStyledAttributes(as);
             try {
+                mStatusBarAvailable = a.getBoolean(0, false);
                 mNavBarAvailable = a.getBoolean(1, false);
             } finally {
                 a.recycle();
@@ -100,13 +104,19 @@ public class BottomSheet extends Dialog implements DialogInterface {
 
             // check window flags
             WindowManager.LayoutParams winParams = ((Activity) context).getWindow().getAttributes();
+
             int bits = WindowManager.LayoutParams.FLAG_TRANSLUCENT_NAVIGATION;
             if ((winParams.flags & bits) != 0) {
                 mNavBarAvailable = true;
             }
+            bits = WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS;
+            if ((winParams.flags & bits) != 0) {
+                mStatusBarAvailable = true;
+            }
             mSmallestWidthDp = getSmallestWidthDp(wm);
             if (mNavBarAvailable)
                 setTranslucentStatus(true);
+            mStatusBarHeight = getInternalDimensionSize(context.getResources(), STATUS_BAR_HEIGHT_RES_NAME);
         }
     }
 
@@ -187,12 +197,6 @@ public class BottomSheet extends Dialog implements DialogInterface {
         setCanceledOnTouchOutside(true);
         ClosableSlidingLayout mDialogView = (ClosableSlidingLayout) View.inflate(context, R.layout.bottom_sheet_dialog, null);
         setContentView(mDialogView);
-//        mDialogView.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                dismiss();
-//            }
-//        });
         mDialogView.setSlideListener(new ClosableSlidingLayout.SlideListener() {
             @Override
             public void onClosed() {
@@ -213,8 +217,9 @@ public class BottomSheet extends Dialog implements DialogInterface {
             }
         });
 
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT && mNavBarAvailable) {
-              mDialogView.setPadding(0, 0, 0, getNavigationBarHeight(getContext())+mDialogView.getPaddingBottom());
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+            mDialogView.setPadding(0, mStatusBarAvailable?mStatusBarHeight:0, 0, 0);
+            mDialogView.getChildAt(0).setPadding(0, 0,0, mNavBarAvailable?getNavigationBarHeight(getContext())+mDialogView.getPaddingBottom():0);
         }
 
         TextView title = (TextView) mDialogView.findViewById(R.id.bottom_sheet_title);
