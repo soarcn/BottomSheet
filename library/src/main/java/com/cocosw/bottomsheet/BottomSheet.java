@@ -187,12 +187,12 @@ public class BottomSheet extends Dialog implements DialogInterface {
         setCanceledOnTouchOutside(true);
         ClosableSlidingLayout mDialogView = (ClosableSlidingLayout) View.inflate(context, R.layout.bottom_sheet_dialog, null);
         setContentView(mDialogView);
-        mDialogView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                dismiss();
-            }
-        });
+//        mDialogView.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                dismiss();
+//            }
+//        });
         mDialogView.setSlideListener(new ClosableSlidingLayout.SlideListener() {
             @Override
             public void onClosed() {
@@ -232,7 +232,7 @@ public class BottomSheet extends Dialog implements DialogInterface {
         }
 
         list = (GridView) mDialogView.findViewById(R.id.bottom_sheet_gridview);
-
+        mDialogView.mTarget = list;
         if (!builder.grid) {
             list.setNumColumns(1);
         }
@@ -373,7 +373,7 @@ public class BottomSheet extends Dialog implements DialogInterface {
         super.onCreate(savedInstanceState);
         init(getContext());
         WindowManager.LayoutParams params = getWindow().getAttributes();
-        params.height = ViewGroup.LayoutParams.MATCH_PARENT;
+        params.height = ViewGroup.LayoutParams.WRAP_CONTENT;
         params.width = ViewGroup.LayoutParams.MATCH_PARENT;
         params.gravity = Gravity.BOTTOM;
         getWindow().setAttributes(params);
@@ -647,7 +647,7 @@ public class BottomSheet extends Dialog implements DialogInterface {
          * @return This Builder object to allow for chaining of calls to set methods
          */
         public BottomSheet show() {
-            BottomSheet dialog = create();
+            BottomSheet dialog = build();
             dialog.show();
             return dialog;
         }
@@ -663,11 +663,18 @@ public class BottomSheet extends Dialog implements DialogInterface {
         }
 
         /**
+         * Deprecated please use build()
          * Create a BottomSheet but not show it
          * @return This Builder object to allow for chaining of calls to set methods
          */
         @SuppressLint("Override")
+        @Deprecated
         public BottomSheet create() {
+            return build();
+        }
+
+        @SuppressLint("Override")
+        public BottomSheet build() {
             BottomSheet dialog = new BottomSheet(context, theme);
             dialog.builder = this;
             return dialog;
