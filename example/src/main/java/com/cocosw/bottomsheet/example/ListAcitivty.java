@@ -91,12 +91,12 @@ public class ListAcitivty extends ActionBarActivity implements AdapterView.OnIte
     protected Dialog onCreateDialog(final int position, Bundle args) {
         switch (action) {
             case 0:
-                sheet = new BottomSheet.Builder(this).icon(getRoundedBitmap(R.drawable.ic_launcher)).title("To " + adapter.getItem(position)).sheet(R.menu.list).listener(new DialogInterface.OnClickListener() {
+                sheet = new BottomSheet.Builder(this).icon(getRoundedBitmap(R.drawable.icon)).title("To " + adapter.getItem(position)).sheet(R.menu.list).listener(new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         ListAcitivty.this.onClick(adapter.getItem(position),which);
                     }
-                }).create();
+                }).build();
                 break;
             case 1:
                 sheet = new BottomSheet.Builder(this).sheet(R.menu.noicon).listener(new DialogInterface.OnClickListener() {
@@ -104,7 +104,7 @@ public class ListAcitivty extends ActionBarActivity implements AdapterView.OnIte
                     public void onClick(DialogInterface dialog, int which) {
                         ListAcitivty.this.onClick(adapter.getItem(position), which);
                     }
-                }).create();
+                }).build();
                 break;
 
             case 2:
@@ -113,7 +113,7 @@ public class ListAcitivty extends ActionBarActivity implements AdapterView.OnIte
                     public void onClick(DialogInterface dialog, int which) {
                         ListAcitivty.this.onClick(adapter.getItem(position),which);
                     }
-                }).create();
+                }).build();
                 break;
             case 3:
                 sheet = new BottomSheet.Builder(this).sheet(R.menu.list).listener(new DialogInterface.OnClickListener() {
@@ -121,7 +121,7 @@ public class ListAcitivty extends ActionBarActivity implements AdapterView.OnIte
                     public void onClick(DialogInterface dialog, int which) {
                         ListAcitivty.this.onClick(adapter.getItem(position),which);
                     }
-                }).grid().create();
+                }).grid().build();
                 break;
             case 4:
                 sheet = new BottomSheet.Builder(this,R.style.BottomSheet_StyleDialog).title("To "+adapter.getItem(position)).sheet(R.menu.list).listener(new DialogInterface.OnClickListener() {
@@ -129,7 +129,7 @@ public class ListAcitivty extends ActionBarActivity implements AdapterView.OnIte
                     public void onClick(DialogInterface dialog, int which) {
                         ListAcitivty.this.onClick(adapter.getItem(position),which);
                     }
-                }).create();
+                }).build();
                 break;
             case 5:
                 sheet = new BottomSheet.Builder(this).title("To "+adapter.getItem(position)).sheet(R.menu.list).listener(new DialogInterface.OnClickListener() {
@@ -137,10 +137,10 @@ public class ListAcitivty extends ActionBarActivity implements AdapterView.OnIte
                     public void onClick(DialogInterface dialog, int which) {
                         ListAcitivty.this.onClick(adapter.getItem(position),which);
                     }
-                }).grid().create();
+                }).grid().build();
                 break;
             case 6:
-                sheet = getShareActions(new BottomSheet.Builder(this).grid().title("Share To "+adapter.getItem(position)),"Hello "+adapter.getItem(position)).create();
+                sheet = getShareActions(new BottomSheet.Builder(this).grid().title("Share To "+adapter.getItem(position)),"Hello "+adapter.getItem(position)).build();
                 break;
             case 7:
 
