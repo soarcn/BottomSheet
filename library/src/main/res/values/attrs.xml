@@ -8,6 +8,9 @@
         <attr name="bs_drawSelectorOnTop" format="boolean" />
         <attr name="bs_dividerColor" format="color|reference" />
         <attr name="bs_numColumns" format="integer"/>
+        <attr name="bs_titleTextAppearance" format="reference" />
+        <attr name="bs_listItemTitleTextAppearance" format="reference" />
+        <attr name="bs_gridItemTitleTextAppearance" format="reference" />
     </declare-styleable>
 
 </resources>
