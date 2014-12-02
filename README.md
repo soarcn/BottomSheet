@@ -61,7 +61,7 @@ Style
 ========
 
 - Invoke darkTheme() to show build-in dark theme
-- Define your style in your application, and call bottomsheet by using new BottomSheet.Builder(this,R.style.BottomSheet_StyleDialog)....
+- Or define your style in your application, and call bottomsheet by using new BottomSheet.Builder(this,R.style.BottomSheet_StyleDialog)....
 
 ```xml
     <style name="BottomSheet.StyleDialog" parent="BottomSheet.Dialog">
@@ -70,13 +70,14 @@ Style
         <item name="android:textColorPrimary">#DDffffff</item>
         <item name="android:textColorSecondary">#8Affffff</item>
         <item name="android:textColorHint">#42ffffff</item>
-        <item name="dialogBackground">@color/abc_search_url_text_normal</item>
-        <item name="listSelector">@drawable/abc_list_selector_holo_light</item>
-        <item name="drawSelectorOnTop">false</item>
-        <item name="dividerColor">@color/abc_search_url_text_pressed</item>
+        <item name="bs_dialogBackground">@color/abc_search_url_text_normal</item>
+        <item name="bs_listSelector">@drawable/list_selector</item>
+        <item name="bs_drawSelectorOnTop">false</item>
+        <item name="bs_dividerColor">@color/abc_search_url_text_pressed</item>
+        <item name="bs_numColumns">4</item>
     </style>
 ```
-- Set bottomesheet style in your activity theme
+- Or set bottomesheet style in your activity theme
 
 ```xml
     <style name="StyleTheme" parent="Theme.AppCompat">
