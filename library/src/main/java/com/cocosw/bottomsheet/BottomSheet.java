@@ -13,6 +13,7 @@ import android.content.res.XmlResourceParser;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.annotation.DrawableRes;
 import android.support.annotation.MenuRes;
 import android.support.annotation.NonNull;
@@ -52,6 +53,7 @@ import java.util.Iterator;
  */
 public class BottomSheet extends Dialog implements DialogInterface {
 
+    private static final long RIPPLE_ANIM_LENGTH = 350;
     private RecyclerView list;
     private ArrayList<MenuItem> menuItem;
     private RecyclerView.Adapter adapter;
@@ -320,6 +322,14 @@ public class BottomSheet extends Dialog implements DialogInterface {
                 WindowManager.LayoutParams.FLAG_TRANSLUCENT_NAVIGATION);
     }
 
+    public void dismissAfterRipple() {
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                dismiss();
+            }
+        }, RIPPLE_ANIM_LENGTH);
+    }
     /**
      * MenuItem
      */

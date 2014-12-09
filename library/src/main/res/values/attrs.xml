@@ -4,7 +4,7 @@
     <declare-styleable name="BottomSheet">
         <attr name="bottomSheetStyle" format="reference"/>
         <attr name="dialogBackground" format="color|reference" />
-        <attr name="listSelector" format="color|reference" />
+        <attr name="itemBackground" format="integer" />
         <attr name="drawSelectorOnTop" format="boolean" />
         <attr name="dividerColor" format="color|reference" />
     </declare-styleable>
