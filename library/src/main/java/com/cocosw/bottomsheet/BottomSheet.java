@@ -10,8 +10,6 @@ import android.content.res.Configuration;
 import android.content.res.Resources;
 import android.content.res.TypedArray;
 import android.content.res.XmlResourceParser;
-import android.graphics.ColorFilter;
-import android.graphics.ColorMatrixColorFilter;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.os.Bundle;
@@ -22,8 +20,10 @@ import android.support.annotation.NonNull;
 import android.support.annotation.StringRes;
 import android.support.annotation.StyleRes;
 import android.text.TextUtils;
+import android.transition.ChangeBounds;
+import android.transition.Transition;
+import android.transition.TransitionManager;
 import android.util.DisplayMetrics;
-import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -58,7 +58,9 @@ import java.util.List;
  */
 public class BottomSheet extends Dialog implements DialogInterface {
 
-    private int columnNum =1;
+    private String moreText;
+    private Drawable close;
+    private Drawable more;
     private int mStatusBarHeight;
     private GridView list;
     private List<MenuItem> menuItem;
@@ -86,12 +88,12 @@ public class BottomSheet extends Dialog implements DialogInterface {
     @SuppressWarnings("WeakerAccess")
     public BottomSheet(Context context, int theme) {
         super(context, theme);
-        TypedArray a = context.getTheme().obtainStyledAttributes(new int[]{R.attr.bs_numColumns});
-        try {
-            columnNum = a.getInt(0, 1);
-        } finally {
-            a.recycle();
-        }
+
+        TypedArray a = getContext()
+                .obtainStyledAttributes(null, R.styleable.BottomSheet, R.attr.bottomSheetStyle, 0);
+        more = a.getDrawable(R.styleable.BottomSheet_bs_moreDrawable);
+        close = a.getDrawable(R.styleable.BottomSheet_bs_closeDrawable);
+        moreText = a.getString(R.styleable.BottomSheet_bs_moreText);
 
         // https://github.com/jgilfelt/SystemBarTint/blob/master/library/src/com/readystatesoftware/systembartint/SystemBarTintManager.java
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
@@ -207,27 +209,19 @@ public class BottomSheet extends Dialog implements DialogInterface {
         return (mSmallestWidthDp >= 600 || mInPortrait);
     }
 
-    private Drawable tintDrawable(Drawable input, int iColor) {
-            int red = (iColor & 0xFF0000) / 0xFFFF;
-            int green = (iColor & 0xFF00) / 0xFF;
-            int blue = iColor & 0xFF;
-
-            float[] matrix = {0, 0, 0, 0, red
-                    , 0, 0, 0, 0, green
-                    , 0, 0, 0, 0, blue
-                    , 0, 0, 0, 1, 0};
-
-            ColorFilter colorFilter = new ColorMatrixColorFilter(matrix);
-
-        input.setColorFilter(colorFilter);
-        return input;
+    private int getNumColumns() {
+            try {
+                Field numColumns = GridView.class.getDeclaredField("mRequestedNumColumns");
+                numColumns.setAccessible(true);
+                return numColumns.getInt(list);
+            } catch (Exception e) {
+                return 1;
+            }
     }
 
-
-
-    private void init(Context context) {
+    private void init(final Context context) {
         setCanceledOnTouchOutside(true);
-        ClosableSlidingLayout mDialogView = (ClosableSlidingLayout) View.inflate(context, R.layout.bottom_sheet_dialog, null);
+        final ClosableSlidingLayout mDialogView = (ClosableSlidingLayout) View.inflate(context, R.layout.bottom_sheet_dialog, null);
         setContentView(mDialogView);
         mDialogView.setSlideListener(new ClosableSlidingLayout.SlideListener() {
             @Override
@@ -248,6 +242,12 @@ public class BottomSheet extends Dialog implements DialogInterface {
                 actions = menuItem;
                 list.setAdapter(adapter);
                 list.startLayoutAnimation();
+                if (builder.icon==null)
+                    icon.setVisibility(View.GONE);
+                else {
+                    icon.setVisibility(View.VISIBLE);
+                    icon.setImageDrawable(builder.icon);
+                }
             }
         });
 
@@ -256,25 +256,19 @@ public class BottomSheet extends Dialog implements DialogInterface {
             mDialogView.getChildAt(0).setPadding(0, 0,0, mNavBarAvailable?getNavigationBarHeight(getContext())+mDialogView.getPaddingBottom():0);
         }
 
-        TextView title = (TextView) mDialogView.findViewById(R.id.bottom_sheet_title);
+        final TextView title = (TextView) mDialogView.findViewById(R.id.bottom_sheet_title);
         if (builder.title != null) {
             title.setVisibility(View.VISIBLE);
             title.setText(builder.title);
         }
 
         icon = (ImageView) mDialogView.findViewById(R.id.bottom_sheet_title_image);
-        if (builder.icon==null)
-            icon.setVisibility(View.GONE);
-        else {
-            icon.setVisibility(View.VISIBLE);
-            icon.setImageDrawable(builder.icon);
-        }
+
 
         list = (GridView) mDialogView.findViewById(R.id.bottom_sheet_gridview);
         mDialogView.mTarget = list;
         if (!builder.grid) {
             list.setNumColumns(1);
-            columnNum = 1;
         }
 
         menuItem = builder.menuItems;
@@ -289,21 +283,19 @@ public class BottomSheet extends Dialog implements DialogInterface {
                     throw new IllegalArgumentException("You should set icon for each items in grid style");
                 }
             }
-        //    list.setPadding(R.dimen.bs_grid_left_padding,R.dimen.bs_grid_top_padding,R.dimen.bs_grid_right_padding,R.dimen.bs_grid_bottom_padding);
         }
 
-        builder.limit = builder.limit*columnNum;
+        builder.limit = builder.limit*getNumColumns();
 
         // over the initial numbers
         if (menuItem.size() > builder.limit) {
             fullMenuItem = new ArrayList<>(menuItem);
-            menuItem = menuItem.subList(0,builder.limit-2);
-            menuItem.add(new MenuItem(R.id.bs_more, "More", context.getResources().getDrawable(R.drawable.bs_ic_more)));
+            menuItem = menuItem.subList(0,builder.limit-1);
+            menuItem.add(new MenuItem(R.id.bs_more, moreText,more));
         }
         actions = menuItem;
 
         adapter = new BaseAdapter() {
-
 
             @Override
             public int getCount() {
@@ -394,11 +386,35 @@ public class BottomSheet extends Dialog implements DialogInterface {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 if (((MenuItem) adapter.getItem(position)).id==R.id.bs_more) {
                     actions = fullMenuItem;
+
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+                        Transition changeBounds = new ChangeBounds();
+                        changeBounds.setDuration(300);
+                        TransitionManager.beginDelayedTransition(list,changeBounds);
+                    }
+
                     adapter.notifyDataSetChanged();
                     ViewGroup.LayoutParams params = list.getLayoutParams();
                     params.height = ViewGroup.LayoutParams.WRAP_CONTENT;
                     params.width = ViewGroup.LayoutParams.MATCH_PARENT;
                     list.setLayoutParams(params);
+                    icon.setVisibility(View.VISIBLE);
+                    icon.setImageDrawable(close);
+                    icon.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            actions = menuItem;
+                            adapter.notifyDataSetChanged();
+                            setListLayout();
+
+                            if (builder.icon==null)
+                                icon.setVisibility(View.GONE);
+                            else {
+                                icon.setVisibility(View.VISIBLE);
+                                icon.setImageDrawable(builder.icon);
+                            }
+                        }
+                    });
                     return;
                 }
 
@@ -412,7 +428,10 @@ public class BottomSheet extends Dialog implements DialogInterface {
         if(builder.dismissListener != null){
             setOnDismissListener(builder.dismissListener);
         }
+        setListLayout();
+    }
 
+    private void setListLayout() {
         list.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
             @Override
             public void onGlobalLayout() {
@@ -732,7 +751,7 @@ public class BottomSheet extends Dialog implements DialogInterface {
          * @param limitRes
          * @return
          */
-        private Builder limit(@IntegerRes int limitRes) {
+        public Builder limit(@IntegerRes int limitRes) {
             limit = context.getResources().getInteger(limitRes);
             return this;
         }

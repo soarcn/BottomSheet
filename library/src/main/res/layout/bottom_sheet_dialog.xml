@@ -22,14 +22,17 @@
 
         <LinearLayout
             android:layout_width="fill_parent"
-            android:layout_height="wrap_content" android:orientation="horizontal">
+            android:layout_height="wrap_content" android:orientation="horizontal"
+            tools:ignore="UseCompoundDrawables">
             
             <ImageView
                 android:layout_width="40dp"
                 android:layout_height="40dp"
                 android:id="@+id/bottom_sheet_title_image"
                 android:layout_marginLeft="16dp"
-                android:visibility="gone"/>
+                android:layout_marginStart="16dp"
+                android:visibility="gone"
+                android:contentDescription="icon" />
             
             <TextView
                 android:id="@+id/bottom_sheet_title"

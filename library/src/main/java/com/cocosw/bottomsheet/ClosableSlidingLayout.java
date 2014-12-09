@@ -1,24 +1,16 @@
 package com.cocosw.bottomsheet;
 
 import android.annotation.TargetApi;
-import android.gesture.Gesture;
-import android.gesture.GestureUtils;
-import android.os.Build;
-import android.support.v4.view.GestureDetectorCompat;
-import android.support.v4.view.MotionEventCompat;
-import android.support.v4.view.ViewConfigurationCompat;
-import android.util.Log;
-import android.view.ViewConfiguration;
-import android.view.animation.Animation;
-import android.widget.AbsListView;
-import android.widget.FrameLayout;
-import android.widget.LinearLayout;
 import android.content.Context;
+import android.os.Build;
+import android.support.v4.view.MotionEventCompat;
 import android.support.v4.view.ViewCompat;
 import android.support.v4.widget.ViewDragHelper;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
 import android.view.View;
+import android.widget.AbsListView;
+import android.widget.FrameLayout;
 
 /**
  * Project: gradle
@@ -93,6 +85,10 @@ class ClosableSlidingLayout extends FrameLayout {
                     mIsBeingDragged = true;
                     mDragHelper.captureChildView(getChildAt(0), 0);
                 }
+//                else if(yDiff < -mDragHelper.getTouchSlop() && !mIsBeingDragged) {
+//                    if (mListener!=null) mListener.onOpened();
+//                }
+
                 break;
         }
         mDragHelper.shouldInterceptTouchEvent(event);

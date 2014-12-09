@@ -24,6 +24,9 @@
         <item name="bs_titleTextAppearance">@style/Text.Headline</item>
         <item name="bs_listItemTitleTextAppearance">@style/Text.Title</item>
         <item name="bs_gridItemTitleTextAppearance">@style/Text.Hint</item>
+        <item name="bs_moreText">@string/bs_more</item>
+        <item name="bs_closeDrawable">@drawable/bs_ic_clear_light</item>
+        <item name="bs_moreDrawable">@drawable/bs_ic_more_light</item>
     </style>
 
     <style name="BottomSheet.Dialog.Dark" parent="BottomSheet.Dialog">
@@ -33,6 +36,8 @@
         <item name="bs_dialogBackground">@android:color/background_dark</item>
         <item name="bs_dividerColor">@color/bs_dark_divider_color</item>
         <item name="bs_listSelector">@drawable/bs_list_dark_selector</item>
+        <item name="bs_closeDrawable">@drawable/bs_ic_clear</item>
+        <item name="bs_moreDrawable">@drawable/bs_ic_more</item>
     </style>
 
     <style name="Text"/>

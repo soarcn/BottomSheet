@@ -152,7 +152,7 @@ public class ListAcitivty extends ActionBarActivity implements AdapterView.OnIte
                 for (int i=0;i<25;i++) {
                     builder.sheet(i,getRoundedBitmap(R.drawable.icon),"Test"+i);
                 }
-                sheet = builder/**.limit(R.integer.bs_initial_row)**/.build();
+                sheet = builder.limit(R.integer.bs_initial_grid_row).build();
                 break;
 
         }
