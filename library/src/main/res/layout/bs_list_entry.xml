@@ -8,13 +8,13 @@
     tools:ignore="UseCompoundDrawables">
 
     <ImageView
-        style="@style/BottomSheet.List.Item.Image"
+        style="@style/BottomSheet.List.ItemImage"
         android:id="@+id/bs_list_image"
         tools:ignore="ContentDescription" />
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        style="@style/BottomSheet.List.Item.Title"
+        style="@style/BottomSheet.List.ItemTitle"
         android:id="@+id/bs_list_title" />
 </LinearLayout>
