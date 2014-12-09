@@ -17,9 +17,9 @@
         <item name="android:textColorSecondary">#8A000000</item>
         <item name="android:textColorHint">#42000000</item>
         <item name="dialogBackground">@android:color/background_light</item>
-        <item name="listSelector">@drawable/bs_list_selector</item>
         <item name="drawSelectorOnTop">false</item>
         <item name="dividerColor">@color/bs_divider_color</item>
+        <item name="itemBackground">@drawable/light_ripple</item>
     </style>
 
     <style name="BottomSheet.Dialog.Dark" parent="BottomSheet.Dialog">
@@ -28,7 +28,7 @@
         <item name="android:textColorHint">#42ffffff</item>
         <item name="dialogBackground">@android:color/background_dark</item>
         <item name="dividerColor">@color/bs_dark_divider_color</item>
-        <item name="listSelector">@drawable/bs_list_dark_selector</item>
+        <item name="itemBackground">@drawable/dark_ripple</item>
     </style>
 
     <style name="Text"/>
@@ -73,7 +73,6 @@
     </style>
 
     <style name="BottomSheet.List">
-        <item name="android:listSelector">?listSelector</item>
         <item name="android:drawSelectorOnTop">?drawSelectorOnTop</item>
         <item name="android:layoutAnimation">@anim/bs_list_layout_anim_in</item>
     </style>
@@ -81,6 +80,7 @@
     <style name="BottomSheet.List.Item">
         <item name="android:layout_marginLeft">16dp</item>
         <item name="android:layout_marginRight">16dp</item>
+        <item name="android:background">?itemBackground</item>
         <item name="android:minHeight">48dp</item>
         <item name="android:gravity">center_vertical</item>
     </style>
@@ -89,11 +89,13 @@
         <item name="android:layout_height">24dp</item>
         <item name="android:layout_width">24dp</item>
         <item name="android:layout_marginRight">16dp</item>
+        <item name="android:background">@android:color/transparent</item>
     </style>
 
     <style name="BottomSheet.List.Item.Title">
         <item name="android:layout_marginLeft">16dp</item>
         <item name="android:textAppearance">@style/Text.Title</item>
+        <item name="android:background">@android:color/transparent</item>
     </style>
 
     <style name="BottomSheet.List.Divider">

@@ -1,5 +1,5 @@
 apply from: 'https://raw.githubusercontent.com/soarcn/gradle/master/android-library.gradle'
-apply from: 'https://raw.githubusercontent.com/soarcn/gradle/master/maven_push.gradle'
+//apply from: 'https://raw.githubusercontent.com/soarcn/gradle/master/maven_push.gradle'
 
 dependencies {
     compile 'com.android.support:support-v4:20.0.0'

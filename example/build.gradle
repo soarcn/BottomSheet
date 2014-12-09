@@ -9,7 +9,7 @@ dependencies {
 android {
 
     defaultConfig {
-        minSdkVersion 9
+        minSdkVersion 21
     }
 
     compileOptions {
