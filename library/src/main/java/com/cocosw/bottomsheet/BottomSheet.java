@@ -520,7 +520,7 @@ public class BottomSheet extends Dialog implements DialogInterface {
         private OnClickListener listener;
         private OnDismissListener dismissListener;
         private Drawable icon;
-        private int limit = Integer.MAX_VALUE;
+        private int limit = Integer.MAX_VALUE/100;
 
 
         /**
