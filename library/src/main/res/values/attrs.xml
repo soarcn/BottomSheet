@@ -4,8 +4,7 @@
     <declare-styleable name="BottomSheet">
         <attr name="bottomSheetStyle" format="reference"/>
         <attr name="bs_dialogBackground" format="color|reference" />
-        <attr name="bs_listSelector" format="color|reference" />
-        <attr name="bs_drawSelectorOnTop" format="boolean" />
+        <attr name="bs_listStyle" format="reference"/>
         <attr name="bs_dividerColor" format="color|reference" />
         <attr name="bs_numColumns" format="integer"/>
         <attr name="bs_titleTextAppearance" format="reference" />

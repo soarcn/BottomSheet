@@ -49,7 +49,7 @@
             android:id="@+id/bottom_sheet_gridview"
             android:numColumns="?bs_numColumns"
             android:fadingEdge="none"
-            style="@style/BottomSheet.List"
+            style="?bs_listStyle"
             tools:listitem="@layout/bs_grid_entry"
             />
     </LinearLayout>

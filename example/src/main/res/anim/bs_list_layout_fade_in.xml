@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<layoutAnimation xmlns:android="http://schemas.android.com/apk/res/android"
+    android:delay="50%"
+    android:animation="@android:anim/slide_in_left"
+    android:interpolator="@android:anim/accelerate_decelerate_interpolator"/>
