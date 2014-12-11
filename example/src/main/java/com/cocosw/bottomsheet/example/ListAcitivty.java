@@ -80,7 +80,7 @@ public class ListAcitivty extends ActionBarActivity implements AdapterView.OnIte
             );
         }
         RoundedBitmapDrawable roundedBitmapDrawable = RoundedBitmapDrawableFactory.create(getResources(), dst);
-        roundedBitmapDrawable.setCornerRadius(dst.getWidth() / 2); //设置圆角半径为正方形边长的一半
+        roundedBitmapDrawable.setCornerRadius(dst.getWidth() / 2);
         roundedBitmapDrawable.setAntiAlias(true);
         return roundedBitmapDrawable;
     }
@@ -143,16 +143,7 @@ public class ListAcitivty extends ActionBarActivity implements AdapterView.OnIte
                 sheet = getShareActions(new BottomSheet.Builder(this).grid().title("Share To "+adapter.getItem(position)),"Hello "+adapter.getItem(position)).build();
                 break;
             case 7:
-                BottomSheet.Builder builder = new BottomSheet.Builder(this).title("To " + adapter.getItem(position)).listener(new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        ListAcitivty.this.onClick(adapter.getItem(position), which);
-                    }
-                }).grid();
-                for (int i=0;i<25;i++) {
-                    builder.sheet(i,getRoundedBitmap(R.drawable.icon),"Test"+i);
-                }
-                sheet = builder.limit(R.integer.bs_initial_grid_row).build();
+                sheet = getShareActions(new BottomSheet.Builder(this).grid().title("Share To "+adapter.getItem(position)),"Hello "+adapter.getItem(position)).limit(R.integer.bs_initial_grid_row).build();
                 break;
 
         }

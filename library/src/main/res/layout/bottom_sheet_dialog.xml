@@ -32,7 +32,7 @@
                 android:layout_marginLeft="16dp"
                 android:layout_marginStart="16dp"
                 android:visibility="gone"
-                android:contentDescription="icon" />
+                tools:ignore="ContentDescription" />
             
             <TextView
                 android:id="@+id/bottom_sheet_title"

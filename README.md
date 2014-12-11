@@ -12,6 +12,7 @@ This library works on android 2.1+
 ![Sample](https://github.com/soarcn/BottomSheet/blob/master/art/image2.png?raw=true)
 ![Sample](https://github.com/soarcn/BottomSheet/blob/master/art/image3.png?raw=true)
 ![Sample](https://github.com/soarcn/BottomSheet/blob/master/art/image4.png?raw=true)
+![Sample](https://github.com/soarcn/BottomSheet/blob/master/art/image5.png?raw=true)
 
 How to use this library
 =======
@@ -22,6 +23,18 @@ How to use this library
 ```groovy
     compile 'com.cocosw:bottomsheet:0.+@aar' 
 ```
+- Using Maven
+
+```xml
+<dependency>
+    <groupId>com.cocosw</groupId>
+    <artifactId>bottomsheet</artifactId>
+    <version>0.x</version>
+    <type>apklib</type>
+</dependency>
+```
+
+- Compile you project with android sdk v21
 
 API
 =======
@@ -71,10 +84,9 @@ Style
         <item name="android:textColorSecondary">#8Affffff</item>
         <item name="android:textColorHint">#42ffffff</item>
         <item name="bs_dialogBackground">@color/abc_search_url_text_normal</item>
-        <item name="bs_listSelector">@drawable/list_selector</item>
-        <item name="bs_drawSelectorOnTop">false</item>
         <item name="bs_dividerColor">@color/abc_search_url_text_pressed</item>
         <item name="bs_numColumns">4</item>
+        <item name="bs_listStyle">@style/BottomSheet.StyleList</item>
     </style>
 ```
 - Or set bottomesheet style in your activity theme
@@ -93,7 +105,6 @@ Contribute
 TODO
 =======
 - (support) DialogFragment
-- Fullscreen mode
 - swipe up to pull up
 
 License
