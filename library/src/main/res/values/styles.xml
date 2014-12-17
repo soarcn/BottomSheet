@@ -86,29 +86,31 @@
         <item name="android:layoutAnimation">@anim/bs_list_layout_anim_in</item>
     </style>
 
-    <style name="BottomSheet.List.Dark" parent="BottomSheet.List">
+    <style name="BottomSheet.List.Dark">
         <item name="android:listSelector">@drawable/bs_list_dark_selector</item>
     </style>
 
-    <style name="BottomSheet.List.Item">
+    <style name="BottomSheet.ListItem">
         <item name="android:layout_marginLeft">16dp</item>
         <item name="android:layout_marginRight">16dp</item>
         <item name="android:minHeight">48dp</item>
         <item name="android:gravity">center_vertical</item>
+        <item name="android:layoutAnimation">@null</item>
     </style>
 
-    <style name="BottomSheet.List.Item.Image">
+    <style name="BottomSheet.ListItemImage">
+        <item name="android:layout_marginLeft">16dp</item>
         <item name="android:layout_height">24dp</item>
         <item name="android:layout_width">24dp</item>
         <item name="android:layout_marginRight">16dp</item>
     </style>
 
-    <style name="BottomSheet.List.Item.Title">
+    <style name="BottomSheet.ListItemTitle">
         <item name="android:layout_marginLeft">16dp</item>
         <item name="android:textAppearance">?bs_listItemTitleTextAppearance</item>
     </style>
 
-    <style name="BottomSheet.List.Divider">
+    <style name="BottomSheet.ListDivider">
         <item name="android:layout_height">wrap_content</item>
         <item name="android:layout_width">fill_parent</item>
         <item name="android:minHeight">1dp</item>
@@ -117,14 +119,14 @@
         <item name="android:layout_marginBottom">8dp</item>
     </style>
 
-    <style name="BottomSheet.Grid.Item.Image">
+    <style name="BottomSheet.GridItemImage">
         <item name="android:layout_height">48dp</item>
         <item name="android:layout_width">48dp</item>
         <item name="android:layout_margin">8dp</item>
         <item name="android:padding">0dp</item>
     </style>
 
-    <style name="BottomSheet.Grid.Item.Title">
+    <style name="BottomSheet.GridItemTitle">
         <item name="android:singleLine">true</item>
         <item name="android:textAppearance">?bs_gridItemTitleTextAppearance</item>
         <item name="android:padding">0dp</item>
@@ -132,7 +134,7 @@
 
     <style name="BottomSheet.Grid"/>
 
-    <style name="BottomSheet.Grid.Item">
+    <style name="BottomSheet.GridItem">
         <item name="android:gravity">center_horizontal</item>
         <item name="android:paddingTop">8dp</item>
         <item name="android:paddingBottom">8dp</item>

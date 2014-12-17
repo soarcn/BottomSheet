@@ -4,5 +4,5 @@
     android:layout_height="wrap_content"
     android:layout_width="fill_parent">
 
-    <View style="@style/BottomSheet.List.Divider" />
+    <View style="@style/BottomSheet.ListDivider" />
 </LinearLayout>

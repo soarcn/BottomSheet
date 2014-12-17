@@ -4,17 +4,17 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:orientation="vertical" android:layout_width="match_parent"
     android:layout_height="match_parent"
-    style="@style/BottomSheet.Grid.Item"
+    style="@style/BottomSheet.GridItem"
     tools:ignore="UseCompoundDrawables">
 
     <ImageView
-        style="@style/BottomSheet.Grid.Item.Image"
+        style="@style/BottomSheet.GridItemImage"
         android:id="@+id/bs_list_image"
         tools:ignore="ContentDescription" />
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        style="@style/BottomSheet.Grid.Item.Title"
+        style="@style/BottomSheet.GridItemTitle"
         android:id="@+id/bs_list_title" />
 </LinearLayout>
