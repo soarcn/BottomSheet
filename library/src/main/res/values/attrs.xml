@@ -13,6 +13,7 @@
         <attr name="bs_moreDrawable" format="reference"/>
         <attr name="bs_moreText" format="string"/>
         <attr name="bs_closeDrawable" format="reference"/>
+        <attr name="bs_layoutAnimation" format="reference"/>
     </declare-styleable>
 
 </resources>

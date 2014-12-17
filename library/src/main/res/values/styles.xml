@@ -26,6 +26,7 @@
         <item name="bs_closeDrawable">@drawable/bs_ic_clear_light</item>
         <item name="bs_moreDrawable">@drawable/bs_ic_more_light</item>
         <item name="bs_listStyle">@style/BottomSheet.List</item>
+        <item name="bs_layoutAnimation">@anim/bs_list_layout_anim_in</item>
     </style>
 
     <style name="BottomSheet.Dialog.Dark" parent="BottomSheet.Dialog">
@@ -83,7 +84,7 @@
     <style name="BottomSheet.List">
         <item name="android:listSelector">@drawable/bs_list_selector</item>
         <item name="android:drawSelectorOnTop">false</item>
-        <item name="android:layoutAnimation">@anim/bs_list_layout_anim_in</item>
+        <item name="android:layoutAnimation">?bs_layoutAnimation</item>
     </style>
 
     <style name="BottomSheet.List.Dark" parent="BottomSheet.List">
