@@ -16,7 +16,7 @@
 
 buildscript {
     repositories {
-        mavenCentral()
+        jCenter()
     }
 
     dependencies {
@@ -30,7 +30,7 @@ allprojects {
 
     repositories {
         mavenLocal()
-        mavenCentral()
+        jCenter()
       }
 
     tasks.withType(JavaCompile) {

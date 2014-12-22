@@ -1,8 +1,19 @@
-apply from: 'https://raw.githubusercontent.com/soarcn/gradle/master/android-library.gradle'
-apply from: 'https://raw.githubusercontent.com/soarcn/gradle/master/maven_push.gradle'
+apply plugin: 'com.android.library'
+
+android {
+    compileSdkVersion 21
+    buildToolsVersion "21.1.2"
+
+    defaultConfig {
+        minSdkVersion 8
+        targetSdkVersion 21
+        versionName "0.1"
+        versionCode 1
+    }
+}
 
 dependencies {
-    compile 'com.android.support:support-v4:21.0.3'
+    compile 'com.android.support:appcompat-v7:21.0.3'
     compile 'com.android.support:support-annotations:20.0.0'
 }
 
