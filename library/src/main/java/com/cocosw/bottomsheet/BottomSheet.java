@@ -224,6 +224,7 @@ public class BottomSheet extends Dialog implements DialogInterface {
 
         final BottomSlidingLayout mDialogView = (BottomSlidingLayout) View.inflate(context, R.layout.bottom_sheet_drag, null);
         setContentView(mDialogView);
+        mDialogView.setAnchorPosition(builder.anchorPosition);
         mDialogView.setSlideListener(new BottomSlidingLayout.SlideListener() {
             @Override
             public void onOpen() {
@@ -523,7 +524,7 @@ public class BottomSheet extends Dialog implements DialogInterface {
         private OnDismissListener dismissListener;
         private Drawable icon;
         private int limit = Integer.MAX_VALUE / 100;
-
+        private int anchorPosition;
 
         /**
          * Constructor using a context for this builder and the {@link com.cocosw.bottomsheet.BottomSheet} it creates.
@@ -760,6 +761,18 @@ public class BottomSheet extends Dialog implements DialogInterface {
          */
         public Builder limit(@IntegerRes int limitRes) {
             limit = context.getResources().getInteger(limitRes);
+            return this;
+        }
+
+        /**
+         * Set the Anchor position of the sliding layout.
+         * Initial open position from bottom.
+         *
+         * @param anchorPosition
+         * @return
+         */
+        public Builder anchorPosition(int anchorPosition) {
+            this.anchorPosition = anchorPosition;
             return this;
         }
 

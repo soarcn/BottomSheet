@@ -38,7 +38,7 @@ public class ListAcitivty extends ActionBarActivity implements AdapterView.OnIte
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        if (getIntent().getBooleanExtra("style",false)) {
+        if (getIntent().getBooleanExtra("style", false)) {
             setTheme(R.style.StyleTheme);
         }
         super.onCreate(savedInstanceState);
@@ -48,7 +48,7 @@ public class ListAcitivty extends ActionBarActivity implements AdapterView.OnIte
         getSupportActionBar().setDisplayShowHomeEnabled(true);
         q = new CocoQuery(this);
         setTitle(getIntent().getStringExtra("title"));
-        String[] items = new String[]{"Janet Perkins","Mary Johnson","Peter Carlsson","Trevor Hansen","Aaron Bennett"};
+        String[] items = new String[]{"Janet Perkins", "Mary Johnson", "Peter Carlsson", "Trevor Hansen", "Aaron Bennett"};
         q.id(R.id.listView)
                 .adapter(adapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, android.R.id.text1, items))
                 .itemClicked(this);
@@ -58,7 +58,7 @@ public class ListAcitivty extends ActionBarActivity implements AdapterView.OnIte
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        if (item.getItemId()==android.R.id.home)
+        if (item.getItemId() == android.R.id.home)
             finish();
         return super.onOptionsItemSelected(item);
     }
@@ -72,11 +72,11 @@ public class ListAcitivty extends ActionBarActivity implements AdapterView.OnIte
     private Drawable getRoundedBitmap(int imageId) {
         Bitmap src = BitmapFactory.decodeResource(getResources(), imageId);
         Bitmap dst;
-        if (src.getWidth() >= src.getHeight()){
-            dst = Bitmap.createBitmap(src, src.getWidth()/2 - src.getHeight()/2, 0, src.getHeight(), src.getHeight()
+        if (src.getWidth() >= src.getHeight()) {
+            dst = Bitmap.createBitmap(src, src.getWidth() / 2 - src.getHeight() / 2, 0, src.getHeight(), src.getHeight()
             );
-        }else{
-            dst = Bitmap.createBitmap(src, 0, src.getHeight()/2 - src.getWidth()/2, src.getWidth(), src.getWidth()
+        } else {
+            dst = Bitmap.createBitmap(src, 0, src.getHeight() / 2 - src.getWidth() / 2, src.getWidth(), src.getWidth()
             );
         }
         RoundedBitmapDrawable roundedBitmapDrawable = RoundedBitmapDrawableFactory.create(getResources(), dst);
@@ -94,7 +94,7 @@ public class ListAcitivty extends ActionBarActivity implements AdapterView.OnIte
                 sheet = new BottomSheet.Builder(this).icon(getRoundedBitmap(R.drawable.icon)).title("To " + adapter.getItem(position)).sheet(R.menu.list).listener(new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        ListAcitivty.this.onClick(adapter.getItem(position),which);
+                        ListAcitivty.this.onClick(adapter.getItem(position), which);
                     }
                 }).build();
                 break;
@@ -111,7 +111,7 @@ public class ListAcitivty extends ActionBarActivity implements AdapterView.OnIte
                 sheet = new BottomSheet.Builder(this).darkTheme().title("To " + adapter.getItem(position)).sheet(R.menu.list).listener(new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        ListAcitivty.this.onClick(adapter.getItem(position),which);
+                        ListAcitivty.this.onClick(adapter.getItem(position), which);
                     }
                 }).build();
                 break;
@@ -119,31 +119,31 @@ public class ListAcitivty extends ActionBarActivity implements AdapterView.OnIte
                 sheet = new BottomSheet.Builder(this).sheet(R.menu.list).listener(new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        ListAcitivty.this.onClick(adapter.getItem(position),which);
+                        ListAcitivty.this.onClick(adapter.getItem(position), which);
                     }
                 }).grid().build();
                 break;
             case 4:
-                sheet = new BottomSheet.Builder(this,R.style.BottomSheet_StyleDialog).title("To "+adapter.getItem(position)).sheet(R.menu.list).listener(new DialogInterface.OnClickListener() {
+                sheet = new BottomSheet.Builder(this, R.style.BottomSheet_StyleDialog).title("To " + adapter.getItem(position)).sheet(R.menu.list).listener(new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        ListAcitivty.this.onClick(adapter.getItem(position),which);
+                        ListAcitivty.this.onClick(adapter.getItem(position), which);
                     }
                 }).build();
                 break;
             case 5:
-                sheet = new BottomSheet.Builder(this).title("To "+adapter.getItem(position)).sheet(R.menu.list).listener(new DialogInterface.OnClickListener() {
+                sheet = new BottomSheet.Builder(this).title("To " + adapter.getItem(position)).sheet(R.menu.list).listener(new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        ListAcitivty.this.onClick(adapter.getItem(position),which);
+                        ListAcitivty.this.onClick(adapter.getItem(position), which);
                     }
                 }).grid().build();
                 break;
             case 6:
-                sheet = getShareActions(new BottomSheet.Builder(this).grid().title("Share To "+adapter.getItem(position)),"Hello "+adapter.getItem(position)).build();
+                sheet = getShareActions(new BottomSheet.Builder(this).grid().title("Share To " + adapter.getItem(position)), "Hello " + adapter.getItem(position)).anchorPosition(400).build();
                 break;
             case 7:
-                sheet = getShareActions(new BottomSheet.Builder(this).grid().title("Share To "+adapter.getItem(position)),"Hello "+adapter.getItem(position)).limit(R.integer.bs_initial_grid_row).build();
+                sheet = getShareActions(new BottomSheet.Builder(this).grid().title("Share To " + adapter.getItem(position)), "Hello " + adapter.getItem(position)).limit(R.integer.bs_initial_grid_row).build();
                 break;
 
         }
@@ -159,7 +159,7 @@ public class ListAcitivty extends ActionBarActivity implements AdapterView.OnIte
         final List<ResolveInfo> list = pm.queryIntentActivities(shareIntent, 0);
 
         for (int i = 0; i < list.size(); i++) {
-            builder.sheet(i,list.get(i).loadIcon(pm),list.get(i).loadLabel(pm));
+            builder.sheet(i, list.get(i).loadIcon(pm), list.get(i).loadLabel(pm));
         }
 
         builder.listener(new DialogInterface.OnClickListener() {

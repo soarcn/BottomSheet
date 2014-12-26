@@ -2,6 +2,7 @@ package com.cocosw.bottomsheet;
 
 import android.annotation.TargetApi;
 import android.content.Context;
+import android.content.res.TypedArray;
 import android.os.Build;
 import android.support.v4.view.ViewCompat;
 import android.support.v4.widget.ViewDragHelper;
@@ -16,7 +17,7 @@ public class BottomSlidingLayout extends FrameLayout {
 
     private String TAG = "BottomSlidingLayout.class";
     private final double AUTO_OPEN_SPEED_LIMIT = 800.0;
-    private final int DEFAULT_TOP_POSTITION = 400;
+    private final int DEFAULT_TOP_POSTITION = 600;
     private final ViewDragHelper mDragHelper;
 
     private static final int STATE_IDLE = 0;
@@ -29,9 +30,11 @@ public class BottomSlidingLayout extends FrameLayout {
     private int mSlideLayoutState = STATE_IDLE;
 
     private int mDraggingBorder;
+    private boolean mIsSlidingUp;
     private int mDraggingState = 0;
     private int mVerticalRange;
     private boolean mIsOpen;
+    private int mAnchorPosition = 0;
 
     public interface SlideListener {
         public void onOpen();
@@ -55,32 +58,42 @@ public class BottomSlidingLayout extends FrameLayout {
     public BottomSlidingLayout(Context context, AttributeSet attrs, int defStyle) {
         super(context, attrs, defStyle);
         mDragHelper = ViewDragHelper.create(this, 0.8f, new ViewDragCallback());
+
+        TypedArray ta = context.obtainStyledAttributes(attrs, R.styleable.BottomSlidingLayout);
+        mAnchorPosition = ta.getDimensionPixelSize(R.styleable.BottomSlidingLayout_bsl_anchorPosition, 0);
     }
 
     public void setSlideListener(SlideListener listener) {
         this.mSlideListener = listener;
     }
 
+    public void setAnchorPosition(int anchorPosition) {
+        this.mAnchorPosition = anchorPosition;
+        requestLayout();
+    }
+
     @Override
     protected void onFinishInflate() {
-        if (getChildCount() > 1) {
-            throw new IllegalArgumentException("Can have only 1 parent view.");
-        }
-        mSuperParent = (ViewGroup) getChildAt(0);
-        mDragView = mSuperParent;
         super.onFinishInflate();
     }
 
     @Override
     protected void onSizeChanged(int w, int h, int oldw, int oldh) {
         mVerticalRange = h;
+        if (mAnchorPosition > 0) {
+            mDragHelper.smoothSlideViewTo(mSuperParent, mSuperParent.getLeft(), mAnchorPosition);
+        }
         super.onSizeChanged(w, h, oldw, oldh);
     }
 
     @Override
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
         super.onMeasure(widthMeasureSpec, heightMeasureSpec);
-        mDragHelper.smoothSlideViewTo(mSuperParent, mSuperParent.getLeft(), DEFAULT_TOP_POSTITION);
+        if (getChildCount() != 1) {
+            throw new IllegalArgumentException("Can have only 1 child.");
+        }
+        mSuperParent = (ViewGroup) getChildAt(0);
+        mDragView = mSuperParent;
     }
 
     @Override
@@ -234,7 +247,7 @@ public class BottomSlidingLayout extends FrameLayout {
                 settleToOpen = false;
             }
 
-            final int settleDestY = settleToOpen ? mVerticalRange : 0;
+            final int settleDestY = settleToOpen && !mIsSlidingUp ? mVerticalRange : 0;
             if (mDragHelper.settleCapturedViewAt(0, settleDestY)) {
                 ViewCompat.postInvalidateOnAnimation(BottomSlidingLayout.this);
             }
@@ -243,9 +256,10 @@ public class BottomSlidingLayout extends FrameLayout {
         @Override
         public void onViewPositionChanged(View changedView, int left, int top, int dx, int dy) {
             mDraggingBorder = top;
-            if (mDraggingBorder == 0) {
-                mSlideLayoutState = STATE_OPEN;
-                requestLayout();
+            if (dy < 0) {
+                mIsSlidingUp = true;
+            } else if (dy > 0) {
+                mIsSlidingUp = false;
             }
             if (Build.VERSION.SDK_INT < Build.VERSION_CODES.HONEYCOMB) {
                 requestLayout();
@@ -278,6 +292,7 @@ public class BottomSlidingLayout extends FrameLayout {
                 break;
             }
             case STATE_CLOSED: {
+                mDragHelper.abort();
                 mSlideListener.onClose();
                 break;
             }

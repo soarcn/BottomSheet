@@ -15,4 +15,8 @@
         <attr name="bs_closeDrawable" format="reference" />
     </declare-styleable>
 
+    <declare-styleable name="BottomSlidingLayout">
+        <attr name="bsl_anchorPosition" format="dimension" />
+    </declare-styleable>
+
 </resources>
