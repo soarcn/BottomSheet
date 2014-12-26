@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<com.cocosw.bottomsheet.ClosableSlidingLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<com.cocosw.bottomsheet.BottomSlidingLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
@@ -42,14 +42,13 @@
 
         </LinearLayout>
 
-
         <GridView
             android:layout_width="match_parent"
-            android:layout_height="240dp"
+            android:layout_height="wrap_content"
             android:id="@+id/bottom_sheet_gridview"
             android:numColumns="?bs_numColumns"
             android:fadingEdge="none"
             style="?bs_listStyle"
             tools:listitem="@layout/bs_grid_entry" />
     </LinearLayout>
-</com.cocosw.bottomsheet.ClosableSlidingLayout>
+</com.cocosw.bottomsheet.BottomSlidingLayout>

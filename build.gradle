@@ -16,7 +16,7 @@
 
 buildscript {
     repositories {
-        jCenter()
+        mavenCentral()
     }
 
     dependencies {
@@ -30,17 +30,16 @@ allprojects {
 
     repositories {
         mavenLocal()
-        jCenter()
-      }
+        mavenCentral()
+    }
 
     tasks.withType(JavaCompile) {
         options.encoding = "UTF-8"
     }
 }
 
-
 task wrapper(type: Wrapper) {
-    gradleVersion = '1.12'
+    gradleVersion = '2.2.1'
 }
 
 

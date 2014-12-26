@@ -2,17 +2,17 @@
 <resources>
 
     <declare-styleable name="BottomSheet">
-        <attr name="bottomSheetStyle" format="reference"/>
+        <attr name="bottomSheetStyle" format="reference" />
         <attr name="bs_dialogBackground" format="color|reference" />
-        <attr name="bs_listStyle" format="reference"/>
+        <attr name="bs_listStyle" format="reference" />
         <attr name="bs_dividerColor" format="color|reference" />
-        <attr name="bs_numColumns" format="integer"/>
+        <attr name="bs_numColumns" format="integer" />
         <attr name="bs_titleTextAppearance" format="reference" />
         <attr name="bs_listItemTitleTextAppearance" format="reference" />
         <attr name="bs_gridItemTitleTextAppearance" format="reference" />
-        <attr name="bs_moreDrawable" format="reference"/>
-        <attr name="bs_moreText" format="string"/>
-        <attr name="bs_closeDrawable" format="reference"/>
+        <attr name="bs_moreDrawable" format="reference" />
+        <attr name="bs_moreText" format="string" />
+        <attr name="bs_closeDrawable" format="reference" />
     </declare-styleable>
 
 </resources>
