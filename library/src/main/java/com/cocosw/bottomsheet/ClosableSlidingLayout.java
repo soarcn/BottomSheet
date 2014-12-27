@@ -174,7 +174,7 @@ class ClosableSlidingLayout extends FrameLayout {
             if (yvel > MINVEL) {
                 dismiss(releasedChild);
             } else if (yvel < -MINVEL) {
-             //   mDragHelper.smoothSlideViewTo(releasedChild, 0, -getHeight());
+                //   mDragHelper.smoothSlideViewTo(releasedChild, 0, -getHeight());
             } else {
                 if (releasedChild.getTop() >= top+height/2) {
                     dismiss(releasedChild);

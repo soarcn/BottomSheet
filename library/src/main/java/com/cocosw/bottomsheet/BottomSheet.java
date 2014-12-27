@@ -50,9 +50,9 @@ import java.util.List;
 
 /**
  * One way to present a set of actions to a user is with bottom sheets, a sheet of paper that slides up from the bottom edge of the screen. Bottom sheets offer flexibility in the display of clear and simple actions that do not need explanation.
- *
+ * <p/>
  * https://www.google.com/design/spec/components/bottom-sheets.html
- *
+ * <p/>
  * Project: BottomSheet
  * Created by LiaoKai(soarcn) on 2014/9/21.
  */
@@ -82,7 +82,7 @@ public class BottomSheet extends Dialog implements DialogInterface {
     private List<MenuItem> actions = menuItem;
 
     public BottomSheet(Context context) {
-        super(context,R.style.BottomSheet_Dialog);
+        super(context, R.style.BottomSheet_Dialog);
     }
 
     @SuppressWarnings("WeakerAccess")
@@ -210,31 +210,37 @@ public class BottomSheet extends Dialog implements DialogInterface {
     }
 
     private int getNumColumns() {
-            try {
-                Field numColumns = GridView.class.getDeclaredField("mRequestedNumColumns");
-                numColumns.setAccessible(true);
-                return numColumns.getInt(list);
-            } catch (Exception e) {
-                return 1;
-            }
+        try {
+            Field numColumns = GridView.class.getDeclaredField("mRequestedNumColumns");
+            numColumns.setAccessible(true);
+            return numColumns.getInt(list);
+        } catch (Exception e) {
+            return 1;
+        }
     }
 
     private void init(final Context context) {
         setCanceledOnTouchOutside(true);
-        final ClosableSlidingLayout mDialogView = (ClosableSlidingLayout) View.inflate(context, R.layout.bottom_sheet_dialog, null);
+
+        final BottomSlidingLayout mDialogView = (BottomSlidingLayout) View.inflate(context, R.layout.bottom_sheet_drag, null);
         setContentView(mDialogView);
-        mDialogView.setSlideListener(new ClosableSlidingLayout.SlideListener() {
+        mDialogView.setAnchorPosition(builder.anchorPosition);
+        mDialogView.setSlideListener(new BottomSlidingLayout.SlideListener() {
             @Override
-            public void onClosed() {
+            public void onOpen() {
+
+            }
+
+            @Override
+            public void onDragging() {
+
+            }
+
+            @Override
+            public void onClose() {
                 BottomSheet.this.dismiss();
             }
-
-            @Override
-            public void onOpened() {
-
-            }
         });
-
 
         this.setOnShowListener(new OnShowListener() {
             @Override
@@ -242,7 +248,7 @@ public class BottomSheet extends Dialog implements DialogInterface {
                 actions = menuItem;
                 list.setAdapter(adapter);
                 list.startLayoutAnimation();
-                if (builder.icon==null)
+                if (builder.icon == null)
                     icon.setVisibility(View.GONE);
                 else {
                     icon.setVisibility(View.VISIBLE);
@@ -252,8 +258,8 @@ public class BottomSheet extends Dialog implements DialogInterface {
         });
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
-            mDialogView.setPadding(0, mStatusBarAvailable?mStatusBarHeight:0, 0, 0);
-            mDialogView.getChildAt(0).setPadding(0, 0,0, mNavBarAvailable?getNavigationBarHeight(getContext())+mDialogView.getPaddingBottom():0);
+            mDialogView.setPadding(0, mStatusBarAvailable ? mStatusBarHeight : 0, 0, 0);
+            mDialogView.getChildAt(0).setPadding(0, 0, 0, mNavBarAvailable ? getNavigationBarHeight(getContext()) + mDialogView.getPaddingBottom() : 0);
         }
 
         final TextView title = (TextView) mDialogView.findViewById(R.id.bottom_sheet_title);
@@ -264,9 +270,7 @@ public class BottomSheet extends Dialog implements DialogInterface {
 
         icon = (ImageView) mDialogView.findViewById(R.id.bottom_sheet_title_image);
 
-
         list = (GridView) mDialogView.findViewById(R.id.bottom_sheet_gridview);
-        mDialogView.mTarget = list;
         if (!builder.grid) {
             list.setNumColumns(1);
         }
@@ -279,19 +283,19 @@ public class BottomSheet extends Dialog implements DialogInterface {
                 MenuItem item = i.next();
                 if (item.divider)
                     i.remove();
-                else if (item.icon==null) {
+                else if (item.icon == null) {
                     throw new IllegalArgumentException("You should set icon for each items in grid style");
                 }
             }
         }
 
-        builder.limit = builder.limit*getNumColumns();
+        builder.limit = builder.limit * getNumColumns();
 
         // over the initial numbers
         if (menuItem.size() > builder.limit) {
             fullMenuItem = new ArrayList<>(menuItem);
-            menuItem = menuItem.subList(0,builder.limit-1);
-            menuItem.add(new MenuItem(R.id.bs_more, moreText,more));
+            menuItem = menuItem.subList(0, builder.limit - 1);
+            menuItem.add(new MenuItem(R.id.bs_more, moreText, more));
         }
         actions = menuItem;
 
@@ -383,13 +387,13 @@ public class BottomSheet extends Dialog implements DialogInterface {
         list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                if (((MenuItem) adapter.getItem(position)).id==R.id.bs_more) {
+                if (((MenuItem) adapter.getItem(position)).id == R.id.bs_more) {
                     actions = fullMenuItem;
 
                     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
                         Transition changeBounds = new ChangeBounds();
                         changeBounds.setDuration(300);
-                        TransitionManager.beginDelayedTransition(list,changeBounds);
+                        TransitionManager.beginDelayedTransition(list, changeBounds);
                     }
 
                     adapter.notifyDataSetChanged();
@@ -406,7 +410,7 @@ public class BottomSheet extends Dialog implements DialogInterface {
                             adapter.notifyDataSetChanged();
                             setListLayout();
 
-                            if (builder.icon==null)
+                            if (builder.icon == null)
                                 icon.setVisibility(View.GONE);
                             else {
                                 icon.setVisibility(View.VISIBLE);
@@ -424,7 +428,7 @@ public class BottomSheet extends Dialog implements DialogInterface {
             }
         });
 
-        if(builder.dismissListener != null){
+        if (builder.dismissListener != null) {
             setOnDismissListener(builder.dismissListener);
         }
         setListLayout();
@@ -441,7 +445,7 @@ public class BottomSheet extends Dialog implements DialogInterface {
                     list.getViewTreeObserver().removeOnGlobalLayoutListener(this);
                 }
                 View lastChild = list.getChildAt(list.getChildCount() - 1);
-                if (lastChild!=null)
+                if (lastChild != null)
                     list.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, lastChild.getBottom() + lastChild.getPaddingBottom()));
             }
         });
@@ -476,7 +480,6 @@ public class BottomSheet extends Dialog implements DialogInterface {
     }
 
 
-
     /**
      * MenuItem
      */
@@ -506,8 +509,8 @@ public class BottomSheet extends Dialog implements DialogInterface {
         }
     }
 
-    /***
-     *  Constructor using a context for this builder and the {@link com.cocosw.bottomsheet.BottomSheet} it creates.
+    /**
+     * Constructor using a context for this builder and the {@link com.cocosw.bottomsheet.BottomSheet} it creates.
      */
     public static class Builder {
 
@@ -519,8 +522,8 @@ public class BottomSheet extends Dialog implements DialogInterface {
         private OnClickListener listener;
         private OnDismissListener dismissListener;
         private Drawable icon;
-        private int limit = Integer.MAX_VALUE/100;
-
+        private int limit = Integer.MAX_VALUE / 100;
+        private int anchorPosition;
 
         /**
          * Constructor using a context for this builder and the {@link com.cocosw.bottomsheet.BottomSheet} it creates.
@@ -528,7 +531,7 @@ public class BottomSheet extends Dialog implements DialogInterface {
          * @param context A Context for built BottomSheet.
          */
         public Builder(@NonNull Activity context) {
-            this(context,R.style.BottomSheet_Dialog);
+            this(context, R.style.BottomSheet_Dialog);
             TypedArray ta = context.getTheme().obtainStyledAttributes(new int[]{R.attr.bottomSheetStyle});
             try {
                 theme = ta.getResourceId(0, R.style.BottomSheet_Dialog);
@@ -602,7 +605,7 @@ public class BottomSheet extends Dialog implements DialogInterface {
         /**
          * Add one item into BottomSheet
          *
-         * @param id ID of item
+         * @param id      ID of item
          * @param iconRes icon resource
          * @param textRes text resource
          * @return This Builder object to allow for chaining of calls to set methods
@@ -615,12 +618,12 @@ public class BottomSheet extends Dialog implements DialogInterface {
         /**
          * Add one item into BottomSheet
          *
-         * @param id ID of item
+         * @param id   ID of item
          * @param icon icon
          * @param text text
          * @return This Builder object to allow for chaining of calls to set methods
          */
-        public Builder sheet(int id,@NonNull Drawable icon, @NonNull CharSequence text) {
+        public Builder sheet(int id, @NonNull Drawable icon, @NonNull CharSequence text) {
             item(new MenuItem(id, text, icon));
             return this;
         }
@@ -628,7 +631,7 @@ public class BottomSheet extends Dialog implements DialogInterface {
         /**
          * Add one item without icon into BottomSheet
          *
-         * @param id ID of item
+         * @param id      ID of item
          * @param textRes text resource
          * @return This Builder object to allow for chaining of calls to set methods
          */
@@ -640,17 +643,18 @@ public class BottomSheet extends Dialog implements DialogInterface {
         /**
          * Add one item without icon into BottomSheet
          *
-         * @param id ID of item
+         * @param id   ID of item
          * @param text text
          * @return This Builder object to allow for chaining of calls to set methods
          */
-        public Builder sheet(int id,@NonNull CharSequence text) {
+        public Builder sheet(int id, @NonNull CharSequence text) {
             item(new MenuItem(id, text, null));
             return this;
         }
 
         /**
          * Set title for BottomSheet
+         *
          * @param titleRes title for BottomSheet
          * @return This Builder object to allow for chaining of calls to set methods
          */
@@ -661,6 +665,7 @@ public class BottomSheet extends Dialog implements DialogInterface {
 
         /**
          * Set title for BottomSheet
+         *
          * @param icon icon for BottomSheet
          * @return This Builder object to allow for chaining of calls to set methods
          */
@@ -671,6 +676,7 @@ public class BottomSheet extends Dialog implements DialogInterface {
 
         /**
          * Set title for BottomSheet
+         *
          * @param iconRes icon resource id for BottomSheet
          * @return This Builder object to allow for chaining of calls to set methods
          */
@@ -715,6 +721,7 @@ public class BottomSheet extends Dialog implements DialogInterface {
 
         /**
          * Show BottomSheet in dark color theme looking
+         *
          * @return This Builder object to allow for chaining of calls to set methods
          */
         public Builder darkTheme() {
@@ -725,6 +732,7 @@ public class BottomSheet extends Dialog implements DialogInterface {
 
         /**
          * Show BottomSheet
+         *
          * @return This Builder object to allow for chaining of calls to set methods
          */
         public BottomSheet show() {
@@ -756,8 +764,21 @@ public class BottomSheet extends Dialog implements DialogInterface {
         }
 
         /**
+         * Set the Anchor position of the sliding layout.
+         * Initial open position from bottom.
+         *
+         * @param anchorPosition
+         * @return
+         */
+        public Builder anchorPosition(int anchorPosition) {
+            this.anchorPosition = anchorPosition;
+            return this;
+        }
+
+        /**
          * Deprecated please use build()
          * Create a BottomSheet but not show it
+         *
          * @return This Builder object to allow for chaining of calls to set methods
          */
         @SuppressLint("Override")
@@ -784,12 +805,13 @@ public class BottomSheet extends Dialog implements DialogInterface {
             return this;
         }
 
-        /***
+        /**
          * Set the OnDismissListener for BottomSheet
+         *
          * @param listener OnDismissListener for Bottom
          * @return This Builder object to allow for chaining of calls to set methods
          */
-        public Builder setOnDismissListener(@NonNull OnDismissListener listener){
+        public Builder setOnDismissListener(@NonNull OnDismissListener listener) {
             this.dismissListener = listener;
             return this;
         }
