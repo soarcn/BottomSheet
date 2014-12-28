@@ -7,6 +7,7 @@
         <item name="android:windowFrame">@null</item>
         <item name="android:textColor">@null</item>
         <item name="android:windowNoTitle">true</item>
+        <item name="android:layout_width">fill_parent</item>
         <item name="android:windowBackground">@android:color/transparent</item>
         <item name="android:windowIsFloating">true</item>
         <item name="android:windowContentOverlay">@null</item>

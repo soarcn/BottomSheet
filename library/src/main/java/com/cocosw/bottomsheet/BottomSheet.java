@@ -91,9 +91,13 @@ public class BottomSheet extends Dialog implements DialogInterface {
 
         TypedArray a = getContext()
                 .obtainStyledAttributes(null, R.styleable.BottomSheet, R.attr.bottomSheetStyle, 0);
-        more = a.getDrawable(R.styleable.BottomSheet_bs_moreDrawable);
-        close = a.getDrawable(R.styleable.BottomSheet_bs_closeDrawable);
-        moreText = a.getString(R.styleable.BottomSheet_bs_moreText);
+        try {
+            more = a.getDrawable(R.styleable.BottomSheet_bs_moreDrawable);
+            close = a.getDrawable(R.styleable.BottomSheet_bs_closeDrawable);
+            moreText = a.getString(R.styleable.BottomSheet_bs_moreText);
+        }finally {
+            a.recycle();
+        }
 
         // https://github.com/jgilfelt/SystemBarTint/blob/master/library/src/com/readystatesoftware/systembartint/SystemBarTintManager.java
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
@@ -242,7 +246,7 @@ public class BottomSheet extends Dialog implements DialogInterface {
                 actions = menuItem;
                 list.setAdapter(adapter);
                 list.startLayoutAnimation();
-                if (builder.icon==null)
+                if (builder.icon == null)
                     icon.setVisibility(View.GONE);
                 else {
                     icon.setVisibility(View.VISIBLE);
@@ -395,7 +399,6 @@ public class BottomSheet extends Dialog implements DialogInterface {
                     adapter.notifyDataSetChanged();
                     ViewGroup.LayoutParams params = list.getLayoutParams();
                     params.height = ViewGroup.LayoutParams.WRAP_CONTENT;
-                    params.width = ViewGroup.LayoutParams.MATCH_PARENT;
                     list.setLayoutParams(params);
                     icon.setVisibility(View.VISIBLE);
                     icon.setImageDrawable(close);
@@ -452,10 +455,18 @@ public class BottomSheet extends Dialog implements DialogInterface {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         init(getContext());
+
         WindowManager.LayoutParams params = getWindow().getAttributes();
         params.height = ViewGroup.LayoutParams.WRAP_CONTENT;
-        params.width = ViewGroup.LayoutParams.MATCH_PARENT;
         params.gravity = Gravity.BOTTOM;
+
+        TypedArray a = getContext().obtainStyledAttributes(new int[]{android.R.attr.layout_width});
+        try {
+            params.width = a.getLayoutDimension(0, ViewGroup.LayoutParams.MATCH_PARENT);
+        } finally {
+            a.recycle();
+        }
+
         getWindow().setAttributes(params);
     }
 
