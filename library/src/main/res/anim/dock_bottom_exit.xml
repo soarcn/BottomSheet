@@ -18,7 +18,13 @@
 
 <!-- Animation for when a dock window at the bottom of the screen is exiting. -->
 <set xmlns:android="http://schemas.android.com/apk/res/android"
-        android:interpolator="@android:anim/accelerate_interpolator">
-    <translate android:fromYDelta="0" android:toYDelta="100%"
-        android:startOffset="100" android:duration="250"/>
+     android:interpolator="@android:anim/accelerate_interpolator">
+    <translate
+        android:duration="@android:integer/config_shortAnimTime"
+        android:fromYDelta="0"
+        android:toYDelta="15%"/>
+    <alpha
+        android:duration="@android:integer/config_shortAnimTime"
+        android:fromAlpha="1"
+        android:toAlpha="0"/>
 </set>
