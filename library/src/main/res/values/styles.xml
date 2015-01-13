@@ -82,6 +82,12 @@
         <item name="android:gravity">center_vertical</item>
     </style>
 
+    <style name="BottomSheet.Icon">
+        <item name="android:layout_width">40dp</item>
+        <item name="android:layout_height">40dp</item>
+        <item name="android:layout_marginLeft">16dp</item>
+    </style>
+
     <style name="BottomSheet.List">
         <item name="android:listSelector">@drawable/bs_list_selector</item>
         <item name="android:drawSelectorOnTop">false</item>
@@ -146,6 +152,8 @@
         <item name="android:windowEnterAnimation">@anim/dock_bottom_enter</item>
         <item name="android:windowExitAnimation">@anim/dock_bottom_exit</item>
     </style>
+
+
 
 
 </resources>
