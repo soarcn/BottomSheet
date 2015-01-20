@@ -361,6 +361,21 @@ public class BottomSheet extends Dialog implements DialogInterface, View.OnClick
     public void invalidateDialogLayout() {
         if (list == null) return;
 
+        int height = grid ? getGridHeight() : getListHeight();
+        list.setLayoutParams(new LayoutParams(LayoutParams.MATCH_PARENT, height));
+    }
+
+    private int getGridHeight() {
+        Resources res = getContext().getResources();
+
+        int columnCount = res.getInteger(R.integer.bs_grid_colum);
+        int rowCount = (int) Math.ceil((float) getAdapter().getItemCountWithoutDividers() / columnCount);
+
+        return rowCount * itemHeight;
+    }
+
+    private int getListHeight() {
+
         Resources res = getContext().getResources();
 
         int itemCount = getAdapter().getItemCountWithoutDividers();
@@ -369,9 +384,7 @@ public class BottomSheet extends Dialog implements DialogInterface, View.OnClick
         int dividerHeight = res.getDimensionPixelSize(R.dimen.bs_divider_height)
                 + res.getDimensionPixelSize(R.dimen.bs_divider_margin_top)
                 + res.getDimensionPixelSize(R.dimen.bs_divider_margin_bottom);
-        int newHeight = (itemCount * itemHeight) + (dividerCount * dividerHeight);
-
-        list.setLayoutParams(new LayoutParams(LayoutParams.MATCH_PARENT, newHeight));
+        return (itemCount * itemHeight) + (dividerCount * dividerHeight);
     }
 
     public void dismissAfterRipple() {
