@@ -323,6 +323,14 @@ public class BottomSheet extends Dialog implements DialogInterface, View.OnClick
         return adapter;
     }
 
+    public void showItem(int itemId, boolean visible) {
+        if (visible) {
+            showItem(itemId);
+        } else {
+            hideItem(itemId);
+        }
+    }
+
     public void showItem(int itemId) {
         getAdapter().showItem(itemId);
 
@@ -345,6 +353,10 @@ public class BottomSheet extends Dialog implements DialogInterface, View.OnClick
                 });
             }
         });
+    }
+
+    public boolean isItemVisible(int itemId) {
+        return getAdapter().isItemVisible(itemId);
     }
 
     public void postInvalidateDialogLayout() {
