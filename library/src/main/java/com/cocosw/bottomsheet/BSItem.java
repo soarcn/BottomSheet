@@ -16,14 +16,20 @@ class BSItem {
     private CharSequence text;
     private Drawable icon;
     private boolean divider;
+    private boolean isVisible = true;
 
     BSItem() {
     }
 
     BSItem(int id, CharSequence text, Drawable icon) {
+        this(id, text, icon, true);
+    }
+
+    BSItem(int id, CharSequence text, Drawable icon, boolean isVisible) {
         this.id = id;
         this.text = text;
         this.icon = icon;
+        this.isVisible = isVisible;
     }
 
     @Override
@@ -56,6 +62,14 @@ class BSItem {
         this.divider = divider;
     }
 
+    public boolean isVisible() {
+        return isVisible;
+    }
+
+    public void setVisible(boolean visible) {
+        isVisible = visible;
+    }
+
     static List<BSItem> parseMenuXml(Context context, int menu) {
         List<BSItem> bsItems = new ArrayList<>();
         try {
@@ -69,10 +83,12 @@ class BSItem {
                         String textId = xpp.getAttributeValue("http://schemas.android.com/apk/res/android", "title");
                         String iconId = xpp.getAttributeValue("http://schemas.android.com/apk/res/android", "icon");
                         String resId = xpp.getAttributeValue("http://schemas.android.com/apk/res/android", "id");
+                        String visible = xpp.getAttributeValue("http://schemas.android.com/apk/res/android", "visible");;
 
                         BSItem item = new BSItem();
                         item.id = Integer.valueOf(resId.replace("@", ""));
                         item.text = resourceIdToString(context, textId);
+                        item.isVisible = visible == null || visible.equals("true");
                         if (!TextUtils.isEmpty(iconId))
                             item.icon = context.getResources().getDrawable(Integer.valueOf(iconId.replace("@", "")));
 

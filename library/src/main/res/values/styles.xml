@@ -94,6 +94,7 @@
 
     <style name="BottomSheet.List.ItemTitle">
         <item name="android:layout_marginLeft">16dp</item>
+        <item name="android:maxLines">1</item>
         <item name="android:textAppearance">@style/Text.Title</item>
         <item name="android:background">@android:color/transparent</item>
     </style>
@@ -101,10 +102,10 @@
     <style name="BottomSheet.List.Divider">
         <item name="android:layout_height">wrap_content</item>
         <item name="android:layout_width">fill_parent</item>
-        <item name="android:minHeight">1dp</item>
+        <item name="android:minHeight">@dimen/bs_divider_height</item>
         <item name="android:background">?dividerColor</item>
-        <item name="android:layout_marginTop">7dp</item>
-        <item name="android:layout_marginBottom">8dp</item>
+        <item name="android:layout_marginTop">@dimen/bs_divider_margin_top</item>
+        <item name="android:layout_marginBottom">@dimen/bs_divider_margin_bottom</item>
     </style>
 
     <style name="BottomSheet.Grid.Item.Image">

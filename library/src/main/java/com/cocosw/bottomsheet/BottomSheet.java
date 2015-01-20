@@ -21,16 +21,19 @@ import android.support.annotation.StyleRes;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.RecyclerView.ItemAnimator.ItemAnimatorFinishedListener;
 import android.util.DisplayMetrics;
 import android.view.Gravity;
 import android.view.View;
 import android.view.ViewConfiguration;
 import android.view.ViewGroup;
-import android.view.ViewTreeObserver;
+import android.view.ViewTreeObserver.OnGlobalLayoutListener;
 import android.view.Window;
 import android.view.WindowManager;
-import android.widget.LinearLayout;
+import android.widget.LinearLayout.LayoutParams;
 import android.widget.TextView;
+
+import com.cocosw.bottomsheet.utils.BuildHelper;
 
 import java.lang.reflect.Method;
 import java.util.ArrayList;
@@ -50,7 +53,7 @@ public class BottomSheet extends Dialog implements DialogInterface, View.OnClick
 
     private static final long RIPPLE_ANIM_LENGTH = 350;
     private RecyclerView list;
-    private RecyclerView.Adapter adapter;
+    private BottomSheetAdapter adapter;
     
     // Builder Props
     private List<BSItem> bsItems;
@@ -67,6 +70,7 @@ public class BottomSheet extends Dialog implements DialogInterface, View.OnClick
     private String sNavBarOverride;
     private boolean mNavBarAvailable;
     private float mSmallestWidthDp;
+    private int itemHeight;
 
     public BottomSheet(Context context) {
         super(context,R.style.BottomSheet_Dialog);
@@ -75,15 +79,17 @@ public class BottomSheet extends Dialog implements DialogInterface, View.OnClick
     private BottomSheet(Builder builder) {
         super(builder.activity, builder.theme);
         // https://github.com/jgilfelt/SystemBarTint/blob/master/library/src/com/readystatesoftware/systembartint/SystemBarTintManager.java
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+        if (BuildHelper.HAS_KITKAT) {
             reflectOnNavBar(builder);
             mInPortrait = (getContext().getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT);
             setupTheme(builder);
             setupWidow(builder);
         }
+        setCanceledOnTouchOutside(true);
         setPropertiesFromBuilder(builder);
     }
-    
+
+    @TargetApi(19)
     private void setupWidow(Builder builder) {
         WindowManager wm = (WindowManager) getContext().getSystemService(Context.WINDOW_SERVICE);
         
@@ -97,6 +103,23 @@ public class BottomSheet extends Dialog implements DialogInterface, View.OnClick
             setTranslucentStatus(true);
     }
 
+    @TargetApi(19)
+    private void setTranslucentStatus(boolean on) {
+        Window win = getWindow();
+        WindowManager.LayoutParams winParams = win.getAttributes();
+        final int bits = WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS;
+        if (on) {
+            winParams.flags |= bits;
+        } else {
+            winParams.flags &= ~bits;
+        }
+        win.setAttributes(winParams);
+        // instance
+        win.setFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_NAVIGATION,
+                WindowManager.LayoutParams.FLAG_TRANSLUCENT_NAVIGATION);
+    }
+
+    @TargetApi(19)
     /** Let's be honest, reflecting on the system is bad. */
     private void reflectOnNavBar(Builder builder) {
         try {
@@ -108,7 +131,8 @@ public class BottomSheet extends Dialog implements DialogInterface, View.OnClick
             sNavBarOverride = null;
         }
     }
-    
+
+    @TargetApi(19)
     private void setupTheme(Builder builder) {
         int[] as = {android.R.attr.windowTranslucentStatus,
                 android.R.attr.windowTranslucentNavigation};
@@ -220,11 +244,22 @@ public class BottomSheet extends Dialog implements DialogInterface, View.OnClick
         return (mSmallestWidthDp >= 600 || mInPortrait);
     }
 
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        inflateViews(getContext());
+        setDialogLocation();
+    }
 
-    private void init(final Context context) {
-        setCanceledOnTouchOutside(true);
-        View mDialogView = View.inflate(context, R.layout.bottom_sheet_dialog, null);
-        setContentView(mDialogView);
+    @Override
+    protected void onStart() {
+        super.onStart();
+        postInvalidateDialogLayout();
+    }
+
+    private void inflateViews(final Context context) {
+        View dialogView = View.inflate(context, R.layout.bottom_sheet_dialog, null);
+        setContentView(dialogView);
 
         this.setOnShowListener(new OnShowListener() {
             @Override
@@ -233,29 +268,30 @@ public class BottomSheet extends Dialog implements DialogInterface, View.OnClick
             }
         });
 
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT && mNavBarAvailable) {
-              mDialogView.setPadding(0, 0, 0, getNavigationBarHeight(getContext())+mDialogView.getPaddingBottom());
+        if (BuildHelper.HAS_KITKAT && mNavBarAvailable) {
+            dialogView.setPadding(0, 0, 0, getNavigationBarHeight(getContext())+dialogView.getPaddingBottom());
         }
 
-        TextView title = (TextView) mDialogView.findViewById(R.id.bottom_sheet_title);
+        TextView title = (TextView) dialogView.findViewById(R.id.bottom_sheet_title);
         if (text != null) {
             title.setVisibility(View.VISIBLE);
             title.setText(text);
         }
 
-        list = (RecyclerView) mDialogView.findViewById(R.id.bottom_sheet_recyclerview);
+        setupListView(dialogView);
+    }
+
+    private void setupListView(View dialogView) {
+        list = (RecyclerView) dialogView.findViewById(R.id.bottom_sheet_recyclerview);
 
         if (grid) {
-            list.setLayoutManager(new GridLayoutManager(context, context.getResources().getInteger(R.integer.bs_grid_colum)));
+            list.setLayoutManager(new GridLayoutManager(getContext(), getContext().getResources().getInteger(R.integer.bs_grid_colum)));
         } else {
-            list.setLayoutManager(new LinearLayoutManager(context));
+            list.setLayoutManager(new LinearLayoutManager(getContext()));
         }
 
-        adapter = new BottomSheetAdapter(getContext(), this, bsItems, grid);
-
-        list.setAdapter(adapter);
-
-        list.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
+        list.setAdapter(getAdapter());
+        list.getViewTreeObserver().addOnGlobalLayoutListener(new OnGlobalLayoutListener() {
             @Override
             public void onGlobalLayout() {
                 if (Build.VERSION.SDK_INT < 16) {
@@ -265,17 +301,14 @@ public class BottomSheet extends Dialog implements DialogInterface, View.OnClick
                     list.getViewTreeObserver().removeOnGlobalLayoutListener(this);
                 }
                 View lastChild = list.getChildAt(list.getChildCount() - 1);
-                if (lastChild!=null)
-                    list.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, lastChild.getBottom() + lastChild.getPaddingBottom()));
+                if (lastChild != null) {
+                    itemHeight = lastChild.getHeight() + lastChild.getPaddingTop() + lastChild.getPaddingBottom();
+                }
             }
         });
-
     }
 
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        init(getContext());
+    private void setDialogLocation() {
         WindowManager.LayoutParams params = getWindow().getAttributes();
         params.height = ViewGroup.LayoutParams.WRAP_CONTENT;
         params.width = ViewGroup.LayoutParams.MATCH_PARENT;
@@ -283,20 +316,62 @@ public class BottomSheet extends Dialog implements DialogInterface, View.OnClick
         getWindow().setAttributes(params);
     }
 
-    @TargetApi(19)
-    private void setTranslucentStatus(boolean on) {
-        Window win = getWindow();
-        WindowManager.LayoutParams winParams = win.getAttributes();
-        final int bits = WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS;
-        if (on) {
-            winParams.flags |= bits;
-        } else {
-            winParams.flags &= ~bits;
+    private BottomSheetAdapter getAdapter() {
+        if (adapter == null) {
+            adapter = new BottomSheetAdapter(getContext(), this, bsItems, grid);
         }
-        win.setAttributes(winParams);
-        // instance
-        win.setFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_NAVIGATION,
-                WindowManager.LayoutParams.FLAG_TRANSLUCENT_NAVIGATION);
+        return adapter;
+    }
+
+    public void showItem(int itemId) {
+        getAdapter().showItem(itemId);
+
+        invalidateDialogLayout();
+    }
+
+    public void hideItem(int itemId) {
+        getAdapter().hideItem(itemId);
+
+        list.post(new Runnable() {
+            @Override
+            public void run() {
+                if (list == null) return;
+
+                list.getItemAnimator().isRunning(new ItemAnimatorFinishedListener() {
+                    @Override
+                    public void onAnimationsFinished() {
+                        invalidateDialogLayout();
+                    }
+                });
+            }
+        });
+    }
+
+    public void postInvalidateDialogLayout() {
+        if (list == null) return;
+
+        list.post(new Runnable() {
+            @Override
+            public void run() {
+                invalidateDialogLayout();
+            }
+        });
+    }
+
+    public void invalidateDialogLayout() {
+        if (list == null) return;
+
+        Resources res = getContext().getResources();
+
+        int itemCount = getAdapter().getItemCountWithoutDividers();
+        int dividerCount = getAdapter().getDividerCount();
+
+        int dividerHeight = res.getDimensionPixelSize(R.dimen.bs_divider_height)
+                + res.getDimensionPixelSize(R.dimen.bs_divider_margin_top)
+                + res.getDimensionPixelSize(R.dimen.bs_divider_margin_bottom);
+        int newHeight = (itemCount * itemHeight) + (dividerCount * dividerHeight);
+
+        list.setLayoutParams(new LayoutParams(LayoutParams.MATCH_PARENT, newHeight));
     }
 
     public void dismissAfterRipple() {
@@ -304,6 +379,15 @@ public class BottomSheet extends Dialog implements DialogInterface, View.OnClick
             @Override
             public void run() {
                 dismiss();
+            }
+        }, RIPPLE_ANIM_LENGTH);
+    }
+
+    public void hideAfterRipple() {
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                hide();
             }
         }, RIPPLE_ANIM_LENGTH);
     }
@@ -326,7 +410,7 @@ public class BottomSheet extends Dialog implements DialogInterface, View.OnClick
          * @param activity A Context for built BottomSheet.
          */
         public Builder(@NonNull Activity activity) {
-            this(activity,R.style.BottomSheet_Dialog);
+            this(activity, R.style.BottomSheet_Dialog);
             TypedArray ta = activity.getTheme().obtainStyledAttributes(new int[]{R.attr.bottomSheetStyle});
             try {
                 theme = ta.getResourceId(0, R.style.BottomSheet_Dialog);

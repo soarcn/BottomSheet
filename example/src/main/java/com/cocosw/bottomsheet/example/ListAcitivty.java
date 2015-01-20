@@ -119,15 +119,18 @@ public class ListAcitivty extends ActionBarActivity implements AdapterView.OnIte
         switch (which) {
             case R.id.share:
                 q.toast("Share to " + name);
+                sheet.showItem(R.id.upload);
                 break;
             case R.id.upload:
                 q.toast("Upload for " + name);
                 break;
             case R.id.call:
                 q.toast("Call to " + name);
+                sheet.hideItem(which);
                 break;
             case R.id.help:
                 q.toast("Help me!");
+                sheet.showItem(R.id.call);
                 break;
         }
     }
