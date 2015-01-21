@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <style name="BottomSheet.Dialog" parent="BottomSheet.BaseDialog">
+        <item name="itemBackground">@drawable/bs_ripple</item>
+    </style>
+
+    <style name="BottomSheet.Dialog.Dark" parent="BottomSheet.BaseDialog.Dark">
+        <item name="itemBackground">@drawable/bs_ripple_dark</item>
+    </style>
+</resources>

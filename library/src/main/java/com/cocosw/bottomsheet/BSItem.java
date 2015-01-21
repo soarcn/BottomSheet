@@ -83,7 +83,7 @@ class BSItem {
                         String textId = xpp.getAttributeValue("http://schemas.android.com/apk/res/android", "title");
                         String iconId = xpp.getAttributeValue("http://schemas.android.com/apk/res/android", "icon");
                         String resId = xpp.getAttributeValue("http://schemas.android.com/apk/res/android", "id");
-                        String visible = xpp.getAttributeValue("http://schemas.android.com/apk/res/android", "visible");;
+                        String visible = xpp.getAttributeValue("http://schemas.android.com/apk/res/android", "visible");
 
                         BSItem item = new BSItem();
                         item.id = Integer.valueOf(resId.replace("@", ""));

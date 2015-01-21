@@ -59,7 +59,7 @@ public class BottomSheet extends Dialog implements DialogInterface, View.OnClick
     private List<BSItem> bsItems;
     private Dialog.OnClickListener dialogListener;
     private CharSequence text;
-    private boolean grid;
+    private boolean isGrid;
     
 
     // translucent support
@@ -72,25 +72,21 @@ public class BottomSheet extends Dialog implements DialogInterface, View.OnClick
     private float mSmallestWidthDp;
     private int itemHeight;
 
-    public BottomSheet(Context context) {
-        super(context,R.style.BottomSheet_Dialog);
-    }
-
     private BottomSheet(Builder builder) {
         super(builder.activity, builder.theme);
         // https://github.com/jgilfelt/SystemBarTint/blob/master/library/src/com/readystatesoftware/systembartint/SystemBarTintManager.java
         if (BuildHelper.HAS_KITKAT) {
-            reflectOnNavBar(builder);
+            reflectOnNavBar();
             mInPortrait = (getContext().getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT);
-            setupTheme(builder);
-            setupWidow(builder);
+            setupTheme();
+            setupWindow(builder);
         }
         setCanceledOnTouchOutside(true);
         setPropertiesFromBuilder(builder);
     }
 
     @TargetApi(19)
-    private void setupWidow(Builder builder) {
+    private void setupWindow(Builder builder) {
         WindowManager wm = (WindowManager) getContext().getSystemService(Context.WINDOW_SERVICE);
         
         WindowManager.LayoutParams winParams = (builder.activity).getWindow().getAttributes();
@@ -121,7 +117,7 @@ public class BottomSheet extends Dialog implements DialogInterface, View.OnClick
 
     @TargetApi(19)
     /** Let's be honest, reflecting on the system is bad. */
-    private void reflectOnNavBar(Builder builder) {
+    private void reflectOnNavBar() {
         try {
             Class c = Class.forName("android.os.SystemProperties");
             Method m = c.getDeclaredMethod("get", String.class);
@@ -133,7 +129,7 @@ public class BottomSheet extends Dialog implements DialogInterface, View.OnClick
     }
 
     @TargetApi(19)
-    private void setupTheme(Builder builder) {
+    private void setupTheme() {
         int[] as = {android.R.attr.windowTranslucentStatus,
                 android.R.attr.windowTranslucentNavigation};
         TypedArray a = getContext().obtainStyledAttributes(as);
@@ -148,18 +144,19 @@ public class BottomSheet extends Dialog implements DialogInterface, View.OnClick
         dialogListener = builder.listener;
 
         text = builder.title;
-        grid = builder.grid;
+        isGrid = builder.isGrid;
 
         bsItems = builder.bsItems;
         // Grid mode does not support divider, we will remove them all here
-        if (builder.grid) {
+        if (builder.isGrid) {
             Iterator<BSItem> i = bsItems.iterator();
             while (i.hasNext()) {
                 BSItem item = i.next();
-                if (item.isDivider())
+                if (item.isDivider()) {
                     i.remove();
+                }
                 else if (item.getIcon()==null) {
-                    throw new IllegalArgumentException("You should set icon for each items in grid style");
+                    throw new IllegalArgumentException("You should set icon for each items in isGrid style");
                 }
             }
         }
@@ -257,8 +254,8 @@ public class BottomSheet extends Dialog implements DialogInterface, View.OnClick
         postInvalidateDialogLayout();
     }
 
-    private void inflateViews(final Context context) {
-        View dialogView = View.inflate(context, R.layout.bottom_sheet_dialog, null);
+    private void inflateViews(Context context) {
+        View dialogView = View.inflate(context, R.layout.bs_bottom_sheet_dialog, null);
         setContentView(dialogView);
 
         this.setOnShowListener(new OnShowListener() {
@@ -282,12 +279,13 @@ public class BottomSheet extends Dialog implements DialogInterface, View.OnClick
     }
 
     private void setupListView(View dialogView) {
+        Context context = getContext();
         list = (RecyclerView) dialogView.findViewById(R.id.bottom_sheet_recyclerview);
 
-        if (grid) {
-            list.setLayoutManager(new GridLayoutManager(getContext(), getContext().getResources().getInteger(R.integer.bs_grid_colum)));
+        if (isGrid) {
+            list.setLayoutManager(new GridLayoutManager(context, context.getResources().getInteger(R.integer.bs_grid_colum)));
         } else {
-            list.setLayoutManager(new LinearLayoutManager(getContext()));
+            list.setLayoutManager(new LinearLayoutManager(context));
         }
 
         list.setAdapter(getAdapter());
@@ -318,7 +316,7 @@ public class BottomSheet extends Dialog implements DialogInterface, View.OnClick
 
     private BottomSheetAdapter getAdapter() {
         if (adapter == null) {
-            adapter = new BottomSheetAdapter(getContext(), this, bsItems, grid);
+            adapter = new BottomSheetAdapter(getContext(), this, bsItems, isGrid);
         }
         return adapter;
     }
@@ -373,7 +371,7 @@ public class BottomSheet extends Dialog implements DialogInterface, View.OnClick
     public void invalidateDialogLayout() {
         if (list == null) return;
 
-        int height = grid ? getGridHeight() : getListHeight();
+        int height = isGrid ? getGridHeight() : getListHeight();
         list.setLayoutParams(new LayoutParams(LayoutParams.MATCH_PARENT, height));
     }
 
@@ -426,7 +424,7 @@ public class BottomSheet extends Dialog implements DialogInterface, View.OnClick
         private int theme;
         private final List<BSItem> bsItems = new ArrayList<>();
         private CharSequence title;
-        private boolean grid;
+        private boolean isGrid;
         private OnClickListener listener;
 
         /**
@@ -452,8 +450,6 @@ public class BottomSheet extends Dialog implements DialogInterface, View.OnClick
         public Builder(Activity activity, @StyleRes int theme) {
             this.activity = activity;
             this.theme = theme;
-
-
         }
 
         /**
@@ -582,7 +578,7 @@ public class BottomSheet extends Dialog implements DialogInterface, View.OnClick
          * @return This Builder object to allow for chaining of calls to set methods
          */
         public Builder grid() {
-            this.grid = true;
+            this.isGrid = true;
             return this;
         }
 
