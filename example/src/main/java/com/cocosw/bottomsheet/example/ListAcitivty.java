@@ -123,11 +123,15 @@ public class ListAcitivty extends ActionBarActivity implements AdapterView.OnIte
             case R.id.upload:
                 q.toast("Upload for " + name);
                 break;
+            case R.id.add_remove:
+                sheet.showItem(R.id.upload, !sheet.isItemVisible(R.id.upload));
+                break;
             case R.id.call:
                 q.toast("Call to " + name);
                 break;
             case R.id.help:
                 q.toast("Help me!");
+                sheet.showItem(R.id.call);
                 break;
         }
     }
