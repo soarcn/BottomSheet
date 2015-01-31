@@ -12,4 +12,11 @@ android {
         minSdkVersion 9
     }
 
+    buildTypes {
+        debug {
+            minifyEnabled true
+            shrinkResources true
+            proguardFile 'proguard.cfg'
+        }
+    }
 }
