@@ -81,6 +81,8 @@ public class BottomSheet extends Dialog implements DialogInterface {
     private ArrayList<MenuItem> fullMenuItem;
     private List<MenuItem> actions = menuItem;
 
+    private int limit = -1;
+
     public BottomSheet(Context context) {
         super(context,R.style.BottomSheet_Dialog);
     }
@@ -289,12 +291,15 @@ public class BottomSheet extends Dialog implements DialogInterface {
             }
         }
 
-        builder.limit = builder.limit*getNumColumns();
+        if (builder.limit >0)
+            limit = builder.limit*getNumColumns();
+        else
+            limit = Integer.MAX_VALUE;
 
         // over the initial numbers
-        if (menuItem.size() > builder.limit) {
+        if (menuItem.size() > limit) {
             fullMenuItem = new ArrayList<>(menuItem);
-            menuItem = menuItem.subList(0,builder.limit-1);
+            menuItem = menuItem.subList(0,limit-1);
             menuItem.add(new MenuItem(R.id.bs_more, moreText,more));
         }
         actions = menuItem;
@@ -530,7 +535,7 @@ public class BottomSheet extends Dialog implements DialogInterface {
         private OnClickListener listener;
         private OnDismissListener dismissListener;
         private Drawable icon;
-        private int limit = Integer.MAX_VALUE/100;
+        private int limit = -1;
 
 
         /**
