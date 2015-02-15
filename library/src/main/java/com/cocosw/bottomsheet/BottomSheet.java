@@ -215,6 +215,9 @@ public class BottomSheet extends Dialog implements DialogInterface {
         return (mSmallestWidthDp >= 600 || mInPortrait);
     }
 
+    /**
+     * Hacky way to get gridview's column number
+     */
     private int getNumColumns() {
             try {
                 Field numColumns = GridView.class.getDeclaredField("mRequestedNumColumns");
@@ -763,8 +766,8 @@ public class BottomSheet extends Dialog implements DialogInterface {
          * Set initial number of actions which will be shown in current sheet.
          * If more actions need to be shown, a "more" action will be display in the last position.
          *
-         * @param limitRes
-         * @return
+         * @param limitRes resource id for initial number of actions
+         * @return This Builder object to allow for chaining of calls to set methods
          */
         public Builder limit(@IntegerRes int limitRes) {
             limit = context.getResources().getInteger(limitRes);
