@@ -3,6 +3,7 @@ package com.cocosw.bottomsheet;
 import android.annotation.TargetApi;
 import android.content.Context;
 import android.os.Build;
+import android.os.Handler;
 import android.support.v4.view.MotionEventCompat;
 import android.support.v4.view.ViewCompat;
 import android.support.v4.widget.ViewDragHelper;
@@ -28,6 +29,7 @@ class ClosableSlidingLayout extends FrameLayout {
     private float mInitialMotionY;
     private static final int INVALID_POINTER = -1;
     View mTarget;
+    private boolean dismissed;
 
     public ClosableSlidingLayout(Context context) {
         this(context, null);
@@ -62,6 +64,7 @@ class ClosableSlidingLayout extends FrameLayout {
 
         switch (action) {
             case MotionEvent.ACTION_DOWN:
+                dismissed = false;
                 height = getChildAt(0).getHeight();
                 top = getChildAt(0).getTop();
                 mActivePointerId = MotionEventCompat.getPointerId(event, 0);
@@ -163,24 +166,20 @@ class ClosableSlidingLayout extends FrameLayout {
 
         @Override
         public void onViewDragStateChanged(int state) {
-            //Is off the screen ?
-//            if (state == ViewDragHelper.STATE_IDLE && mDragHelper.getCapturedView().getLeft()!=0) {
-//                mListener.onClosed();
-//            }
+            if (mDragHelper.getViewDragState() == ViewDragHelper.STATE_IDLE && dismissed) {
+                    if (mListener!=null) {
+                        mListener.onClosed();
+                    }
+            }
         }
 
         @Override
         public void onViewReleased(View releasedChild, float xvel, float yvel) {
             if (yvel > MINVEL) {
-                dismiss(releasedChild);
-            } else if (yvel < -MINVEL) {
-             //   mDragHelper.smoothSlideViewTo(releasedChild, 0, -getHeight());
+                dismiss(releasedChild,yvel);
             } else {
                 if (releasedChild.getTop() >= top+height/2) {
-                    dismiss(releasedChild);
-//                } else if (releasedChild.getTop() < height / 2) {
-//                    mDragHelper
-//                            .smoothSlideViewTo(releasedChild, 0, -getHeight());
+                    dismiss(releasedChild,yvel);
                 } else {
                     mDragHelper.smoothSlideViewTo(releasedChild, 0, top);
                 }
@@ -201,13 +200,13 @@ class ClosableSlidingLayout extends FrameLayout {
         }
     }
 
-    private void dismiss(View view) {
-        if (mListener!=null) mListener.onClosed();
-
-        mDragHelper.abort();
+    private void dismiss(View view, float yvel) {
+        mDragHelper.smoothSlideViewTo(view, 0, top + height);
+        mDragHelper.cancel();
+        dismissed = true;
         ViewCompat.postInvalidateOnAnimation(ClosableSlidingLayout.this);
-
     }
+
 
     /**
      * set listener
