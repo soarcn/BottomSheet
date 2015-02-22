@@ -105,7 +105,6 @@ Contribute
 
 TODO
 =======
-- (support) DialogFragment
 - swipe up to pull up
 
 License
