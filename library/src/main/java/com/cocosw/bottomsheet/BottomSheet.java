@@ -400,6 +400,7 @@ public class BottomSheet extends Dialog implements DialogInterface {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 if (((MenuItem) adapter.getItem(position)).id==R.id.bs_more) {
                     showFullItems();
+                    mDialogView.setCollapsible(false);
                     return;
                 }
 
