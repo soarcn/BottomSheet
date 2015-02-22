@@ -3,13 +3,13 @@ package com.cocosw.bottomsheet;
 import android.annotation.TargetApi;
 import android.content.Context;
 import android.os.Build;
-import android.os.Handler;
 import android.support.v4.view.MotionEventCompat;
 import android.support.v4.view.ViewCompat;
 import android.support.v4.widget.ViewDragHelper;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.ViewConfiguration;
 import android.widget.AbsListView;
 import android.widget.FrameLayout;
 
@@ -30,6 +30,9 @@ class ClosableSlidingLayout extends FrameLayout {
     private static final int INVALID_POINTER = -1;
     View mTarget;
     private boolean dismissed;
+
+    private boolean collapsible = false;
+    private float yDiff;
 
     public ClosableSlidingLayout(Context context) {
         this(context, null);
@@ -56,9 +59,12 @@ class ClosableSlidingLayout extends FrameLayout {
         }
 
         if (action == MotionEvent.ACTION_CANCEL || action == MotionEvent.ACTION_UP) {
-            mDragHelper.cancel();
             mActivePointerId = INVALID_POINTER;
             mIsBeingDragged = false;
+            if (collapsible && yDiff < mDragHelper.getTouchSlop()*2) {
+                expand(mDragHelper.getCapturedView(), 0);
+            }
+            mDragHelper.cancel();
             return false;
         }
 
@@ -74,6 +80,7 @@ class ClosableSlidingLayout extends FrameLayout {
                     return false;
                 }
                 mInitialMotionY = initialMotionY;
+                yDiff = 0;
                 break;
             case MotionEvent.ACTION_MOVE:
                 if (mActivePointerId == INVALID_POINTER) {
@@ -83,7 +90,7 @@ class ClosableSlidingLayout extends FrameLayout {
                 if (y == -1) {
                     return false;
                 }
-                final float yDiff = y - mInitialMotionY;
+                yDiff = y - mInitialMotionY;
                 if (yDiff > mDragHelper.getTouchSlop() && !mIsBeingDragged) {
                     mIsBeingDragged = true;
                     mDragHelper.captureChildView(getChildAt(0), 0);
@@ -153,6 +160,10 @@ class ClosableSlidingLayout extends FrameLayout {
         mListener = listener;
     }
 
+    void setCollapsible(boolean collapsible) {
+        this.collapsible = collapsible;
+    }
+
     /**
      *Callback
      */
@@ -175,6 +186,18 @@ class ClosableSlidingLayout extends FrameLayout {
 
         @Override
         public void onViewReleased(View releasedChild, float xvel, float yvel) {
+
+//            if (collapsible && ((yvel <-MINVEL)||releasedChild.getTop()<top)) {
+//                if (yvel <-MINVEL) {
+//                    expand(releasedChild, yvel);
+//                } else {
+//                    if (releasedChild.getTop() < top/2) {
+//                        expand(releasedChild, yvel);
+//                    } else {
+//                        mDragHelper.smoothSlideViewTo(releasedChild, 0, top);
+//                    }
+//                }
+//            } else
             if (yvel > MINVEL) {
                 dismiss(releasedChild,yvel);
             } else {
@@ -196,7 +219,16 @@ class ClosableSlidingLayout extends FrameLayout {
 
         @Override
         public int clampViewPositionVertical(View child, int top, int dy) {
-            return Math.max(top, ClosableSlidingLayout.this.top);
+//            if (collapsible) {
+//                return top;
+//            } else
+                return Math.max(top, ClosableSlidingLayout.this.top);
+        }
+    }
+
+    private void expand(View releasedChild, float yvel) {
+        if (mListener!=null) {
+            mListener.onOpened();
         }
     }
 

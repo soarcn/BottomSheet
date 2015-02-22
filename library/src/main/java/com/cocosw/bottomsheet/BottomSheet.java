@@ -240,7 +240,7 @@ public class BottomSheet extends Dialog implements DialogInterface {
 
             @Override
             public void onOpened() {
-
+                showFullItems();
             }
         });
 
@@ -299,11 +299,14 @@ public class BottomSheet extends Dialog implements DialogInterface {
         else
             limit = Integer.MAX_VALUE;
 
+        mDialogView.setCollapsible(false);
+
         // over the initial numbers
         if (menuItem.size() > limit) {
             fullMenuItem = new ArrayList<>(menuItem);
             menuItem = menuItem.subList(0,limit-1);
             menuItem.add(new MenuItem(R.id.bs_more, moreText,more));
+            mDialogView.setCollapsible(true);
         }
         actions = menuItem;
 
@@ -396,35 +399,7 @@ public class BottomSheet extends Dialog implements DialogInterface {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 if (((MenuItem) adapter.getItem(position)).id==R.id.bs_more) {
-                    actions = fullMenuItem;
-
-                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
-                        Transition changeBounds = new ChangeBounds();
-                        changeBounds.setDuration(300);
-                        TransitionManager.beginDelayedTransition(list,changeBounds);
-                    }
-
-                    adapter.notifyDataSetChanged();
-                    ViewGroup.LayoutParams params = list.getLayoutParams();
-                    params.height = ViewGroup.LayoutParams.WRAP_CONTENT;
-                    list.setLayoutParams(params);
-                    icon.setVisibility(View.VISIBLE);
-                    icon.setImageDrawable(close);
-                    icon.setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View v) {
-                            actions = menuItem;
-                            adapter.notifyDataSetChanged();
-                            setListLayout();
-
-                            if (builder.icon==null)
-                                icon.setVisibility(View.GONE);
-                            else {
-                                icon.setVisibility(View.VISIBLE);
-                                icon.setImageDrawable(builder.icon);
-                            }
-                        }
-                    });
+                    showFullItems();
                     return;
                 }
 
@@ -439,6 +414,41 @@ public class BottomSheet extends Dialog implements DialogInterface {
             setOnDismissListener(builder.dismissListener);
         }
         setListLayout();
+    }
+
+    private void showFullItems() {
+        actions = fullMenuItem;
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+            Transition changeBounds = new ChangeBounds();
+            changeBounds.setDuration(300);
+            TransitionManager.beginDelayedTransition(list,changeBounds);
+        }
+
+        adapter.notifyDataSetChanged();
+        ViewGroup.LayoutParams params = list.getLayoutParams();
+        params.height = ViewGroup.LayoutParams.WRAP_CONTENT;
+        list.setLayoutParams(params);
+        icon.setVisibility(View.VISIBLE);
+        icon.setImageDrawable(close);
+        icon.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                showShortItems();
+            }
+        });
+    }
+
+    private void showShortItems() {
+        actions = menuItem;
+        adapter.notifyDataSetChanged();
+        setListLayout();
+
+        if (builder.icon==null)
+            icon.setVisibility(View.GONE);
+        else {
+            icon.setVisibility(View.VISIBLE);
+            icon.setImageDrawable(builder.icon);
+        }
     }
 
     private void setListLayout() {
