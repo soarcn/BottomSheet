@@ -61,7 +61,7 @@ class ClosableSlidingLayout extends FrameLayout {
         if (action == MotionEvent.ACTION_CANCEL || action == MotionEvent.ACTION_UP) {
             mActivePointerId = INVALID_POINTER;
             mIsBeingDragged = false;
-            if (collapsible && yDiff < mDragHelper.getTouchSlop()*2) {
+            if (collapsible && -yDiff > mDragHelper.getTouchSlop()) {
                 expand(mDragHelper.getCapturedView(), 0);
             }
             mDragHelper.cancel();
