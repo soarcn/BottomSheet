@@ -690,6 +690,21 @@ public class BottomSheet extends Dialog implements DialogInterface {
         }
 
         /**
+         * Remove an item from BottomSheet
+         * @param id ID of item
+         * @return This Builder object to allow for chaining of calls to set methods
+         */
+        public Builder remove(int id) {
+            for (MenuItem item : menuItems){
+                if (item.id == id) {
+                    menuItems.remove(item);
+                    break;
+                }
+            }
+            return this;
+        }
+
+        /**
          * Set title for BottomSheet
          * @param icon icon for BottomSheet
          * @return This Builder object to allow for chaining of calls to set methods
