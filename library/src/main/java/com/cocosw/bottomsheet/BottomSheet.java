@@ -442,9 +442,7 @@ public class BottomSheet extends Dialog implements DialogInterface {
         }
 
         adapter.notifyDataSetChanged();
-        ViewGroup.LayoutParams params = list.getLayoutParams();
-        params.height = ViewGroup.LayoutParams.WRAP_CONTENT;
-        list.setLayoutParams(params);
+        setListLayout();
         icon.setVisibility(View.VISIBLE);
         icon.setImageDrawable(close);
         icon.setOnClickListener(new View.OnClickListener() {
@@ -468,7 +466,20 @@ public class BottomSheet extends Dialog implements DialogInterface {
         }
     }
 
+    private boolean hasDivider() {
+        if (builder.grid) return false;
+        else {
+            for (MenuItem item : menuItem) {
+                if (item.divider) return true;
+            }
+            return false;
+        }
+    }
+
     private void setListLayout() {
+        // without divider, the height of gridview is correct
+        if (!hasDivider())
+            return;
         list.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
             @Override
             public void onGlobalLayout() {
@@ -480,7 +491,7 @@ public class BottomSheet extends Dialog implements DialogInterface {
                 }
                 View lastChild = list.getChildAt(list.getChildCount() - 1);
                 if (lastChild!=null)
-                    list.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, lastChild.getBottom() + lastChild.getPaddingBottom()));
+                    list.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, lastChild.getBottom() + lastChild.getPaddingBottom()+list.getPaddingBottom()));
             }
         });
     }
