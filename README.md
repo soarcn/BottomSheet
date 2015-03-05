@@ -40,7 +40,7 @@ How to use this library
 API
 =======
 
-- Define actions in menu xml
+- Define actions in menu xml (only id/title/icon attribution been supported right now)
 
 ```xml
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
@@ -53,7 +53,7 @@ API
 
 ```
 
-- Call it just like you call a dialog
+- Call it just like you calling a dialog
 
 ```java
 new BottomSheet.Builder(this).title("title").sheet(R.menu.list).listener(new DialogInterface.OnClickListener() {
@@ -105,12 +105,12 @@ Contribute
 
 TODO
 =======
-- swipe up to pull up
+- Testing
 
 License
 =======
 
-    Copyright 2011, 2014 Liao Kai
+    Copyright 2011, 2015 Kai Liao
 
     Licensed under the Apache License, Version 2.0 (the "License");
     you may not use this file except in compliance with the License.

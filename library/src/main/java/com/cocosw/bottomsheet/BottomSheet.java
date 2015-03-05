@@ -1,3 +1,19 @@
+/*
+ * Copyright 2011, 2015 Kai Liao
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *         http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 package com.cocosw.bottomsheet;
 
 import android.annotation.SuppressLint;
@@ -54,7 +70,7 @@ import java.util.List;
  * https://www.google.com/design/spec/components/bottom-sheets.html
  *
  * Project: BottomSheet
- * Created by LiaoKai(soarcn) on 2014/9/21.
+ * Created by Kai Liao on 2014/9/21.
  */
 public class BottomSheet extends Dialog implements DialogInterface {
 
@@ -78,11 +94,15 @@ public class BottomSheet extends Dialog implements DialogInterface {
     private String sNavBarOverride;
     private boolean mNavBarAvailable;
     private float mSmallestWidthDp;
+
+
     private ImageView icon;
     private ArrayList<MenuItem> fullMenuItem;
     private List<MenuItem> actions = menuItem;
 
     private int limit = -1;
+    private boolean cancelOnTouchOutside = true;
+    private boolean cancelOnSwipeDown = true;
 
     public BottomSheet(Context context) {
         super(context,R.style.BottomSheet_Dialog);
@@ -221,19 +241,36 @@ public class BottomSheet extends Dialog implements DialogInterface {
      * Hacky way to get gridview's column number
      */
     private int getNumColumns() {
-            try {
-                Field numColumns = GridView.class.getDeclaredField("mRequestedNumColumns");
-                numColumns.setAccessible(true);
-                return numColumns.getInt(list);
-            } catch (Exception e) {
-                return 1;
-            }
+        try {
+            Field numColumns = GridView.class.getDeclaredField("mRequestedNumColumns");
+            numColumns.setAccessible(true);
+            return numColumns.getInt(list);
+        } catch (Exception e) {
+            return 1;
+        }
+    }
+
+    @Override
+    public void setCanceledOnTouchOutside(boolean cancel) {
+        super.setCanceledOnTouchOutside(cancel);
+        cancelOnTouchOutside = cancel;
+    }
+
+    /**
+     * Sets whether this dialog is canceled when swipe it down
+     *
+     * @param cancel
+     */
+    public void setCanceledOnSwipeDown(boolean cancel) {
+        cancelOnSwipeDown = cancel;
     }
 
     private void init(final Context context) {
-        setCanceledOnTouchOutside(true);
+        setCanceledOnTouchOutside(cancelOnTouchOutside);
         final ClosableSlidingLayout mDialogView = (ClosableSlidingLayout) View.inflate(context, R.layout.bottom_sheet_dialog, null);
         setContentView(mDialogView);
+        if (!cancelOnSwipeDown)
+            mDialogView.swipeable = cancelOnSwipeDown;
         mDialogView.setSlideListener(new ClosableSlidingLayout.SlideListener() {
             @Override
             public void onClosed() {
@@ -428,9 +465,7 @@ public class BottomSheet extends Dialog implements DialogInterface {
         }
 
         adapter.notifyDataSetChanged();
-        ViewGroup.LayoutParams params = list.getLayoutParams();
-        params.height = ViewGroup.LayoutParams.WRAP_CONTENT;
-        list.setLayoutParams(params);
+        setListLayout();
         icon.setVisibility(View.VISIBLE);
         icon.setImageDrawable(close);
         icon.setOnClickListener(new View.OnClickListener() {
@@ -454,7 +489,20 @@ public class BottomSheet extends Dialog implements DialogInterface {
         }
     }
 
+    private boolean hasDivider() {
+        if (builder.grid) return false;
+        else {
+            for (MenuItem item : menuItem) {
+                if (item.divider) return true;
+            }
+            return false;
+        }
+    }
+
     private void setListLayout() {
+        // without divider, the height of gridview is correct
+        if (!hasDivider())
+            return;
         list.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
             @Override
             public void onGlobalLayout() {
@@ -466,7 +514,7 @@ public class BottomSheet extends Dialog implements DialogInterface {
                 }
                 View lastChild = list.getChildAt(list.getChildCount() - 1);
                 if (lastChild!=null)
-                    list.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, lastChild.getBottom() + lastChild.getPaddingBottom()));
+                    list.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, lastChild.getBottom() + lastChild.getPaddingBottom()+list.getPaddingBottom()));
             }
         });
     }
@@ -517,6 +565,7 @@ public class BottomSheet extends Dialog implements DialogInterface {
         private CharSequence text;
         private Drawable icon;
         boolean divider;
+        private int layout = -1;
 
         private MenuItem() {
         }
@@ -534,6 +583,7 @@ public class BottomSheet extends Dialog implements DialogInterface {
                     ", text=" + text +
                     ", icon=" + icon +
                     ", divider=" + divider +
+                    ", layout=" + layout +
                     '}';
         }
     }
@@ -604,12 +654,16 @@ public class BottomSheet extends Dialog implements DialogInterface {
                             String textId = xpp.getAttributeValue("http://schemas.android.com/apk/res/android", "title");
                             String iconId = xpp.getAttributeValue("http://schemas.android.com/apk/res/android", "icon");
                             String resId = xpp.getAttributeValue("http://schemas.android.com/apk/res/android", "id");
+                            String layoutId = xpp.getAttributeValue("http://schemas.android.com/apk/res/android", "actionLayout");
 
                             MenuItem item = new MenuItem();
                             item.id = Integer.valueOf(resId.replace("@", ""));
                             item.text = resourceIdToString(textId);
                             if (!TextUtils.isEmpty(iconId))
                                 item.icon = context.getResources().getDrawable(Integer.valueOf(iconId.replace("@", "")));
+
+                            if (!TextUtils.isEmpty(layoutId))
+                                item.layout = context.getResources().getInteger(Integer.valueOf(layoutId.replace("@", "")));
 
                             menuItems.add(item);
                         } else if (elemName.equals("divider")) {

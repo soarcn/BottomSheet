@@ -13,8 +13,7 @@
         android:layout_height="wrap_content"
         android:background="?bs_dialogBackground"
         tools:ignore="Overdraw"
-        android:layout_gravity="bottom"
-        android:paddingBottom="8dp">
+        android:layout_gravity="bottom">
         <View
             android:background="?bs_dividerColor"
             android:layout_width="fill_parent"
