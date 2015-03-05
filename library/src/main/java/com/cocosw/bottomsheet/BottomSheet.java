@@ -98,6 +98,7 @@ public class BottomSheet extends Dialog implements DialogInterface {
     private List<MenuItem> actions = menuItem;
 
     private int limit = -1;
+    private boolean cancelOnTouchOutside = true;
 
     public BottomSheet(Context context) {
         super(context,R.style.BottomSheet_Dialog);
@@ -244,8 +245,14 @@ public class BottomSheet extends Dialog implements DialogInterface {
             }
     }
 
+    @Override
+    public void setCanceledOnTouchOutside(boolean cancel) {
+        super.setCanceledOnTouchOutside(cancel);
+        cancelOnTouchOutside = cancel;
+    }
+
     private void init(final Context context) {
-        setCanceledOnTouchOutside(true);
+        setCanceledOnTouchOutside(cancelOnTouchOutside);
         final ClosableSlidingLayout mDialogView = (ClosableSlidingLayout) View.inflate(context, R.layout.bottom_sheet_dialog, null);
         setContentView(mDialogView);
         mDialogView.setSlideListener(new ClosableSlidingLayout.SlideListener() {
