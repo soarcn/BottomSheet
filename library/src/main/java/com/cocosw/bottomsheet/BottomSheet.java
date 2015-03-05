@@ -101,6 +101,7 @@ public class BottomSheet extends Dialog implements DialogInterface {
 
     private int limit = -1;
     private boolean cancelOnTouchOutside = true;
+    private boolean cancelOnSwipeDown = true;
 
     public BottomSheet(Context context) {
         super(context,R.style.BottomSheet_Dialog);
@@ -253,10 +254,21 @@ public class BottomSheet extends Dialog implements DialogInterface {
         cancelOnTouchOutside = cancel;
     }
 
+    /**
+     * Sets whether this dialog is canceled when swipe it down
+     *
+     * @param cancel
+     */
+    public void setCanceledOnSwipeDown(boolean cancel) {
+        cancelOnSwipeDown = cancel;
+    }
+
     private void init(final Context context) {
         setCanceledOnTouchOutside(cancelOnTouchOutside);
         final ClosableSlidingLayout mDialogView = (ClosableSlidingLayout) View.inflate(context, R.layout.bottom_sheet_dialog, null);
         setContentView(mDialogView);
+        if (!cancelOnSwipeDown)
+            mDialogView.swipeable = cancelOnSwipeDown;
         mDialogView.setSlideListener(new ClosableSlidingLayout.SlideListener() {
             @Override
             public void onClosed() {
