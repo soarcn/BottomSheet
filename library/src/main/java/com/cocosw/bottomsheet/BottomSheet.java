@@ -93,6 +93,8 @@ public class BottomSheet extends Dialog implements DialogInterface {
     private String sNavBarOverride;
     private boolean mNavBarAvailable;
     private float mSmallestWidthDp;
+
+
     private ImageView icon;
     private ArrayList<MenuItem> fullMenuItem;
     private List<MenuItem> actions = menuItem;
@@ -236,13 +238,13 @@ public class BottomSheet extends Dialog implements DialogInterface {
      * Hacky way to get gridview's column number
      */
     private int getNumColumns() {
-            try {
-                Field numColumns = GridView.class.getDeclaredField("mRequestedNumColumns");
-                numColumns.setAccessible(true);
-                return numColumns.getInt(list);
-            } catch (Exception e) {
-                return 1;
-            }
+        try {
+            Field numColumns = GridView.class.getDeclaredField("mRequestedNumColumns");
+            numColumns.setAccessible(true);
+            return numColumns.getInt(list);
+        } catch (Exception e) {
+            return 1;
+        }
     }
 
     @Override
@@ -549,6 +551,7 @@ public class BottomSheet extends Dialog implements DialogInterface {
         private CharSequence text;
         private Drawable icon;
         boolean divider;
+        private int layout = -1;
 
         private MenuItem() {
         }
@@ -566,6 +569,7 @@ public class BottomSheet extends Dialog implements DialogInterface {
                     ", text=" + text +
                     ", icon=" + icon +
                     ", divider=" + divider +
+                    ", layout=" + layout +
                     '}';
         }
     }
@@ -636,12 +640,16 @@ public class BottomSheet extends Dialog implements DialogInterface {
                             String textId = xpp.getAttributeValue("http://schemas.android.com/apk/res/android", "title");
                             String iconId = xpp.getAttributeValue("http://schemas.android.com/apk/res/android", "icon");
                             String resId = xpp.getAttributeValue("http://schemas.android.com/apk/res/android", "id");
+                            String layoutId = xpp.getAttributeValue("http://schemas.android.com/apk/res/android", "actionLayout");
 
                             MenuItem item = new MenuItem();
                             item.id = Integer.valueOf(resId.replace("@", ""));
                             item.text = resourceIdToString(textId);
                             if (!TextUtils.isEmpty(iconId))
                                 item.icon = context.getResources().getDrawable(Integer.valueOf(iconId.replace("@", "")));
+
+                            if (!TextUtils.isEmpty(layoutId))
+                                item.layout = context.getResources().getInteger(Integer.valueOf(layoutId.replace("@", "")));
 
                             menuItems.add(item);
                         } else if (elemName.equals("divider")) {
