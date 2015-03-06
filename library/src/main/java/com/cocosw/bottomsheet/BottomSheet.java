@@ -77,6 +77,7 @@ public class BottomSheet extends Dialog implements DialogInterface {
     private String moreText;
     private Drawable close;
     private Drawable more;
+    private boolean collapseListIcons;
     private int mStatusBarHeight;
     private GridView list;
     private List<MenuItem> menuItem;
@@ -117,6 +118,7 @@ public class BottomSheet extends Dialog implements DialogInterface {
             more = a.getDrawable(R.styleable.BottomSheet_bs_moreDrawable);
             close = a.getDrawable(R.styleable.BottomSheet_bs_closeDrawable);
             moreText = a.getString(R.styleable.BottomSheet_bs_moreText);
+            collapseListIcons = a.getBoolean(R.styleable.BottomSheet_bs_collapseListIcons, true);
         }finally {
             a.recycle();
         }
@@ -407,7 +409,7 @@ public class BottomSheet extends Dialog implements DialogInterface {
 
                     holder.title.setText(item.text);
                     if (item.icon == null)
-                        holder.image.setVisibility(View.GONE);
+                        holder.image.setVisibility(collapseListIcons ? View.GONE : View.INVISIBLE);
                     else {
                         holder.image.setVisibility(View.VISIBLE);
                         holder.image.setImageDrawable(item.icon);
@@ -740,6 +742,21 @@ public class BottomSheet extends Dialog implements DialogInterface {
          */
         public Builder title(@StringRes int titleRes) {
             title = context.getText(titleRes);
+            return this;
+        }
+
+        /**
+         * Remove an item from BottomSheet
+         * @param id ID of item
+         * @return This Builder object to allow for chaining of calls to set methods
+         */
+        public Builder remove(int id) {
+            for (MenuItem item : menuItems){
+                if (item.id == id) {
+                    menuItems.remove(item);
+                    break;
+                }
+            }
             return this;
         }
 

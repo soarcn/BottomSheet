@@ -28,6 +28,7 @@
         <item name="bs_closeDrawable">@drawable/bs_ic_clear_light</item>
         <item name="bs_moreDrawable">@drawable/bs_ic_more_light</item>
         <item name="bs_listStyle">@style/BottomSheet.List</item>
+        <item name="bs_collapseListIcons">true</item>
     </style>
 
     <style name="BottomSheet.Dialog.Dark" parent="BottomSheet.Dialog">
