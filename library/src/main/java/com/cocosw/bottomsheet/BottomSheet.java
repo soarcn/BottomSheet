@@ -686,6 +686,20 @@ public class BottomSheet extends Dialog implements DialogInterface {
         }
 
         /**
+         * Find a menu item with the specified id
+         *
+         * @param id ID of item
+         * @return the menu item, or null if not found
+         */
+        private MenuItem findItem(int id) {
+            for (MenuItem item : menuItems) {
+                if (item.id == id)
+                    return item;
+            }
+            return null;
+        }
+
+        /**
          * Add one item into BottomSheet
          *
          * @param id ID of item
@@ -736,6 +750,32 @@ public class BottomSheet extends Dialog implements DialogInterface {
         }
 
         /**
+         * Set icon for an item in BottomSheet
+         * @param icon icon for BottomSheet
+         * @return This Builder object to allow for chaining of calls to set methods
+         */
+        public Builder icon(int id, @NonNull Drawable icon) {
+            MenuItem item = findItem(id);
+            if (item != null) {
+                item.icon = icon;
+            }
+            return this;
+        }
+
+        /**
+         * Set icon for an item in BottomSheet
+         * @param iconRes icon resource id for BottomSheet
+         * @return This Builder object to allow for chaining of calls to set methods
+         */
+        public Builder icon(int id, @DrawableRes int iconRes) {
+            MenuItem item = findItem(id);
+            if (item != null) {
+                item.icon = context.getResources().getDrawable(iconRes);
+            }
+            return this;
+        }
+
+        /**
          * Set title for BottomSheet
          * @param titleRes title for BottomSheet
          * @return This Builder object to allow for chaining of calls to set methods
@@ -751,11 +791,9 @@ public class BottomSheet extends Dialog implements DialogInterface {
          * @return This Builder object to allow for chaining of calls to set methods
          */
         public Builder remove(int id) {
-            for (MenuItem item : menuItems){
-                if (item.id == id) {
-                    menuItems.remove(item);
-                    break;
-                }
+            MenuItem item = findItem(id);
+            if (item != null) {
+                menuItems.remove(item);
             }
             return this;
         }
