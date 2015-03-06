@@ -29,7 +29,7 @@ import java.util.List;
  * Project: gradle
  * Created by LiaoKai(soarcn) on 2014/9/22.
  */
-public class ListAcitivty extends ActionBarActivity implements AdapterView.OnItemClickListener {
+public class ListActivity extends ActionBarActivity implements AdapterView.OnItemClickListener {
 
     private CocoQuery q;
     private int action;
@@ -94,7 +94,7 @@ public class ListAcitivty extends ActionBarActivity implements AdapterView.OnIte
                 sheet = new BottomSheet.Builder(this).icon(getRoundedBitmap(R.drawable.icon)).title("To " + adapter.getItem(position)).sheet(R.menu.list).listener(new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        ListAcitivty.this.onClick(adapter.getItem(position),which);
+                        ListActivity.this.onClick(adapter.getItem(position),which);
                     }
                 }).build();
                 break;
@@ -102,7 +102,7 @@ public class ListAcitivty extends ActionBarActivity implements AdapterView.OnIte
                 sheet = new BottomSheet.Builder(this).sheet(R.menu.noicon).listener(new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        ListAcitivty.this.onClick(adapter.getItem(position), which);
+                        ListActivity.this.onClick(adapter.getItem(position), which);
                     }
                 }).build();
                 break;
@@ -111,7 +111,7 @@ public class ListAcitivty extends ActionBarActivity implements AdapterView.OnIte
                 sheet = new BottomSheet.Builder(this).darkTheme().title("To " + adapter.getItem(position)).sheet(R.menu.list).listener(new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        ListAcitivty.this.onClick(adapter.getItem(position),which);
+                        ListActivity.this.onClick(adapter.getItem(position),which);
                     }
                 }).build();
                 break;
@@ -119,7 +119,7 @@ public class ListAcitivty extends ActionBarActivity implements AdapterView.OnIte
                 sheet = new BottomSheet.Builder(this).sheet(R.menu.list).listener(new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        ListAcitivty.this.onClick(adapter.getItem(position),which);
+                        ListActivity.this.onClick(adapter.getItem(position),which);
                     }
                 }).grid().build();
                 break;
@@ -127,7 +127,7 @@ public class ListAcitivty extends ActionBarActivity implements AdapterView.OnIte
                 sheet = new BottomSheet.Builder(this,R.style.BottomSheet_StyleDialog).title("To "+adapter.getItem(position)).sheet(R.menu.list).listener(new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        ListAcitivty.this.onClick(adapter.getItem(position),which);
+                        ListActivity.this.onClick(adapter.getItem(position),which);
                     }
                 }).build();
                 break;
@@ -135,7 +135,7 @@ public class ListAcitivty extends ActionBarActivity implements AdapterView.OnIte
                 sheet = new BottomSheet.Builder(this).title("To "+adapter.getItem(position)).sheet(R.menu.list).listener(new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        ListAcitivty.this.onClick(adapter.getItem(position),which);
+                        ListActivity.this.onClick(adapter.getItem(position),which);
                     }
                 }).grid().build();
                 break;

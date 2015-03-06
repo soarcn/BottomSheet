@@ -761,7 +761,7 @@ public class BottomSheet extends Dialog implements DialogInterface {
         }
 
         /**
-         * Set title for BottomSheet
+         * Set icon for BottomSheet
          * @param icon icon for BottomSheet
          * @return This Builder object to allow for chaining of calls to set methods
          */
@@ -771,7 +771,7 @@ public class BottomSheet extends Dialog implements DialogInterface {
         }
 
         /**
-         * Set title for BottomSheet
+         * Set icon for BottomSheet
          * @param iconRes icon resource id for BottomSheet
          * @return This Builder object to allow for chaining of calls to set methods
          */
