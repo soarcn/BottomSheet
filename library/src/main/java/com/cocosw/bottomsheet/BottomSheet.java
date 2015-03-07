@@ -137,12 +137,10 @@ public class BottomSheet extends Dialog implements DialogInterface {
             }
 
             // check theme attrs
-            int[] as = {android.R.attr.windowTranslucentStatus,
-                    android.R.attr.windowTranslucentNavigation};
+            int[] as = {android.R.attr.windowTranslucentNavigation};
             a = context.obtainStyledAttributes(as);
             try {
-                mStatusBarAvailable = a.getBoolean(0, false);
-                mNavBarAvailable = a.getBoolean(1, false);
+                mNavBarAvailable = a.getBoolean(0, false);
             } finally {
                 a.recycle();
             }
@@ -154,10 +152,7 @@ public class BottomSheet extends Dialog implements DialogInterface {
             if ((winParams.flags & bits) != 0) {
                 mNavBarAvailable = true;
             }
-            bits = WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS;
-            if ((winParams.flags & bits) != 0) {
-                mStatusBarAvailable = true;
-            }
+
             mSmallestWidthDp = getSmallestWidthDp(wm);
             if (mNavBarAvailable)
                 setTranslucentStatus(true);
@@ -298,9 +293,11 @@ public class BottomSheet extends Dialog implements DialogInterface {
                 }
             }
         });
+        int[] location = new  int[2] ;
+        mDialogView.getLocationOnScreen(location);
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
-            mDialogView.setPadding(0, mStatusBarAvailable?mStatusBarHeight:0, 0, 0);
+            mDialogView.setPadding(0, location[0]==0?mStatusBarHeight:0, 0, 0);
             mDialogView.getChildAt(0).setPadding(0, 0,0, mNavBarAvailable?getNavigationBarHeight(getContext())+mDialogView.getPaddingBottom():0);
         }
 
