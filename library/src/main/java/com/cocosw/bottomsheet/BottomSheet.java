@@ -664,8 +664,14 @@ public class BottomSheet extends Dialog implements DialogInterface {
 
                             menuItems.add(item);
                         } else if (elemName.equals("divider")) {
+                            String resId = xpp.getAttributeValue("http://schemas.android.com/apk/res/android", "id");
+
                             MenuItem item = new MenuItem();
                             item.divider = true;
+                            if (!TextUtils.isEmpty(resId)) {
+                                item.id = Integer.valueOf(resId.replace("@", ""));
+                            }
+
                             menuItems.add(item);
                         }
                     }
