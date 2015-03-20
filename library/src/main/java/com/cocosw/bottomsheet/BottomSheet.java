@@ -461,7 +461,8 @@ public class BottomSheet extends Dialog implements DialogInterface {
         for (MenuItem item : newLineItems) {
             int lastNewLineIndex = menuItem.indexOf(item);
             int tempSize = lastNewLineIndex + 1;// = nextIndex
-            int needItemCount = columnsNum - tempSize % columnsNum;
+            int leftNum = tempSize % columnsNum;
+            int needItemCount = leftNum == 0 ? 0 : (columnsNum - leftNum) ;
             for (int i = 0 ; i < needItemCount ; i++) {
                 MenuItem emptyItem = new MenuItem(-1, "", transparentDrawable);
                 emptyItem.empty = true;
