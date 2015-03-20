@@ -7,4 +7,13 @@
     <string name="call">Call</string>
     <string name="help">Help</string>
     <string name="bottomsheet">BottomSheet Sample</string>
+
+    <string name="share1">Custom Share Item1</string>
+    <string name="share2">Custom Share Item2</string>
+    <string name="share3">Custom Share Item3</string>
+    <string name="share4">Custom Share Item4</string>
+    <string name="share5">Custom Share Item5</string>
+    <string name="share6">Custom Share Item6</string>
+    <string name="share7">Custom Share Item7</string>
+
 </resources>

@@ -328,6 +328,7 @@ public class BottomSheet extends Dialog implements DialogInterface {
                     throw new IllegalArgumentException("You should set icon for each items in grid style");
                 }
             }
+            handleNewLine();
         }
 
         if (builder.limit >0)
@@ -370,7 +371,7 @@ public class BottomSheet extends Dialog implements DialogInterface {
 
             @Override
             public boolean isEnabled(int position) {
-                return getItemViewType(position) == 0;
+                return !getItem(position).empty && getItemViewType(position) == 0;
             }
 
             @Override
@@ -451,6 +452,22 @@ public class BottomSheet extends Dialog implements DialogInterface {
             setOnDismissListener(builder.dismissListener);
         }
         setListLayout();
+    }
+
+    private void handleNewLine() {
+        int columnsNum = getNumColumns();
+        List<MenuItem> newLineItems = builder.getNewLineItems();
+        Drawable transparentDrawable = builder.context.getResources().getDrawable(R.drawable.transparent);
+        for (MenuItem item : newLineItems) {
+            int lastNewLineIndex = menuItem.indexOf(item);
+            int tempSize = lastNewLineIndex + 1;// = nextIndex
+            int needItemCount = columnsNum - tempSize % columnsNum;
+            for (int i = 0 ; i < needItemCount ; i++) {
+                MenuItem emptyItem = new MenuItem(-1, "", transparentDrawable);
+                emptyItem.empty = true;
+                menuItem.add(tempSize + i, emptyItem);
+            }
+        }
     }
 
     private void showFullItems() {
@@ -562,6 +579,7 @@ public class BottomSheet extends Dialog implements DialogInterface {
         private CharSequence text;
         private Drawable icon;
         boolean divider;
+        boolean empty;
         private int layout = -1;
 
         private MenuItem() {
@@ -790,7 +808,17 @@ public class BottomSheet extends Dialog implements DialogInterface {
             item(item);
             return this;
         }
+        private List<MenuItem> mNewLineItems = new ArrayList<>();
 
+        /**
+         * just for grid mode
+         */
+        public void newLine() {
+            mNewLineItems.add(menuItems.get(menuItems.size() - 1));
+        }
+        public List<MenuItem> getNewLineItems() {
+            return mNewLineItems;
+        }
         /**
          * Set OnclickListener for BottomSheet
          *
