@@ -45,14 +45,14 @@
     <style name="Text"/>
 
     <style name="Text.Headline">
-        <item name="android:textSize">20sp</item>
+        <item name="android:textSize">16sp</item>
         <item name="android:fontFamily" tools:ignore="NewApi">sans-serif</item>
         <item name="android:textStyle">normal</item>
         <item name="android:textColor">?android:textColorSecondary</item>
     </style>
 
     <style name="Text.Title">
-        <item name="android:textSize">20sp</item>
+        <item name="android:textSize">16sp</item>
         <item name="android:textStyle">normal</item>
         <item name="android:textColor">?android:textColorPrimary</item>
         <item name="android:fontFamily" tools:ignore="NewApi">sans-serif-medium</item>
