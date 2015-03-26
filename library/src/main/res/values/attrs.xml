@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
+    <!-- Global theme attributes -->
     <declare-styleable name="BottomSheet">
         <attr name="bottomSheetStyle" format="reference"/>
         <attr name="bs_dialogBackground" format="color|reference" />
@@ -14,6 +15,19 @@
         <attr name="bs_moreText" format="string"/>
         <attr name="bs_closeDrawable" format="reference"/>
         <attr name="bs_collapseListIcons" format="boolean"/>
+
+        <!-- Set icon tint colors for list icons -->
+        <attr name="bsListIconTintColor" format="color|reference" />
+
+    </declare-styleable>
+
+    <declare-styleable name="MenuItem">
+        <!-- Menu extra attributes -->
+        <attr name="bsIconTintColor" format="color|reference" />
+    </declare-styleable>
+
+    <declare-styleable name="TintImageView">
+        <attr name="bsTintColor" format="color|reference" />
     </declare-styleable>
 
 </resources>

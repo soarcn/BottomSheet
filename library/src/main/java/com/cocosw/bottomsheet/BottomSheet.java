@@ -22,10 +22,12 @@ import android.app.Activity;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.res.ColorStateList;
 import android.content.res.Configuration;
 import android.content.res.Resources;
 import android.content.res.TypedArray;
 import android.content.res.XmlResourceParser;
+import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.os.Bundle;
@@ -396,7 +398,7 @@ public class BottomSheet extends Dialog implements DialogInterface {
                             convertView = inflater.inflate(R.layout.bs_list_entry, parent,false);
                         holder = new ViewHolder();
                         holder.title = (TextView) convertView.findViewById(R.id.bs_list_title);
-                        holder.image = (ImageView) convertView.findViewById(R.id.bs_list_image);
+                        holder.image = (TintImageView) convertView.findViewById(R.id.bs_list_image);
                         convertView.setTag(holder);
                     } else {
                         holder = (ViewHolder) convertView.getTag();
@@ -410,6 +412,7 @@ public class BottomSheet extends Dialog implements DialogInterface {
                     else {
                         holder.image.setVisibility(View.VISIBLE);
                         holder.image.setImageDrawable(item.icon);
+                        holder.image.setTintColor(item.iconTintColor);
                     }
 
                     return convertView;
@@ -426,7 +429,7 @@ public class BottomSheet extends Dialog implements DialogInterface {
 
             class ViewHolder {
                 private TextView title;
-                private ImageView image;
+                private TintImageView image;
             }
         };
 
@@ -563,6 +566,7 @@ public class BottomSheet extends Dialog implements DialogInterface {
         private Drawable icon;
         boolean divider;
         private int layout = -1;
+        private ColorStateList iconTintColor;
 
         private MenuItem() {
         }
@@ -641,7 +645,8 @@ public class BottomSheet extends Dialog implements DialogInterface {
 
         private void parseXml(int menu) {
             try {
-                XmlResourceParser xpp = context.getResources().getXml(menu);
+                Resources r = context.getResources();
+                XmlResourceParser xpp = r.getXml(menu);
                 xpp.next();
                 int eventType = xpp.getEventType();
                 while (eventType != XmlPullParser.END_DOCUMENT) {
@@ -652,15 +657,28 @@ public class BottomSheet extends Dialog implements DialogInterface {
                             String iconId = xpp.getAttributeValue("http://schemas.android.com/apk/res/android", "icon");
                             String resId = xpp.getAttributeValue("http://schemas.android.com/apk/res/android", "id");
                             String layoutId = xpp.getAttributeValue("http://schemas.android.com/apk/res/android", "actionLayout");
+                            String iconTintColor = xpp.getAttributeValue("http://schemas.android.com/apk/res-auto", "bsIconTintColor");
 
                             MenuItem item = new MenuItem();
                             item.id = Integer.valueOf(resId.replace("@", ""));
                             item.text = resourceIdToString(textId);
-                            if (!TextUtils.isEmpty(iconId))
-                                item.icon = context.getResources().getDrawable(Integer.valueOf(iconId.replace("@", "")));
 
-                            if (!TextUtils.isEmpty(layoutId))
-                                item.layout = context.getResources().getInteger(Integer.valueOf(layoutId.replace("@", "")));
+                            if (!TextUtils.isEmpty(iconId)) {
+                                item.icon = r.getDrawable(Integer.valueOf(iconId.replace("@", "")));
+                            }
+
+                            if (!TextUtils.isEmpty(layoutId)) {
+                                item.layout = r.getInteger(Integer.valueOf(layoutId.replace("@", "")));
+                            }
+
+                            if (!TextUtils.isEmpty(iconTintColor)) {
+                                if (iconTintColor.contains("#")) {
+                                    int color = Color.parseColor(iconTintColor);
+                                    item.iconTintColor = new ColorStateList(TintImageView.EMPTY, new int[]{color});
+                                } else {
+                                    item.iconTintColor = r.getColorStateList(Integer.valueOf(iconTintColor.replace("@", "")));
+                                }
+                            }
 
                             menuItems.add(item);
                         } else if (elemName.equals("divider")) {
