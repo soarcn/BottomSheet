@@ -14,7 +14,7 @@
         android:layout_gravity="bottom">
 
         <View
-            android:style="@style/BottomSheet.TopDivider" />
+            style="@style/BottomSheet.TopDivider" />
 
         <LinearLayout
             android:layout_width="fill_parent"
