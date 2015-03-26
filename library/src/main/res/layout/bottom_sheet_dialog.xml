@@ -13,18 +13,15 @@
         android:background="?bs_dialogBackground"
         tools:ignore="Overdraw"
         android:layout_gravity="bottom">
-        <View
-            android:background="?bs_dividerColor"
-            android:layout_width="fill_parent"
-            android:layout_height="1dp"
-            android:layout_marginBottom="8dp"/>
 
         <LinearLayout
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
             android:gravity="center_vertical"
-            tools:ignore="UseCompoundDrawables">
+            android:minHeight="8dp"
+            android:orientation="horizontal"
+            tools:ignore="UseCompoundDrawables"
+            >
             
             <ImageView
                 android:id="@+id/bottom_sheet_title_image"
