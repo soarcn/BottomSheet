@@ -7,7 +7,7 @@
     style="@style/BottomSheet.ListItem"
     tools:ignore="UseCompoundDrawables">
 
-    <ImageView
+    <com.cocosw.bottomsheet.TintImageView
         style="@style/BottomSheet.ListItemImage"
         android:id="@+id/bs_list_image"
         tools:ignore="ContentDescription" />

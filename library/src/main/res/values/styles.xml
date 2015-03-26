@@ -29,6 +29,7 @@
         <item name="bs_moreDrawable">@drawable/bs_ic_more_light</item>
         <item name="bs_listStyle">@style/BottomSheet.List</item>
         <item name="bs_collapseListIcons">true</item>
+        <item name="bsListIconTintColor">@null</item>
     </style>
 
     <style name="BottomSheet.Dialog.Dark" parent="BottomSheet.Dialog">
@@ -45,14 +46,14 @@
     <style name="Text"/>
 
     <style name="Text.Headline">
-        <item name="android:textSize">20sp</item>
+        <item name="android:textSize">16sp</item>
         <item name="android:fontFamily" tools:ignore="NewApi">sans-serif</item>
         <item name="android:textStyle">normal</item>
         <item name="android:textColor">?android:textColorSecondary</item>
     </style>
 
     <style name="Text.Title">
-        <item name="android:textSize">20sp</item>
+        <item name="android:textSize">16sp</item>
         <item name="android:textStyle">normal</item>
         <item name="android:textColor">?android:textColorPrimary</item>
         <item name="android:fontFamily" tools:ignore="NewApi">sans-serif-medium</item>
@@ -74,7 +75,7 @@
 
     <style name="BottomSheet.Title">
         <item name="android:singleLine">true</item>
-        <item name="android:minHeight">48dp</item>
+        <item name="android:minHeight">56dp</item>
         <item name="android:layout_marginLeft">16dp</item>
         <item name="android:layout_marginRight">16dp</item>
         <item name="android:layout_width">fill_parent</item>
@@ -92,7 +93,7 @@
     <style name="BottomSheet.List">
         <item name="android:listSelector">@drawable/bs_list_selector</item>
         <item name="android:drawSelectorOnTop">false</item>
-        <item name="android:layoutAnimation">@anim/bs_list_layout_anim_in</item>
+        <!--<item name="android:layoutAnimation">@anim/bs_list_layout_anim_in</item>-->
         <item name="android:paddingBottom">8dp</item>
         <item name="android:clipToPadding">false</item>
     </style>
@@ -102,8 +103,6 @@
     </style>
 
     <style name="BottomSheet.ListItem">
-        <item name="android:layout_marginLeft">16dp</item>
-        <item name="android:layout_marginRight">16dp</item>
         <item name="android:minHeight">48dp</item>
         <item name="android:gravity">center_vertical</item>
         <item name="android:layoutAnimation">@null</item>
@@ -114,10 +113,12 @@
         <item name="android:layout_height">24dp</item>
         <item name="android:layout_width">24dp</item>
         <item name="android:layout_marginRight">16dp</item>
+        <item name="bsTintColor">?attr/bsListIconTintColor</item>
     </style>
 
     <style name="BottomSheet.ListItemTitle">
         <item name="android:layout_marginLeft">16dp</item>
+        <item name="android:layout_marginRight">16dp</item>
         <item name="android:textAppearance">?bs_listItemTitleTextAppearance</item>
     </style>
 
