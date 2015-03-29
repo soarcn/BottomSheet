@@ -22,7 +22,7 @@ How to use this library
 - Using Gradle
 
 ```groovy
-    compile 'com.cocosw:bottomsheet:0.+@aar' 
+    compile 'com.cocosw:bottomsheet:1.+@aar'
 ```
 - Using Maven
 
@@ -30,12 +30,12 @@ How to use this library
 <dependency>
     <groupId>com.cocosw</groupId>
     <artifactId>bottomsheet</artifactId>
-    <version>0.x</version>
+    <version>1.x</version>
     <type>apklib</type>
 </dependency>
 ```
 
-- Compile you project with android sdk v21
+- Compile you project with android sdk v21+
 
 API
 =======
