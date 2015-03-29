@@ -3,7 +3,7 @@ apply from: 'https://raw.githubusercontent.com/soarcn/gradle/master/android.grad
 dependencies {
     compile project(':library')
     compile 'com.cocosw:query:0.2.2'
-    compile 'com.android.support:appcompat-v7:21.+'
+    compile 'com.android.support:appcompat-v7:22.0.0'
     compile 'com.android.support:support-annotations:21.+'
 
     androidTestCompile 'com.android.support.test.espresso:espresso-core:2.+'
