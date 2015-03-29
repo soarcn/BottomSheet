@@ -103,9 +103,11 @@ Contribute
 
 - Feel free to fork it
 
-TODO
+About me
 =======
-- Testing
+
+I'm Kai, an 32 years old android developer based in Sydney. I'm looking for a job right now, contact me if you think I can be of service to you. Thanks!
+
 
 License
 =======
