@@ -254,7 +254,7 @@ public class BottomSheet extends Dialog implements DialogInterface {
     /**
      * Sets whether this dialog is canceled when swipe it down
      *
-     * @param cancel
+     * @param cancel whether this dialog is canceled when swipe it down
      */
     public void setCanceledOnSwipeDown(boolean cancel) {
         cancelOnSwipeDown = cancel;
@@ -620,6 +620,7 @@ public class BottomSheet extends Dialog implements DialogInterface {
          * Constructor using a context for this builder and the {@link com.cocosw.bottomsheet.BottomSheet} it creates with given style
          *
          * @param context A Context for built BottomSheet.
+         * @param theme The theme id will be apply to BottomSheet
          */
         public Builder(Context context, @StyleRes int theme) {
             this.context = context;
