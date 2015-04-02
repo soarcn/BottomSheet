@@ -291,6 +291,8 @@ public class BottomSheet extends Dialog implements DialogInterface {
                     icon.setVisibility(View.VISIBLE);
                     icon.setImageDrawable(builder.icon);
                 }
+
+                if(builder.listener!=null) builder.listener.onSheetShown(builder.object);
             }
         });
         int[] location = new  int[2] ;
@@ -434,22 +436,23 @@ public class BottomSheet extends Dialog implements DialogInterface {
         list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                if (((MenuItem) adapter.getItem(position)).id==R.id.bs_more) {
+                if (((MenuItem) adapter.getItem(position)).id == R.id.bs_more) {
                     showFullItems();
                     mDialogView.setCollapsible(false);
                     return;
                 }
 
-                if (builder.listener != null) {
-                    builder.listener.onClick(BottomSheet.this, ((MenuItem) adapter.getItem(position)).id);
-                }
+                if (builder.listener != null) builder.listener.onItemClicked(((MenuItem) adapter.getItem(position)).id, builder.object);
                 dismiss();
             }
         });
 
-        if(builder.dismissListener != null){
-            setOnDismissListener(builder.dismissListener);
-        }
+        setOnDismissListener(new OnDismissListener() {
+            @Override
+            public void onDismiss(DialogInterface dialog) {
+                if(builder.listener != null) builder.listener.onSheetDismissed(builder.object);
+            }
+        });
         setListLayout();
     }
 
@@ -595,10 +598,10 @@ public class BottomSheet extends Dialog implements DialogInterface {
         private final ArrayList<MenuItem> menuItems = new ArrayList<>();
         private CharSequence title;
         private boolean grid;
-        private OnClickListener listener;
-        private OnDismissListener dismissListener;
+        private BottomSheetListener listener;
         private Drawable icon;
         private int limit = -1;
+        private Object object;
 
 
         /**
@@ -798,7 +801,7 @@ public class BottomSheet extends Dialog implements DialogInterface {
          * @param listener OnclickListener for BottomSheet
          * @return This Builder object to allow for chaining of calls to set methods
          */
-        public Builder listener(@NonNull OnClickListener listener) {
+        public Builder listener(@NonNull BottomSheetListener listener) {
             this.listener = listener;
             return this;
         }
@@ -883,15 +886,16 @@ public class BottomSheet extends Dialog implements DialogInterface {
             return this;
         }
 
-        /***
-         * Set the OnDismissListener for BottomSheet
-         * @param listener OnDismissListener for Bottom
-         * @return This Builder object to allow for chaining of calls to set methods
+        /**
+         * Sets the custom object for the BottomSheetListener callback
+         * @param object
+         * @return
          */
-        public Builder setOnDismissListener(@NonNull OnDismissListener listener){
-            this.dismissListener = listener;
-            return this;
-        }
+       public Builder object(Object object){
+           this.object = object;
+           return this;
+       }
+
     }
 
 

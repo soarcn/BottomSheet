@@ -22,7 +22,7 @@
             android:orientation="horizontal"
             android:gravity="center_vertical"
             tools:ignore="UseCompoundDrawables">
-            
+
             <ImageView
                 android:id="@+id/bottom_sheet_title_image"
                 android:visibility="gone"
@@ -33,7 +33,7 @@
                 android:id="@+id/bottom_sheet_title"
                 android:visibility="gone"
                 style="@style/BottomSheet.Title" />
-            
+
         </LinearLayout>
 
         <GridView

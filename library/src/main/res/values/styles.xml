@@ -7,7 +7,7 @@
         <item name="android:windowFrame">@null</item>
         <item name="android:textColor">@null</item>
         <item name="android:windowNoTitle">true</item>
-        <item name="android:layout_width">fill_parent</item>
+        <item name="android:layout_width">match_parent</item>
         <item name="android:windowBackground">@android:color/transparent</item>
         <item name="android:windowIsFloating">true</item>
         <item name="android:windowContentOverlay">@null</item>
@@ -77,7 +77,7 @@
         <item name="android:minHeight">56dp</item>
         <item name="android:layout_marginLeft">16dp</item>
         <item name="android:layout_marginRight">16dp</item>
-        <item name="android:layout_width">fill_parent</item>
+        <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">wrap_content</item>
         <item name="android:textAppearance">?bs_titleTextAppearance</item>
         <item name="android:gravity">center_vertical</item>
@@ -122,7 +122,7 @@
 
     <style name="BottomSheet.ListDivider">
         <item name="android:layout_height">wrap_content</item>
-        <item name="android:layout_width">fill_parent</item>
+        <item name="android:layout_width">match_parent</item>
         <item name="android:minHeight">1dp</item>
         <item name="android:background">?bs_dividerColor</item>
         <item name="android:layout_marginTop">7dp</item>
