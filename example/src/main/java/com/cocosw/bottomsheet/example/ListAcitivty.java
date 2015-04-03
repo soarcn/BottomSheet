@@ -19,6 +19,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Toast;
 
 import com.cocosw.bottomsheet.BottomSheet;
 import com.cocosw.query.CocoQuery;
@@ -143,6 +144,9 @@ public class ListAcitivty extends ActionBarActivity implements AdapterView.OnIte
                 sheet = getShareActions(new BottomSheet.Builder(this).grid().title("Share To "+adapter.getItem(position)),"Hello "+adapter.getItem(position)).build();
                 break;
             case 7:
+                sheet = getShareActionsWithNewLine(new BottomSheet.Builder(this).grid().title("Share To "+adapter.getItem(position)),"Hello "+adapter.getItem(position)).build();
+                break;
+            case 8:
                 sheet = getShareActions(new BottomSheet.Builder(this).grid().title("Share To "+adapter.getItem(position)),"Hello "+adapter.getItem(position)).limit(R.integer.bs_initial_grid_row).build();
                 break;
 
@@ -152,7 +156,6 @@ public class ListAcitivty extends ActionBarActivity implements AdapterView.OnIte
 
     private BottomSheet.Builder getShareActions(BottomSheet.Builder builder, String text) {
         PackageManager pm = this.getPackageManager();
-
         final Intent shareIntent = new Intent(Intent.ACTION_SEND);
         shareIntent.setType("text/plain");
         shareIntent.putExtra(Intent.EXTRA_TEXT, text);
@@ -178,7 +181,66 @@ public class ListAcitivty extends ActionBarActivity implements AdapterView.OnIte
         return builder;
     }
 
+    private BottomSheet.Builder getShareActionsWithNewLine(BottomSheet.Builder builder, String text) {
+        PackageManager pm = this.getPackageManager();
+        builder.sheet(R.string.share1, R.drawable.perm_group_messages, R.string.share1);
+        builder.sheet(R.string.share2, R.drawable.perm_group_messages, R.string.share2);
+        builder.sheet(R.string.share3, R.drawable.perm_group_messages, R.string.share3);
+        builder.sheet(R.string.share4, R.drawable.perm_group_messages, R.string.share4);
+        builder.sheet(R.string.share5, R.drawable.perm_group_messages, R.string.share5);
+        builder.sheet(R.string.share6, R.drawable.perm_group_messages, R.string.share6);
+        builder.sheet(R.string.share7, R.drawable.perm_group_messages, R.string.share7);
+        builder.newLine();
 
+        final Intent shareIntent = new Intent(Intent.ACTION_SEND);
+        shareIntent.setType("text/plain");
+        shareIntent.putExtra(Intent.EXTRA_TEXT, text);
+        final List<ResolveInfo> list = pm.queryIntentActivities(shareIntent, 0);
+
+        for (int i = 0; i < list.size(); i++) {
+            builder.sheet(i,list.get(i).loadIcon(pm),list.get(i).loadLabel(pm));
+        }
+
+        builder.listener(new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                switch (which) {
+                    case R.string.share1:
+                        Toast.makeText(getApplication(), R.string.share1, Toast.LENGTH_LONG).show();
+                        break;
+                    case R.string.share2:
+                        Toast.makeText(getApplication(), R.string.share2, Toast.LENGTH_LONG).show();
+                        break;
+                    case R.string.share3:
+                        Toast.makeText(getApplication(), R.string.share3, Toast.LENGTH_LONG).show();
+                        break;
+                    case R.string.share4:
+                        Toast.makeText(getApplication(), R.string.share4, Toast.LENGTH_LONG).show();
+                        break;
+                    case R.string.share5:
+                        Toast.makeText(getApplication(), R.string.share5, Toast.LENGTH_LONG).show();
+                        break;
+                    case R.string.share6:
+                        Toast.makeText(getApplication(), R.string.share6, Toast.LENGTH_LONG).show();
+                        break;
+                    case R.string.share7:
+                        Toast.makeText(getApplication(), R.string.share7, Toast.LENGTH_LONG).show();
+                        break;
+                    default:
+                        ActivityInfo activity = list.get(which).activityInfo;
+                        ComponentName name = new ComponentName(activity.applicationInfo.packageName,
+                                activity.name);
+                        Intent newIntent = (Intent) shareIntent.clone();
+                        newIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK |
+                                Intent.FLAG_ACTIVITY_RESET_TASK_IF_NEEDED);
+                        newIntent.setComponent(name);
+                        startActivity(newIntent);
+                        break;
+                }
+            }
+        });
+        return builder;
+    }
     void onClick(String name, int which) {
         switch (which) {
             case R.id.share:
