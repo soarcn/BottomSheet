@@ -267,6 +267,8 @@ public class BottomSheet extends Dialog implements DialogInterface {
             @Override
             public void onClosed() {
                 BottomSheet.this.dismiss();
+                if (limit!=Integer.MAX_VALUE)
+                    showShortItems();
             }
 
             @Override
@@ -315,7 +317,7 @@ public class BottomSheet extends Dialog implements DialogInterface {
         if (builder.grid) {
             for (int i = 0; i < getMenu().size(); i++) {
                 if (getMenu().getItem(i).getIcon() == null)
-                    throw new IllegalArgumentException("You should set icon for each items in grid style");
+                    throw new IllegalArgumentException("You must set icon for each items in grid style");
             }
         }
 
@@ -417,22 +419,8 @@ public class BottomSheet extends Dialog implements DialogInterface {
         adapter = new SimpleSectionedGridAdapter(context, baseAdapter, R.layout.bs_list_divider, R.id.headerlayout, R.id.header);
         list.setAdapter(adapter);
         adapter.setGridView(list);
-        if (!builder.grid && getMenu().size() > 0) {
-            int groupId = getMenu().getItem(0).getGroupId();
-            ArrayList<SimpleSectionedGridAdapter.Section> sections = new ArrayList<>();
-            for (int i = 0; i < getMenu().size(); i++) {
-                if (getMenu().getItem(i).getGroupId() != groupId) {
-                    groupId = getMenu().getItem(i).getGroupId();
-                    sections.add(new SimpleSectionedGridAdapter.Section(i, null));
-                }
-            }
-            if (sections.size() > 0) {
-                SimpleSectionedGridAdapter.Section[] s = new SimpleSectionedGridAdapter.Section[sections.size()];
-                sections.toArray(s);
-                adapter.setSections(s);
-            }
-        }
 
+        updateSection();
 
         list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -459,6 +447,24 @@ public class BottomSheet extends Dialog implements DialogInterface {
         setListLayout();
     }
 
+    private void updateSection() {
+        if (!builder.grid && actions.size() > 0) {
+            int groupId = actions.getItem(0).getGroupId();
+            ArrayList<SimpleSectionedGridAdapter.Section> sections = new ArrayList<>();
+            for (int i = 0; i < actions.size(); i++) {
+                if (actions.getItem(i).getGroupId() != groupId) {
+                    groupId = actions.getItem(i).getGroupId();
+                    sections.add(new SimpleSectionedGridAdapter.Section(i, null));
+                }
+            }
+            if (sections.size() > 0) {
+                SimpleSectionedGridAdapter.Section[] s = new SimpleSectionedGridAdapter.Section[sections.size()];
+                sections.toArray(s);
+                adapter.setSections(s);
+            }
+        }
+    }
+
     private void showFullItems() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
             Transition changeBounds = new ChangeBounds();
@@ -466,8 +472,8 @@ public class BottomSheet extends Dialog implements DialogInterface {
             TransitionManager.beginDelayedTransition(list, changeBounds);
         }
         actions = fullMenuItem;
+        updateSection();
         adapter.notifyDataSetChanged();
-        setListLayout();
         icon.setVisibility(View.VISIBLE);
         icon.setImageDrawable(close);
         icon.setOnClickListener(new View.OnClickListener() {
@@ -476,10 +482,12 @@ public class BottomSheet extends Dialog implements DialogInterface {
                 showShortItems();
             }
         });
+        setListLayout();
     }
 
     private void showShortItems() {
         actions = menuItem;
+        updateSection();
         adapter.notifyDataSetChanged();
         setListLayout();
 
@@ -492,10 +500,8 @@ public class BottomSheet extends Dialog implements DialogInterface {
     }
 
     private boolean hasDivider() {
-        for (int i = 0; i < getMenu().size(); i++) {
-            if (getMenu().getItem(i).getGroupId() > 0) return true;
-        }
-
+        if (adapter.mSections.size()>0)
+            return true;
         return false;
     }
 

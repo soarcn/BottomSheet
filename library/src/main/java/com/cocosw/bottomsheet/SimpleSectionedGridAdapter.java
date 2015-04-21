@@ -25,7 +25,7 @@ class SimpleSectionedGridAdapter extends BaseAdapter{
     private int mSectionResourceId;
     private LayoutInflater mLayoutInflater;
     private ListAdapter mBaseAdapter;
-    private SparseArray<Section> mSections = new SparseArray<Section>();
+    SparseArray<Section> mSections = new SparseArray<Section>();
     private Section[] mInitialSections = new Section[0];
     private Context mContext;
     private View mLastViewSeen;
