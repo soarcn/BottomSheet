@@ -17,6 +17,7 @@
 package com.cocosw.bottomsheet;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 import android.content.ComponentName;
@@ -307,9 +308,17 @@ import android.view.SubMenu;
         return mItems.size();
     }
 
-    public ActionMenu clone(int size) {
+    ActionMenu clone(int size) {
         ActionMenu out = new ActionMenu(getContext());
         out.mItems = new ArrayList<>(this.mItems.subList(0,size));
         return out;
+    }
+
+    void removeInvisible() {
+        Iterator<ActionMenuItem> iter = mItems.iterator();
+        while (iter.hasNext()) {
+            ActionMenuItem item = iter.next();
+                if (!item.isVisible()) iter.remove();
+        }
     }
 }

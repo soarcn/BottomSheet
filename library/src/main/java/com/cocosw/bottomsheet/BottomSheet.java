@@ -38,6 +38,8 @@ import android.transition.ChangeBounds;
 import android.transition.Transition;
 import android.transition.TransitionManager;
 import android.util.DisplayMetrics;
+import android.util.SparseArray;
+import android.util.SparseIntArray;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -80,6 +82,8 @@ public class BottomSheet extends Dialog implements DialogInterface {
     private GridView list;
     private SimpleSectionedGridAdapter adapter;
     private Builder builder;
+
+    private SparseIntArray hidden = new SparseIntArray();
 
     // translucent support
     private static final String STATUS_BAR_HEIGHT_RES_NAME = "status_bar_height";
@@ -342,9 +346,10 @@ public class BottomSheet extends Dialog implements DialogInterface {
 
         BaseAdapter baseAdapter = new BaseAdapter() {
 
+
             @Override
             public int getCount() {
-                return actions.size();
+                return actions.size()-hidden.size();
             }
 
             @Override
@@ -388,6 +393,11 @@ public class BottomSheet extends Dialog implements DialogInterface {
                     convertView.setTag(holder);
                 } else {
                     holder = (ViewHolder) convertView.getTag();
+                }
+
+                for (int i = 0; i < hidden.size(); i++) {
+                    if (hidden.valueAt(i) <= position)
+                        position++;
                 }
 
                 MenuItem item = getItem(position);
@@ -447,7 +457,10 @@ public class BottomSheet extends Dialog implements DialogInterface {
         setListLayout();
     }
 
+
     private void updateSection() {
+        actions.removeInvisible();
+
         if (!builder.grid && actions.size() > 0) {
             int groupId = actions.getItem(0).getGroupId();
             ArrayList<SimpleSectionedGridAdapter.Section> sections = new ArrayList<>();
@@ -555,6 +568,7 @@ public class BottomSheet extends Dialog implements DialogInterface {
         } else {
             winParams.flags &= ~bits;
         }
+
         win.setAttributes(winParams);
         // instance
         win.setFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_NAVIGATION,
@@ -563,6 +577,11 @@ public class BottomSheet extends Dialog implements DialogInterface {
 
     public Menu getMenu() {
         return builder.menu;
+    }
+
+    public void invalidate() {
+        adapter.notifyDataSetChanged();
+        setListLayout();
     }
 
 
