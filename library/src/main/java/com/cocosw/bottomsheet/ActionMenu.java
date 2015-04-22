@@ -52,7 +52,7 @@ import android.view.SubMenu;
 
     public ActionMenu(Context context) {
         mContext = context;
-        mItems = new ArrayList<ActionMenuItem>();
+        mItems = new ArrayList<>();
     }
 
     public Context getContext() {

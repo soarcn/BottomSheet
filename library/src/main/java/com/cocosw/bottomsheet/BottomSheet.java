@@ -104,6 +104,7 @@ public class BottomSheet extends Dialog implements DialogInterface {
     private ActionMenu fullMenuItem;
     private ActionMenu menuItem;
     private ActionMenu actions;
+    private OnDismissListener dismissListener;
 
     BottomSheet(Context context) {
         super(context, R.style.BottomSheet_Dialog);
@@ -271,8 +272,6 @@ public class BottomSheet extends Dialog implements DialogInterface {
             @Override
             public void onClosed() {
                 BottomSheet.this.dismiss();
-                if (limit!=Integer.MAX_VALUE)
-                    showShortItems();
             }
 
             @Override
@@ -410,10 +409,6 @@ public class BottomSheet extends Dialog implements DialogInterface {
                     holder.image.setImageDrawable(item.getIcon());
                 }
 
-                if (!item.isVisible()) {
-                    convertView.setVisibility(View.GONE);
-                }
-
                 holder.image.setEnabled(item.isEnabled());
                 holder.title.setEnabled(item.isEnabled());
 
@@ -487,6 +482,7 @@ public class BottomSheet extends Dialog implements DialogInterface {
         actions = fullMenuItem;
         updateSection();
         adapter.notifyDataSetChanged();
+        list.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT));
         icon.setVisibility(View.VISIBLE);
         icon.setImageDrawable(close);
         icon.setOnClickListener(new View.OnClickListener() {
@@ -513,9 +509,7 @@ public class BottomSheet extends Dialog implements DialogInterface {
     }
 
     private boolean hasDivider() {
-        if (adapter.mSections.size()>0)
-            return true;
-        return false;
+        return adapter.mSections.size() > 0;
     }
 
     private void setListLayout() {
@@ -554,7 +548,15 @@ public class BottomSheet extends Dialog implements DialogInterface {
         } finally {
             a.recycle();
         }
-
+        super.setOnDismissListener(new OnDismissListener() {
+            @Override
+            public void onDismiss(DialogInterface dialog) {
+                if (dismissListener!=null)
+                    dismissListener.onDismiss(dialog);
+                if (limit!=Integer.MAX_VALUE)
+                    showShortItems();
+            }
+        });
         getWindow().setAttributes(params);
     }
 
@@ -579,11 +581,19 @@ public class BottomSheet extends Dialog implements DialogInterface {
         return builder.menu;
     }
 
+    /**
+     * If you make any changes to menu and try to apply it immediately to your bottomsheet, you should call this.
+     */
     public void invalidate() {
+        updateSection();
         adapter.notifyDataSetChanged();
         setListLayout();
     }
 
+    @Override
+    public void setOnDismissListener(OnDismissListener listener) {
+        this.dismissListener = listener;
+    }
 
     /**
      * Constructor using a context for this builder and the {@link com.cocosw.bottomsheet.BottomSheet} it creates.
@@ -649,7 +659,6 @@ public class BottomSheet extends Dialog implements DialogInterface {
          * @param textRes text resource
          * @return This Builder object to allow for chaining of calls to set methods
          */
-        @Deprecated
         public Builder sheet(int id, @DrawableRes int iconRes, @StringRes int textRes) {
             ActionMenuItem item = new ActionMenuItem(context, 0, id, 0, 0, context.getText(textRes));
             item.setIcon(iconRes);
@@ -665,7 +674,6 @@ public class BottomSheet extends Dialog implements DialogInterface {
          * @param text text
          * @return This Builder object to allow for chaining of calls to set methods
          */
-        @Deprecated
         public Builder sheet(int id, @NonNull Drawable icon, @NonNull CharSequence text) {
             ActionMenuItem item = new ActionMenuItem(context, 0, id, 0, 0, text);
             item.setIcon(icon);
@@ -680,7 +688,6 @@ public class BottomSheet extends Dialog implements DialogInterface {
          * @param textRes text resource
          * @return This Builder object to allow for chaining of calls to set methods
          */
-        @Deprecated
         public Builder sheet(int id, @StringRes int textRes) {
             menu.add(0, id, 0, textRes);
             return this;
@@ -693,7 +700,6 @@ public class BottomSheet extends Dialog implements DialogInterface {
          * @param text text
          * @return This Builder object to allow for chaining of calls to set methods
          */
-        @Deprecated
         public Builder sheet(int id, @NonNull CharSequence text) {
             menu.add(0, id, 0, text);
             return this;
