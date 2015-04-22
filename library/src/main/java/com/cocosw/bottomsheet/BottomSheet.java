@@ -469,6 +469,8 @@ public class BottomSheet extends Dialog implements DialogInterface {
                 SimpleSectionedGridAdapter.Section[] s = new SimpleSectionedGridAdapter.Section[sections.size()];
                 sections.toArray(s);
                 adapter.setSections(s);
+            } else {
+                adapter.mSections.clear();
             }
         }
     }
@@ -765,7 +767,7 @@ public class BottomSheet extends Dialog implements DialogInterface {
          * Set OnMenuItemClickListener for BottomSheet
          *
          * @param listener OnMenuItemClickListener for BottomSheet
-         * @return
+         * @return  This Builder object to allow for chaining of calls to set methods
          */
         public Builder listener(@NonNull MenuItem.OnMenuItemClickListener listener) {
             this.menulistener = listener;
