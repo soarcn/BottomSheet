@@ -15,6 +15,7 @@ import android.support.annotation.Nullable;
 import android.support.v4.graphics.drawable.RoundedBitmapDrawable;
 import android.support.v4.graphics.drawable.RoundedBitmapDrawableFactory;
 import android.support.v7.app.ActionBarActivity;
+import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -30,7 +31,7 @@ import java.util.List;
  * Project: gradle
  * Created by LiaoKai(soarcn) on 2014/9/22.
  */
-public class ListAcitivty extends ActionBarActivity implements AdapterView.OnItemClickListener {
+public class ListAcitivty extends AppCompatActivity implements AdapterView.OnItemClickListener {
 
     private CocoQuery q;
     private int action;
