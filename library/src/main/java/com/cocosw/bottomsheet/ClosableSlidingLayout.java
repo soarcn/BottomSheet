@@ -3,6 +3,7 @@ package com.cocosw.bottomsheet;
 import android.annotation.TargetApi;
 import android.content.Context;
 import android.os.Build;
+import android.support.annotation.NonNull;
 import android.support.v4.view.MotionEventCompat;
 import android.support.v4.view.ViewCompat;
 import android.support.v4.widget.ViewDragHelper;
@@ -28,7 +29,6 @@ class ClosableSlidingLayout extends FrameLayout {
     private float mInitialMotionY;
     private static final int INVALID_POINTER = -1;
     View mTarget;
-    private boolean dismissed;
 
     private boolean collapsible = false;
     private float yDiff;
@@ -51,7 +51,7 @@ class ClosableSlidingLayout extends FrameLayout {
     }
 
     @Override
-    public boolean onInterceptTouchEvent(MotionEvent event) {
+    public boolean onInterceptTouchEvent(@NonNull MotionEvent event) {
         final int action = MotionEventCompat.getActionMasked(event);
 
         if (!isEnabled() || canChildScrollUp()) {
@@ -71,7 +71,6 @@ class ClosableSlidingLayout extends FrameLayout {
 
         switch (action) {
             case MotionEvent.ACTION_DOWN:
-                dismissed = false;
                 height = getChildAt(0).getHeight();
                 top = getChildAt(0).getTop();
                 mActivePointerId = MotionEventCompat.getPointerId(event, 0);
@@ -175,28 +174,7 @@ class ClosableSlidingLayout extends FrameLayout {
         }
 
         @Override
-        public void onViewDragStateChanged(int state) {
-            if (mDragHelper.getViewDragState() == ViewDragHelper.STATE_IDLE && dismissed) {
-                if (mListener != null) {
-                    mListener.onClosed();
-                }
-            }
-        }
-
-        @Override
         public void onViewReleased(View releasedChild, float xvel, float yvel) {
-
-//            if (collapsible && ((yvel <-MINVEL)||releasedChild.getTop()<top)) {
-//                if (yvel <-MINVEL) {
-//                    expand(releasedChild, yvel);
-//                } else {
-//                    if (releasedChild.getTop() < top/2) {
-//                        expand(releasedChild, yvel);
-//                    } else {
-//                        mDragHelper.smoothSlideViewTo(releasedChild, 0, top);
-//                    }
-//                }
-//            } else
             if (yvel > MINVEL) {
                 dismiss(releasedChild, yvel);
             } else {
@@ -214,13 +192,13 @@ class ClosableSlidingLayout extends FrameLayout {
             if (Build.VERSION.SDK_INT < Build.VERSION_CODES.HONEYCOMB) {
                 invalidate();
             }
+            if (height-top <1 && mListener!=null) {
+                mListener.onClosed();
+            }
         }
 
         @Override
         public int clampViewPositionVertical(View child, int top, int dy) {
-//            if (collapsible) {
-//                return top;
-//            } else
             return Math.max(top, ClosableSlidingLayout.this.top);
         }
     }
@@ -234,7 +212,6 @@ class ClosableSlidingLayout extends FrameLayout {
     private void dismiss(View view, float yvel) {
         mDragHelper.smoothSlideViewTo(view, 0, top + height);
         mDragHelper.cancel();
-        dismissed = true;
         ViewCompat.postInvalidateOnAnimation(ClosableSlidingLayout.this);
     }
 
