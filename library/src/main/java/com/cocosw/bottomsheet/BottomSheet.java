@@ -57,7 +57,6 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
@@ -348,7 +347,7 @@ public class BottomSheet extends Dialog implements DialogInterface {
 
             @Override
             public int getCount() {
-                return actions.size()-hidden.size();
+                return actions.size() - hidden.size();
             }
 
             @Override
@@ -768,7 +767,7 @@ public class BottomSheet extends Dialog implements DialogInterface {
          * Set OnMenuItemClickListener for BottomSheet
          *
          * @param listener OnMenuItemClickListener for BottomSheet
-         * @return  This Builder object to allow for chaining of calls to set methods
+         * @return This Builder object to allow for chaining of calls to set methods
          */
         public Builder listener(@NonNull MenuItem.OnMenuItemClickListener listener) {
             this.menulistener = listener;
