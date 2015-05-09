@@ -16,11 +16,11 @@
 
 buildscript {
     repositories {
-        mavenCentral()
+        jcenter()
     }
 
     dependencies {
-        classpath 'com.android.tools.build:gradle:1.1.0'
+        classpath 'com.android.tools.build:gradle:1.2.3'
     }
 }
 
@@ -29,8 +29,7 @@ allprojects {
     version = POM_VERSION
 
     repositories {
-        mavenLocal()
-        mavenCentral()
+        jcenter()
       }
 
     tasks.withType(JavaCompile) {
