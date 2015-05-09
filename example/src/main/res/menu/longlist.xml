@@ -3,20 +3,22 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
     <item android:id="@+id/share" android:title="@string/share" android:icon="@drawable/perm_group_messages"/>
     <item android:id="@+id/upload" android:title="@string/upload" android:icon="@drawable/perm_group_system_clock"/>
+    <group android:id="@android:id/empty">
     <item android:id="@+id/call" android:title="@string/call" android:icon="@drawable/perm_group_phone_calls"/>
-    <divider/>
     <item android:id="@+id/help" android:title="@string/help" android:icon="@drawable/perm_group_system_tools"/>
-    <divider/>
     <item android:id="@+id/print" android:title="@string/print" android:icon="@drawable/perm_group_accounts"/>
+    </group>
     <item android:id="@id/print" android:title="@string/print" android:icon="@drawable/perm_group_accounts"/>
     <item android:id="@id/print" android:title="@string/print" android:icon="@drawable/perm_group_accounts"/>
     <item android:id="@id/print" android:title="@string/print" android:icon="@drawable/perm_group_accounts"/>
     <item android:id="@id/print" android:title="@string/print" android:icon="@drawable/perm_group_accounts"/>
     <item android:id="@id/print" android:title="@string/print" android:icon="@drawable/perm_group_accounts"/>
+    <group android:id="@android:id/background">
     <item android:id="@id/print" android:title="@string/print" android:icon="@drawable/perm_group_accounts"/>
     <item android:id="@id/print" android:title="@string/print" android:icon="@drawable/perm_group_accounts"/>
     <item android:id="@id/print" android:title="@string/print" android:icon="@drawable/perm_group_accounts"/>
     <item android:id="@id/print" android:title="@string/print" android:icon="@drawable/perm_group_accounts"/>
+    </group>
     <item android:id="@id/print" android:title="@string/print" android:icon="@drawable/perm_group_accounts"/>
     <item android:id="@id/print" android:title="@string/print" android:icon="@drawable/perm_group_accounts"/>
     <item android:id="@id/print" android:title="@string/print" android:icon="@drawable/perm_group_accounts"/>

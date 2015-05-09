@@ -3,11 +3,14 @@ apply from: 'https://raw.githubusercontent.com/soarcn/gradle/master/android.grad
 dependencies {
     compile project(':library')
     compile 'com.cocosw:query:0.2.2'
-    compile 'com.android.support:appcompat-v7:21.+'
-    compile 'com.android.support:support-annotations:21.+'
+    compile 'com.android.support:appcompat-v7:22.1.1'
 
-    androidTestCompile 'com.android.support.test.espresso:espresso-core:2.+'
-    androidTestCompile 'com.android.support.test:testing-support-lib:+'
+    androidTestCompile ('com.android.support.test.espresso:espresso-core:+') {
+        exclude module: 'support-annotations'
+    }
+    androidTestCompile ('com.android.support.test:testing-support-lib:+') {
+        exclude module: 'support-annotations'
+    }
 }
 
 

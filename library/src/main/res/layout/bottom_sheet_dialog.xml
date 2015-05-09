@@ -3,8 +3,7 @@
 <com.cocosw.bottomsheet.ClosableSlidingLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    >
+    android:layout_height="wrap_content">
 
     <LinearLayout
         android:orientation="vertical"
@@ -13,11 +12,9 @@
         android:background="?bs_dialogBackground"
         tools:ignore="Overdraw"
         android:layout_gravity="bottom">
+
         <View
-            android:background="?bs_dividerColor"
-            android:layout_width="fill_parent"
-            android:layout_height="1dp"
-            android:layout_marginBottom="8dp"/>
+            style="@style/BottomSheet.TopDivider" />
 
         <LinearLayout
             android:layout_width="fill_parent"
@@ -31,24 +28,23 @@
                 android:visibility="gone"
                 tools:ignore="ContentDescription"
                 style="@style/BottomSheet.Icon" />
-            
+
             <TextView
                 android:id="@+id/bottom_sheet_title"
                 android:visibility="gone"
-                style="@style/BottomSheet.Title"
-                />
+                style="@style/BottomSheet.Title" />
             
         </LinearLayout>
 
-
-        <GridView
+        <com.cocosw.bottomsheet.PinnedSectionGridView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:id="@+id/bottom_sheet_gridview"
             android:numColumns="?bs_numColumns"
             android:fadingEdge="none"
             style="?bs_listStyle"
-            tools:listitem="@layout/bs_grid_entry"
-            />
+            tools:listitem="@layout/bs_grid_entry" />
+
     </LinearLayout>
+
 </com.cocosw.bottomsheet.ClosableSlidingLayout>

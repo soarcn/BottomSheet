@@ -45,14 +45,14 @@
     <style name="Text"/>
 
     <style name="Text.Headline">
-        <item name="android:textSize">20sp</item>
+        <item name="android:textSize">16sp</item>
         <item name="android:fontFamily" tools:ignore="NewApi">sans-serif</item>
         <item name="android:textStyle">normal</item>
         <item name="android:textColor">?android:textColorSecondary</item>
     </style>
 
     <style name="Text.Title">
-        <item name="android:textSize">20sp</item>
+        <item name="android:textSize">16sp</item>
         <item name="android:textStyle">normal</item>
         <item name="android:textColor">?android:textColorPrimary</item>
         <item name="android:fontFamily" tools:ignore="NewApi">sans-serif-medium</item>
@@ -74,7 +74,7 @@
 
     <style name="BottomSheet.Title">
         <item name="android:singleLine">true</item>
-        <item name="android:minHeight">48dp</item>
+        <item name="android:minHeight">56dp</item>
         <item name="android:layout_marginLeft">16dp</item>
         <item name="android:layout_marginRight">16dp</item>
         <item name="android:layout_width">fill_parent</item>
@@ -102,8 +102,6 @@
     </style>
 
     <style name="BottomSheet.ListItem">
-        <item name="android:layout_marginLeft">16dp</item>
-        <item name="android:layout_marginRight">16dp</item>
         <item name="android:minHeight">48dp</item>
         <item name="android:gravity">center_vertical</item>
         <item name="android:layoutAnimation">@null</item>
@@ -118,6 +116,7 @@
 
     <style name="BottomSheet.ListItemTitle">
         <item name="android:layout_marginLeft">16dp</item>
+        <item name="android:layout_marginRight">16dp</item>
         <item name="android:textAppearance">?bs_listItemTitleTextAppearance</item>
     </style>
 
@@ -156,7 +155,11 @@
         <item name="android:windowExitAnimation">@anim/dock_bottom_exit</item>
     </style>
 
-
-
+    <style name="BottomSheet.TopDivider">
+        <item name="android:background">?bs_dividerColor</item>
+        <item name="android:layout_width">fill_parent</item>
+        <item name="android:layout_height">1dp</item>
+        <item name="android:layout_marginBottom">8dp</item>
+    </style>
 
 </resources>

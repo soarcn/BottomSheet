@@ -22,7 +22,7 @@ How to use this library
 - Using Gradle
 
 ```groovy
-    compile 'com.cocosw:bottomsheet:0.+@aar' 
+    compile 'com.cocosw:bottomsheet:1.+@aar'
 ```
 - Using Maven
 
@@ -30,30 +30,31 @@ How to use this library
 <dependency>
     <groupId>com.cocosw</groupId>
     <artifactId>bottomsheet</artifactId>
-    <version>0.x</version>
+    <version>1.x</version>
     <type>apklib</type>
 </dependency>
 ```
 
-- Compile you project with android sdk v21
+- Compile you project with android sdk v21+
 
 API
 =======
 
-- Define actions in menu xml (only id/title/icon attribution been supported right now)
+- Define actions in menu xml (Tip: divider tag has been replaced by group tag from 1.1.0)
 
 ```xml
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
     <item android:id="@+id/share" android:title="@string/share" android:icon="@drawable/perm_group_messages"/>
     <item android:id="@+id/upload" android:title="@string/upload" android:icon="@drawable/perm_group_system_clock"/>
     <item android:id="@+id/call" android:title="@string/call" android:icon="@drawable/perm_group_phone_calls"/>
-    <divider/>
-    <item android:id="@+id/help" android:title="@string/help" android:icon="@drawable/perm_group_system_tools"/>
+    <group android:id="@+id/helpgroup">
+         <item android:id="@+id/help" android:title="@string/help" android:icon="@drawable/perm_group_system_tools"/>
+    </group>
 </menu>
 
 ```
 
-- Call it just like you calling a dialog
+- Show it just like showing a dialog.
 
 ```java
 new BottomSheet.Builder(this).title("title").sheet(R.menu.list).listener(new DialogInterface.OnClickListener() {
@@ -69,6 +70,13 @@ new BottomSheet.Builder(this).title("title").sheet(R.menu.list).listener(new Dia
 
 ```
 - You can also add action items in builder.
+
+Action items manipulate
+========
+
+You can get a menu object from bottomsheet instance from 1.1.0, and change it as you want, exactly like you manipulating android menu or actionbar actionitems.
+Please be aware that if you change the menu after showing the bottomsheet, you must call invalidate(), or no changes would be applied and your app might crash.
+Please check example application for more info.
 
 
 Style
@@ -103,9 +111,11 @@ Contribute
 
 - Feel free to fork it
 
-TODO
+About me
 =======
-- Testing
+
+I'm Kai, an 32 years old android developer based in Sydney. I'm looking for a job right now, contact me if you think I can be of service to you. Thanks!
+
 
 License
 =======
