@@ -38,7 +38,6 @@ import android.transition.ChangeBounds;
 import android.transition.Transition;
 import android.transition.TransitionManager;
 import android.util.DisplayMetrics;
-import android.util.SparseArray;
 import android.util.SparseIntArray;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -72,6 +71,7 @@ import java.util.ArrayList;
  * Project: BottomSheet
  * Created by Kai Liao on 2014/9/21.
  */
+@SuppressWarnings("unused")
 public class BottomSheet extends Dialog implements DialogInterface {
 
     private String moreText;
@@ -83,7 +83,7 @@ public class BottomSheet extends Dialog implements DialogInterface {
     private SimpleSectionedGridAdapter adapter;
     private Builder builder;
 
-    private SparseIntArray hidden = new SparseIntArray();
+    private final SparseIntArray hidden = new SparseIntArray();
 
     // translucent support
     private static final String STATUS_BAR_HEIGHT_RES_NAME = "status_bar_height";
@@ -131,7 +131,7 @@ public class BottomSheet extends Dialog implements DialogInterface {
             mInPortrait = (context.getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT);
             try {
                 Class c = Class.forName("android.os.SystemProperties");
-                Method m = c.getDeclaredMethod("get", String.class);
+                @SuppressWarnings("unchecked") Method m = c.getDeclaredMethod("get", String.class);
                 m.setAccessible(true);
                 sNavBarOverride = (String) m.invoke(null, "qemu.hw.mainkeys");
             } catch (Throwable e) {
@@ -553,15 +553,16 @@ public class BottomSheet extends Dialog implements DialogInterface {
         super.setOnDismissListener(new OnDismissListener() {
             @Override
             public void onDismiss(DialogInterface dialog) {
-                if (dismissListener!=null)
+                if (dismissListener != null)
                     dismissListener.onDismiss(dialog);
-                if (limit!=Integer.MAX_VALUE)
+                if (limit != Integer.MAX_VALUE)
                     showShortItems();
             }
         });
         getWindow().setAttributes(params);
     }
 
+    @SuppressWarnings("SameParameterValue")
     @TargetApi(19)
     private void setTranslucentStatus(boolean on) {
         Window win = getWindow();
