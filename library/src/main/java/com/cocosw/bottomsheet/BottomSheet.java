@@ -331,6 +331,7 @@ public class BottomSheet extends Dialog implements DialogInterface {
         mDialogView.setCollapsible(false);
 
         actions = builder.menu;
+        menuItem = actions;
         // over the initial numbers
         if (getMenu().size() > limit) {
             fullMenuItem = builder.menu;
