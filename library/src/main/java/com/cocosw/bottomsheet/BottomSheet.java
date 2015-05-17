@@ -668,6 +668,21 @@ public class BottomSheet extends Dialog implements DialogInterface {
             menu.add(item);
             return this;
         }
+        /**
+         * Add one item into BottomSheet
+         *
+         * @param id      ID of item
+         * @param iconRes icon resource
+         * @param groupId used to add dividers to section with different Ids, default is 0.
+         * @param textRes text resource
+         * @return This Builder object to allow for chaining of calls to set methods
+         */
+        public Builder sheet(int id,int groupId, @DrawableRes int iconRes, @StringRes int textRes) {
+            ActionMenuItem item = new ActionMenuItem(context, groupId, id, 0, 0, context.getText(textRes));
+            item.setIcon(iconRes);
+            menu.add(item);
+            return this;
+        }
 
         /**
          * Add one item into BottomSheet
@@ -679,6 +694,21 @@ public class BottomSheet extends Dialog implements DialogInterface {
          */
         public Builder sheet(int id, @NonNull Drawable icon, @NonNull CharSequence text) {
             ActionMenuItem item = new ActionMenuItem(context, 0, id, 0, 0, text);
+            item.setIcon(icon);
+            menu.add(item);
+            return this;
+        }
+        /**
+         * Add one item into BottomSheet
+         *
+         * @param id   ID of item
+         * @param icon icon
+         * @param groupId used to add dividers to section with different Ids, default is 0.
+         * @param text text
+         * @return This Builder object to allow for chaining of calls to set methods
+         */
+        public Builder sheet(int id,int groupId, @NonNull Drawable icon, @NonNull CharSequence text) {
+            ActionMenuItem item = new ActionMenuItem(context, groupId, id, 0, 0, text);
             item.setIcon(icon);
             menu.add(item);
             return this;
@@ -699,12 +729,38 @@ public class BottomSheet extends Dialog implements DialogInterface {
         /**
          * Add one item without icon into BottomSheet
          *
+         * @param groupId used to add dividers to section with different Ids, default is 0.
+         * @param id      ID of item
+         * @param textRes text resource
+         * @return This Builder object to allow for chaining of calls to set methods
+         */
+        public Builder sheetWithSection(int groupId, int id, @StringRes int textRes) {
+            menu.add(groupId, id, 0, textRes);
+            return this;
+        }
+
+        /**
+         * Add one item without icon into BottomSheet
+         *
          * @param id   ID of item
          * @param text text
          * @return This Builder object to allow for chaining of calls to set methods
          */
         public Builder sheet(int id, @NonNull CharSequence text) {
             menu.add(0, id, 0, text);
+            return this;
+        }
+
+        /**
+         * Add one item without icon into BottomSheet
+         *
+         * @param groupId used to add dividers to section with different Ids, default is 0.
+         * @param id   ID of item
+         * @param text text
+         * @return This Builder object to allow for chaining of calls to set methods
+         */
+        public Builder sheetWithSection(int groupId, int id, @NonNull CharSequence text) {
+            menu.add(groupId, id, 0, text);
             return this;
         }
 
