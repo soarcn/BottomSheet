@@ -9,12 +9,12 @@ import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Typeface;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.graphics.drawable.RoundedBitmapDrawable;
 import android.support.v4.graphics.drawable.RoundedBitmapDrawableFactory;
-import android.support.v7.app.ActionBarActivity;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -25,7 +25,9 @@ import android.widget.ArrayAdapter;
 import com.cocosw.bottomsheet.BottomSheet;
 import com.cocosw.query.CocoQuery;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Project: gradle
@@ -37,6 +39,8 @@ public class ListAcitivty extends AppCompatActivity implements AdapterView.OnIte
     private int action;
     private ArrayAdapter<String> adapter;
     private BottomSheet sheet;
+
+    private static Map<String, Typeface> sTypefaceByFilename = new HashMap<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -173,6 +177,15 @@ public class ListAcitivty extends AppCompatActivity implements AdapterView.OnIte
                 });
                 menu.setGroupVisible(android.R.id.empty,false);
                 break;
+            case 9:
+                sheet = new BottomSheet.Builder(this).typeface(getTypeface("robotoslab_thin.ttf"))
+                        .icon(getRoundedBitmap(R.drawable.icon)).title("To " + adapter.getItem(position)).sheet(R.menu.list).listener(new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        ListAcitivty.this.onClick(adapter.getItem(position), which);
+                    }
+                        }).build();
+                break;
 
         }
         return sheet;
@@ -222,5 +235,14 @@ public class ListAcitivty extends AppCompatActivity implements AdapterView.OnIte
                 q.toast("Help me!");
                 break;
         }
+    }
+
+    public Typeface getTypeface(String fileName) {
+        if (!sTypefaceByFilename.containsKey(fileName)) {
+            Typeface typeface = Typeface
+                    .createFromAsset(getAssets(), "fonts/" + fileName);
+            sTypefaceByFilename.put(fileName, typeface);
+        }
+        return sTypefaceByFilename.get(fileName);
     }
 }
