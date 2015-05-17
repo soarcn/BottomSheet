@@ -25,6 +25,7 @@ import android.content.DialogInterface;
 import android.content.res.Configuration;
 import android.content.res.Resources;
 import android.content.res.TypedArray;
+import android.graphics.Typeface;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.os.Bundle;
@@ -94,6 +95,7 @@ public class BottomSheet extends Dialog implements DialogInterface {
     private boolean mNavBarAvailable;
     private float mSmallestWidthDp;
 
+    private Typeface mTypeface;
 
     private ImageView icon;
 
@@ -111,7 +113,14 @@ public class BottomSheet extends Dialog implements DialogInterface {
 
     @SuppressWarnings("WeakerAccess")
     BottomSheet(Context context, int theme) {
+        this(context, theme, null);
+    }
+
+    @SuppressWarnings("WeakerAccess")
+    BottomSheet(Context context, int theme, Typeface typeface) {
         super(context, theme);
+
+        mTypeface = typeface;
 
         TypedArray a = getContext()
                 .obtainStyledAttributes(null, R.styleable.BottomSheet, R.attr.bottomSheetStyle, 0);
@@ -306,9 +315,11 @@ public class BottomSheet extends Dialog implements DialogInterface {
             title.setVisibility(View.VISIBLE);
             title.setText(builder.title);
         }
+        if (mTypeface != null) {
+            title.setTypeface(mTypeface);
+        }
 
         icon = (ImageView) mDialogView.findViewById(R.id.bottom_sheet_title_image);
-
 
         list = (GridView) mDialogView.findViewById(R.id.bottom_sheet_gridview);
         mDialogView.mTarget = list;
@@ -389,6 +400,10 @@ public class BottomSheet extends Dialog implements DialogInterface {
                     holder = new ViewHolder();
                     holder.title = (TextView) convertView.findViewById(R.id.bs_list_title);
                     holder.image = (ImageView) convertView.findViewById(R.id.bs_list_image);
+                    if (mTypeface != null) {
+                        holder.title.setTypeface(mTypeface);
+                    }
+
                     convertView.setTag(holder);
                 } else {
                     holder = (ViewHolder) convertView.getTag();
@@ -614,6 +629,8 @@ public class BottomSheet extends Dialog implements DialogInterface {
         private int limit = -1;
         private MenuItem.OnMenuItemClickListener menulistener;
 
+        private Typeface typeface;
+
 
         /**
          * Constructor using a context for this builder and the {@link com.cocosw.bottomsheet.BottomSheet} it creates.
@@ -828,7 +845,7 @@ public class BottomSheet extends Dialog implements DialogInterface {
          */
         @SuppressLint("Override")
         public BottomSheet build() {
-            BottomSheet dialog = new BottomSheet(context, theme);
+            BottomSheet dialog = new BottomSheet(context, theme, typeface);
             dialog.builder = this;
             return dialog;
         }
@@ -852,6 +869,11 @@ public class BottomSheet extends Dialog implements DialogInterface {
          */
         public Builder setOnDismissListener(@NonNull OnDismissListener listener) {
             this.dismissListener = listener;
+            return this;
+        }
+
+        public Builder typeface(Typeface typeface) {
+            this.typeface = typeface;
             return this;
         }
     }
