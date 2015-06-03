@@ -17,7 +17,7 @@ import android.widget.FrameLayout;
  * Project: gradle
  * Created by LiaoKai(soarcn) on 2014/11/25.
  */
-class ClosableSlidingLayout extends FrameLayout {
+public class ClosableSlidingLayout extends FrameLayout {
 
     private final float MINVEL;
     private ViewDragHelper mDragHelper;
