@@ -21,4 +21,7 @@
         android:interpolator="@android:anim/accelerate_interpolator">
     <translate android:fromYDelta="0" android:toYDelta="100%"
         android:startOffset="100" android:duration="250"/>
+	<alpha
+        android:fromAlpha="1.0" android:toAlpha="0.0"
+        android:duration="250"/>
 </set>
