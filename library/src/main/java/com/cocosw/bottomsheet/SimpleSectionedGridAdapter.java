@@ -4,6 +4,7 @@ package com.cocosw.bottomsheet;
 import java.util.Arrays;
 import java.util.Comparator;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.database.DataSetObserver;
 import android.graphics.Typeface;
@@ -18,6 +19,7 @@ import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
 
+@SuppressLint("NewApi")
 class SimpleSectionedGridAdapter extends BaseAdapter{
     protected static final int TYPE_FILLER = 0;
     protected static final int TYPE_HEADER = 1;
