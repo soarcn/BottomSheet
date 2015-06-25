@@ -4,8 +4,10 @@ package com.cocosw.bottomsheet;
 import java.util.Arrays;
 import java.util.Comparator;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.database.DataSetObserver;
+import android.graphics.Typeface;
 import android.text.TextUtils;
 import android.util.SparseArray;
 import android.view.LayoutInflater;
@@ -17,6 +19,7 @@ import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
 
+@SuppressLint("NewApi")
 class SimpleSectionedGridAdapter extends BaseAdapter{
     protected static final int TYPE_FILLER = 0;
     protected static final int TYPE_HEADER = 1;
@@ -40,6 +43,7 @@ class SimpleSectionedGridAdapter extends BaseAdapter{
     private GridView mGridView;
     private int mHeaderLayoutResId;
     private int mHeaderTextViewResId;
+    private Typeface mTypeface;
 
     public static class Section {
         int firstPosition;
@@ -58,11 +62,12 @@ class SimpleSectionedGridAdapter extends BaseAdapter{
     }
 
     public SimpleSectionedGridAdapter(Context context, BaseAdapter baseAdapter, int sectionResourceId, int headerLayoutResId,
-                                      int headerTextViewResId) {
+                                      int headerTextViewResId, Typeface typeface) {
         mLayoutInflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         mSectionResourceId = sectionResourceId;
         mHeaderLayoutResId = headerLayoutResId;
         mHeaderTextViewResId = headerTextViewResId;
+        mTypeface = typeface;
         mBaseAdapter = baseAdapter;
         mContext = context;
         mBaseAdapter.registerDataSetObserver(new DataSetObserver() {
@@ -296,6 +301,9 @@ class SimpleSectionedGridAdapter extends BaseAdapter{
                     header = (HeaderLayout) convertView.findViewById(mHeaderLayoutResId);
                     if (!TextUtils.isEmpty(mSections.get(position).title)) {
                         view = (TextView) convertView.findViewById(mHeaderTextViewResId);
+                        if (mTypeface != null) {
+                            view.setTypeface(mTypeface);
+                        }
                         view.setText(mSections.get(position).title);
                     }
                     header.setHeaderWidth(getHeaderSize());
@@ -304,6 +312,9 @@ class SimpleSectionedGridAdapter extends BaseAdapter{
                     header = (HeaderLayout) convertView.findViewById(mHeaderLayoutResId);
                     if (!TextUtils.isEmpty(mSections.get(position).title)) {
                         view = (TextView) convertView.findViewById(mHeaderTextViewResId);
+                        if (mTypeface != null) {
+                            view.setTypeface(mTypeface);
+                        }
                         view.setText(mSections.get(position).title);
                     }
                     header.setHeaderWidth(0);

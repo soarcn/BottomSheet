@@ -21,6 +21,7 @@
         <item name="bs_dialogBackground">@android:color/background_light</item>
         <item name="bs_dividerColor">@color/bs_divider_color</item>
         <item name="bs_numColumns">@integer/bs_grid_colum</item>
+        <item name="bs_wellMargin">16dp</item>
         <item name="bs_titleTextAppearance">@style/Text.Headline</item>
         <item name="bs_listItemTitleTextAppearance">@style/Text.Title</item>
         <item name="bs_gridItemTitleTextAppearance">@style/Text.Hint</item>
@@ -75,8 +76,8 @@
     <style name="BottomSheet.Title">
         <item name="android:singleLine">true</item>
         <item name="android:minHeight">56dp</item>
-        <item name="android:layout_marginLeft">16dp</item>
-        <item name="android:layout_marginRight">16dp</item>
+        <item name="android:layout_marginLeft">?bs_wellMargin</item>
+        <item name="android:layout_marginRight">?bs_wellMargin</item>
         <item name="android:layout_width">fill_parent</item>
         <item name="android:layout_height">wrap_content</item>
         <item name="android:textAppearance">?bs_titleTextAppearance</item>
@@ -86,7 +87,7 @@
     <style name="BottomSheet.Icon">
         <item name="android:layout_width">40dp</item>
         <item name="android:layout_height">40dp</item>
-        <item name="android:layout_marginLeft">16dp</item>
+        <item name="android:layout_marginLeft">?bs_wellMargin</item>
     </style>
 
     <style name="BottomSheet.List">
@@ -108,15 +109,14 @@
     </style>
 
     <style name="BottomSheet.ListItemImage">
-        <item name="android:layout_marginLeft">16dp</item>
+        <item name="android:layout_marginLeft">?bs_wellMargin</item>
         <item name="android:layout_height">24dp</item>
         <item name="android:layout_width">24dp</item>
-        <item name="android:layout_marginRight">16dp</item>
     </style>
 
     <style name="BottomSheet.ListItemTitle">
-        <item name="android:layout_marginLeft">16dp</item>
-        <item name="android:layout_marginRight">16dp</item>
+        <item name="android:layout_marginLeft">?bs_wellMargin</item>
+        <item name="android:layout_marginRight">?bs_wellMargin</item>
         <item name="android:textAppearance">?bs_listItemTitleTextAppearance</item>
     </style>
 

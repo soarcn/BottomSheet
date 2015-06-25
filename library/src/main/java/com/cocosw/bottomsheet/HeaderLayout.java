@@ -2,14 +2,15 @@ package com.cocosw.bottomsheet;
 
 
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.util.AttributeSet;
 import android.widget.FrameLayout;
 
 
+@SuppressLint("Instantiatable")
 class HeaderLayout extends FrameLayout {
     private int mHeaderWidth = 1;
-
 
     public HeaderLayout(Context context) {
         super(context);
