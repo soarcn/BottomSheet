@@ -18,28 +18,16 @@ package com.cocosw.bottomsheet;
  */
 
 
-        import android.content.Context;
-        import android.database.DataSetObserver;
-        import android.graphics.Canvas;
-        import android.graphics.Color;
-        import android.graphics.PointF;
-        import android.graphics.Rect;
-        import android.graphics.drawable.GradientDrawable;
-        import android.graphics.drawable.GradientDrawable.Orientation;
-        import android.os.Parcelable;
-        import android.util.AttributeSet;
-        import android.view.MotionEvent;
-        import android.view.SoundEffectConstants;
-        import android.view.View;
-        import android.view.ViewConfiguration;
-        import android.view.accessibility.AccessibilityEvent;
-        import android.widget.AbsListView;
-        import android.widget.GridView;
+import android.content.Context;
+import android.support.annotation.VisibleForTesting;
+import android.util.AttributeSet;
+import android.widget.GridView;
 
 /**
  * ListView capable to pin views at its top while the rest is still scrolled.
  */
- class PinnedSectionGridView extends GridView {
+@VisibleForTesting
+class PinnedSectionGridView extends GridView {
 
 
     // -- class fields
@@ -68,7 +56,7 @@ package com.cocosw.bottomsheet;
         super.setNumColumns(numColumns);
     }
 
-    public int getNumColumns(){
+    public int getNumColumns() {
         return mNumColumns;
     }
 
@@ -78,7 +66,7 @@ package com.cocosw.bottomsheet;
         super.setHorizontalSpacing(horizontalSpacing);
     }
 
-    public int getHorizontalSpacing(){
+    public int getHorizontalSpacing() {
         return mHorizontalSpacing;
     }
 
@@ -88,11 +76,11 @@ package com.cocosw.bottomsheet;
         super.setColumnWidth(columnWidth);
     }
 
-    public int getColumnWidth(){
+    public int getColumnWidth() {
         return mColumnWidth;
     }
 
-    public int getAvailableWidth(){
+    public int getAvailableWidth() {
         return mAvailableWidth != 0 ? mAvailableWidth : getWidth();
     }
 

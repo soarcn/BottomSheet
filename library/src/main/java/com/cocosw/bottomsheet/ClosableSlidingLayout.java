@@ -4,6 +4,7 @@ import android.annotation.TargetApi;
 import android.content.Context;
 import android.os.Build;
 import android.support.annotation.NonNull;
+import android.support.annotation.VisibleForTesting;
 import android.support.v4.view.MotionEventCompat;
 import android.support.v4.view.ViewCompat;
 import android.support.v4.widget.ViewDragHelper;
@@ -17,6 +18,7 @@ import android.widget.FrameLayout;
  * Project: gradle
  * Created by LiaoKai(soarcn) on 2014/11/25.
  */
+@VisibleForTesting
 class ClosableSlidingLayout extends FrameLayout {
 
     private final float MINVEL;
