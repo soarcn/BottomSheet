@@ -6,6 +6,19 @@ jdk:
 before_install:
  - chmod +x gradlew
 
+after_success:
+   - .buildscript/deploy_snapshot.sh
+
+env:
+   global:
+     - secure: "K6cyrlYhMmCHeez4uwkcQ5QeRLdCiegbbHnj8qKzbgcu0cDsvr2mMr6LLtjMOay1KMaxrW3QBFqz5nzTs/X0UnLl8jnt0Qdsf44BlIIZcJ9oldXFKAAWUZ3wlHTdz8ll+EBA31O1hkjAqRY4RDvS1hk842pRxXae3Dfodnjhz24="
+     - secure: "pOUA/hwXvpwt7VeRIoAZPiIn2qc88c8/sx1AhN3YhSyCiERLEtuxZqFmCgZE/80U41sBlvg75lpvXpEsND4eriYiRNMDPyD7el2NYxTzseWAykZYe1+Gaeiq1mO83w4pTI7QUrrkU/9+rl9Ccqe6E0heER510ERyLH0nGb8vaRM="
+
+
+branches:
+  except:
+    - gh-pages
+
 android:
   components:
     - build-tools-22.0.1
@@ -18,3 +31,7 @@ notifications:
   email: false
 
 sudo: false
+
+cache:
+  directories:
+    - $HOME/.m2
