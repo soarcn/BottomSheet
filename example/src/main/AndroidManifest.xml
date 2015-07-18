@@ -5,7 +5,8 @@
     <application android:icon="@drawable/ic_launcher"
         android:theme="@style/AppTheme"
         android:label="@string/bottomsheet"
-        tools:ignore="AllowBackup">
+        tools:ignore="AllowBackup"
+        android:supportsRtl="true">
         <activity android:name=".Main" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

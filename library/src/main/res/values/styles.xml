@@ -73,6 +73,7 @@
     </style>
 
     <style name="BottomSheet.Title">
+        <item name="android:textAlignment" tools:ignore="NewApi">viewStart</item>
         <item name="android:singleLine">true</item>
         <item name="android:minHeight">56dp</item>
         <item name="android:layout_marginLeft">16dp</item>
@@ -102,6 +103,7 @@
     </style>
 
     <style name="BottomSheet.ListItem">
+        <item name="android:layoutDirection" tools:ignore="NewApi">locale</item>
         <item name="android:minHeight">48dp</item>
         <item name="android:gravity">center_vertical</item>
         <item name="android:layoutAnimation">@null</item>
@@ -115,7 +117,10 @@
     </style>
 
     <style name="BottomSheet.ListItemTitle">
+        <item name="android:textAlignment" tools:targetApi="jelly_bean_mr1">viewStart</item>
         <item name="android:layout_marginLeft">16dp</item>
+        <item name="android:layout_width">fill_parent</item>
+        <item name="android:layout_height">wrap_content</item>
         <item name="android:layout_marginRight">16dp</item>
         <item name="android:textAppearance">?bs_listItemTitleTextAppearance</item>
     </style>
