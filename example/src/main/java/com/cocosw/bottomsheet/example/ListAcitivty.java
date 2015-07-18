@@ -1,12 +1,8 @@
 package com.cocosw.bottomsheet.example;
 
 import android.app.Dialog;
-import android.content.ComponentName;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.pm.ActivityInfo;
-import android.content.pm.PackageManager;
-import android.content.pm.ResolveInfo;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.drawable.Drawable;
@@ -14,7 +10,6 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.graphics.drawable.RoundedBitmapDrawable;
 import android.support.v4.graphics.drawable.RoundedBitmapDrawableFactory;
-import android.support.v7.app.ActionBarActivity;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -23,9 +18,8 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 
 import com.cocosw.bottomsheet.BottomSheet;
+import com.cocosw.bottomsheet.BottomSheetHelper;
 import com.cocosw.query.CocoQuery;
-
-import java.util.List;
 
 /**
  * Project: gradle
@@ -139,10 +133,10 @@ public class ListAcitivty extends AppCompatActivity implements AdapterView.OnIte
                 }).limit(R.integer.bs_initial_list_row).build();
                 break;
             case 6:
-                sheet = getShareActions(new BottomSheet.Builder(this).grid().title("Share To " + adapter.getItem(position)), "Hello " + adapter.getItem(position)).build();
+                sheet = getShareActions("Hello " + adapter.getItem(position)).title("Share To " + adapter.getItem(position)).limit(R.integer.no_limit).build();
                 break;
             case 7:
-                sheet = getShareActions(new BottomSheet.Builder(this).grid().title("Share To " + adapter.getItem(position)), "Hello " + adapter.getItem(position)).limit(R.integer.bs_initial_grid_row).build();
+                sheet = getShareActions("Hello " + adapter.getItem(position)).title("Share To " + adapter.getItem(position)).build();
                 break;
             case 8:
                 sheet = new BottomSheet.Builder(this).icon(getRoundedBitmap(R.drawable.icon)).title("To " + adapter.getItem(position)).sheet(R.menu.list).listener(new DialogInterface.OnClickListener() {
@@ -178,32 +172,12 @@ public class ListAcitivty extends AppCompatActivity implements AdapterView.OnIte
         return sheet;
     }
 
-    private BottomSheet.Builder getShareActions(BottomSheet.Builder builder, String text) {
-        PackageManager pm = this.getPackageManager();
-
+    private BottomSheet.Builder getShareActions(String text) {
         final Intent shareIntent = new Intent(Intent.ACTION_SEND);
         shareIntent.setType("text/plain");
         shareIntent.putExtra(Intent.EXTRA_TEXT, text);
-        final List<ResolveInfo> list = pm.queryIntentActivities(shareIntent, 0);
 
-        for (int i = 0; i < list.size(); i++) {
-            builder.sheet(i, list.get(i).loadIcon(pm), list.get(i).loadLabel(pm));
-        }
-
-        builder.listener(new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                ActivityInfo activity = list.get(which).activityInfo;
-                ComponentName name = new ComponentName(activity.applicationInfo.packageName,
-                        activity.name);
-                Intent newIntent = (Intent) shareIntent.clone();
-                newIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK |
-                        Intent.FLAG_ACTIVITY_RESET_TASK_IF_NEEDED);
-                newIntent.setComponent(name);
-                startActivity(newIntent);
-            }
-        });
-        return builder;
+        return BottomSheetHelper.shareAction(this, shareIntent);
     }
 
 
