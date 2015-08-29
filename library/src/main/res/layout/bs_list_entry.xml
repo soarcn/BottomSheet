@@ -2,17 +2,18 @@
 
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:orientation="horizontal" android:layout_width="match_parent"
-    android:layout_height="match_parent"
     style="@style/BottomSheet.ListItem"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="horizontal"
     tools:ignore="UseCompoundDrawables">
 
     <ImageView
+        android:id="@id/bs_list_image"
         style="@style/BottomSheet.ListItemImage"
-        android:id="@+id/bs_list_image"
         tools:ignore="ContentDescription" />
 
     <TextView
-        style="@style/BottomSheet.ListItemTitle"
-        android:id="@+id/bs_list_title" />
+        android:id="@id/bs_list_title"
+        style="@style/BottomSheet.ListItemTitle" />
 </LinearLayout>

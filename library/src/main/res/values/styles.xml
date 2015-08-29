@@ -29,6 +29,9 @@
         <item name="bs_moreDrawable">@drawable/bs_ic_more_light</item>
         <item name="bs_listStyle">@style/BottomSheet.List</item>
         <item name="bs_collapseListIcons">true</item>
+        <item name="bs_listItemLayout">@layout/bs_list_entry</item>
+        <item name="bs_gridItemLayout">@layout/bs_grid_entry</item>
+        <item name="bs_headerLayout">@layout/bs_header</item>
     </style>
 
     <style name="BottomSheet.Dialog.Dark" parent="BottomSheet.Dialog">

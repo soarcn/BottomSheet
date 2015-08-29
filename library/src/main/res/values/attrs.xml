@@ -14,6 +14,9 @@
         <attr name="bs_moreText" format="string"/>
         <attr name="bs_closeDrawable" format="reference"/>
         <attr name="bs_collapseListIcons" format="boolean"/>
+        <attr name="bs_listItemLayout" format="reference" />
+        <attr name="bs_gridItemLayout" format="reference" />
+        <attr name="bs_headerLayout" format="reference" />
     </declare-styleable>
 
 </resources>

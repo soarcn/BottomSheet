@@ -1,4 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <item name="bs_more" type="id" />
+    <item name="bs_list_image" type="id" />
+    <item name="bs_list_title" type="id" />
+    <item name="bottom_sheet_title_image" type="id" />
+    <item name="bottom_sheet_title" type="id" />
 </resources>
