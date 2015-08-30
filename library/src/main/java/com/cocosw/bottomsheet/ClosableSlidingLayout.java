@@ -168,7 +168,6 @@ class ClosableSlidingLayout extends FrameLayout {
 
     private void dismiss(View view, float yvel) {
         mDragHelper.smoothSlideViewTo(view, 0, top + height);
-        mDragHelper.cancel();
         ViewCompat.postInvalidateOnAnimation(ClosableSlidingLayout.this);
     }
 
@@ -201,9 +200,9 @@ class ClosableSlidingLayout extends FrameLayout {
                     dismiss(releasedChild, yvel);
                 } else {
                     mDragHelper.smoothSlideViewTo(releasedChild, 0, top);
+                    ViewCompat.postInvalidateOnAnimation(ClosableSlidingLayout.this);
                 }
             }
-            ViewCompat.postInvalidateOnAnimation(ClosableSlidingLayout.this);
         }
 
         @Override
@@ -212,7 +211,9 @@ class ClosableSlidingLayout extends FrameLayout {
                 invalidate();
             }
             if (height - top < 1 && mListener != null) {
+                mDragHelper.cancel();
                 mListener.onClosed();
+                mDragHelper.smoothSlideViewTo(changedView, 0, top);
             }
         }
 
