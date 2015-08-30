@@ -21,7 +21,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
-import android.support.annotation.VisibleForTesting;
 import android.support.v4.internal.view.SupportMenu;
 import android.view.KeyEvent;
 import android.view.MenuItem;
@@ -31,13 +30,7 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
-
-@VisibleForTesting
 class ActionMenu implements SupportMenu {
-    private Context mContext;
-
-    private boolean mIsQwerty;
-
     private static final int[] sCategoryToOrder = new int[]{
             1, /* No category */
             4, /* CONTAINER */
@@ -46,12 +39,44 @@ class ActionMenu implements SupportMenu {
             2, /* ALTERNATIVE */
             0, /* SELECTED_ALTERNATIVE */
     };
-
+    private Context mContext;
+    private boolean mIsQwerty;
     private ArrayList<ActionMenuItem> mItems;
 
     public ActionMenu(Context context) {
         mContext = context;
         mItems = new ArrayList<>();
+    }
+
+    private static int findInsertIndex(ArrayList<ActionMenuItem> items, int ordering) {
+        for (int i = items.size() - 1; i >= 0; i--) {
+            ActionMenuItem item = items.get(i);
+            if (item.getOrder() <= ordering) {
+                return i + 1;
+            }
+        }
+        return 0;
+    }
+
+    /**
+     * Returns the ordering across all items. This will grab the category from
+     * the upper bits, find out how to order the category with respect to other
+     * categories, and combine it with the lower bits.
+     *
+     * @param categoryOrder The category order for a particular item (if it has
+     *                      not been or/add with a category, the default category is
+     *                      assumed).
+     * @return An ordering integer that can be used to order this item across
+     * all the items (even from other categories).
+     */
+    private static int getOrdering(int categoryOrder) {
+        final int index = (categoryOrder & CATEGORY_MASK) >> CATEGORY_SHIFT;
+
+        if (index < 0 || index >= sCategoryToOrder.length) {
+            throw new IllegalArgumentException("order does not contain a valid category.");
+        }
+
+        return (sCategoryToOrder[index] << CATEGORY_SHIFT) | (categoryOrder & USER_MASK);
     }
 
     public Context getContext() {
@@ -77,41 +102,9 @@ class ActionMenu implements SupportMenu {
         return item;
     }
 
-
-    private static int findInsertIndex(ArrayList<ActionMenuItem> items, int ordering) {
-        for (int i = items.size() - 1; i >= 0; i--) {
-            ActionMenuItem item = items.get(i);
-            if (item.getOrder() <= ordering) {
-                return i + 1;
-            }
-        }
-        return 0;
-    }
-
     MenuItem add(ActionMenuItem item) {
         mItems.add(findInsertIndex(mItems, getOrdering(item.getOrder())), item);
         return item;
-    }
-
-    /**
-     * Returns the ordering across all items. This will grab the category from
-     * the upper bits, find out how to order the category with respect to other
-     * categories, and combine it with the lower bits.
-     *
-     * @param categoryOrder The category order for a particular item (if it has
-     *                      not been or/add with a category, the default category is
-     *                      assumed).
-     * @return An ordering integer that can be used to order this item across
-     * all the items (even from other categories).
-     */
-    private static int getOrdering(int categoryOrder) {
-        final int index = (categoryOrder & CATEGORY_MASK) >> CATEGORY_SHIFT;
-
-        if (index < 0 || index >= sCategoryToOrder.length) {
-            throw new IllegalArgumentException("order does not contain a valid category.");
-        }
-
-        return (sCategoryToOrder[index] << CATEGORY_SHIFT) | (categoryOrder & USER_MASK);
     }
 
     public int addIntentOptions(int groupId, int itemId, int order,

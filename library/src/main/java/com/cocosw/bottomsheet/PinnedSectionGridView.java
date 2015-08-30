@@ -19,14 +19,12 @@ package com.cocosw.bottomsheet;
 
 
 import android.content.Context;
-import android.support.annotation.VisibleForTesting;
 import android.util.AttributeSet;
 import android.widget.GridView;
 
 /**
  * ListView capable to pin views at its top while the rest is still scrolled.
  */
-@VisibleForTesting
 class PinnedSectionGridView extends GridView {
 
 
@@ -49,6 +47,9 @@ class PinnedSectionGridView extends GridView {
         super(context, attrs, defStyleAttr);
     }
 
+    public int getNumColumns() {
+        return mNumColumns;
+    }
 
     @Override
     public void setNumColumns(int numColumns) {
@@ -56,8 +57,8 @@ class PinnedSectionGridView extends GridView {
         super.setNumColumns(numColumns);
     }
 
-    public int getNumColumns() {
-        return mNumColumns;
+    public int getHorizontalSpacing() {
+        return mHorizontalSpacing;
     }
 
     @Override
@@ -66,18 +67,14 @@ class PinnedSectionGridView extends GridView {
         super.setHorizontalSpacing(horizontalSpacing);
     }
 
-    public int getHorizontalSpacing() {
-        return mHorizontalSpacing;
+    public int getColumnWidth() {
+        return mColumnWidth;
     }
 
     @Override
     public void setColumnWidth(int columnWidth) {
         mColumnWidth = columnWidth;
         super.setColumnWidth(columnWidth);
-    }
-
-    public int getColumnWidth() {
-        return mColumnWidth;
     }
 
     public int getAvailableWidth() {

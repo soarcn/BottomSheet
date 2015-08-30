@@ -4,7 +4,6 @@ import android.annotation.TargetApi;
 import android.content.Context;
 import android.os.Build;
 import android.support.annotation.NonNull;
-import android.support.annotation.VisibleForTesting;
 import android.support.v4.view.MotionEventCompat;
 import android.support.v4.view.ViewCompat;
 import android.support.v4.widget.ViewDragHelper;
@@ -18,10 +17,12 @@ import android.widget.FrameLayout;
  * Project: gradle
  * Created by LiaoKai(soarcn) on 2014/11/25.
  */
-@VisibleForTesting
 class ClosableSlidingLayout extends FrameLayout {
 
+    private static final int INVALID_POINTER = -1;
     private final float MINVEL;
+    View mTarget;
+    boolean swipeable = true;
     private ViewDragHelper mDragHelper;
     private SlideListener mListener;
     private int height;
@@ -29,13 +30,8 @@ class ClosableSlidingLayout extends FrameLayout {
     private int mActivePointerId;
     private boolean mIsBeingDragged;
     private float mInitialMotionY;
-    private static final int INVALID_POINTER = -1;
-    View mTarget;
-
     private boolean collapsible = false;
     private float yDiff;
-
-    boolean swipeable = true;
 
     public ClosableSlidingLayout(Context context) {
         this(context, null);
@@ -156,12 +152,33 @@ class ClosableSlidingLayout extends FrameLayout {
         }
     }
 
-    public void setSlideListener(SlideListener listener) {
+    void setSlideListener(SlideListener listener) {
         mListener = listener;
     }
 
     void setCollapsible(boolean collapsible) {
         this.collapsible = collapsible;
+    }
+
+    private void expand(View releasedChild, float yvel) {
+        if (mListener != null) {
+            mListener.onOpened();
+        }
+    }
+
+    private void dismiss(View view, float yvel) {
+        mDragHelper.smoothSlideViewTo(view, 0, top + height);
+        mDragHelper.cancel();
+        ViewCompat.postInvalidateOnAnimation(ClosableSlidingLayout.this);
+    }
+
+    /**
+     * set listener
+     */
+    interface SlideListener {
+        void onClosed();
+
+        void onOpened();
     }
 
     /**
@@ -194,7 +211,7 @@ class ClosableSlidingLayout extends FrameLayout {
             if (Build.VERSION.SDK_INT < Build.VERSION_CODES.HONEYCOMB) {
                 invalidate();
             }
-            if (height-top <1 && mListener!=null) {
+            if (height - top < 1 && mListener != null) {
                 mListener.onClosed();
             }
         }
@@ -203,28 +220,6 @@ class ClosableSlidingLayout extends FrameLayout {
         public int clampViewPositionVertical(View child, int top, int dy) {
             return Math.max(top, ClosableSlidingLayout.this.top);
         }
-    }
-
-    private void expand(View releasedChild, float yvel) {
-        if (mListener != null) {
-            mListener.onOpened();
-        }
-    }
-
-    private void dismiss(View view, float yvel) {
-        mDragHelper.smoothSlideViewTo(view, 0, top + height);
-        mDragHelper.cancel();
-        ViewCompat.postInvalidateOnAnimation(ClosableSlidingLayout.this);
-    }
-
-
-    /**
-     * set listener
-     */
-    interface SlideListener {
-        void onClosed();
-
-        void onOpened();
     }
 
 }
