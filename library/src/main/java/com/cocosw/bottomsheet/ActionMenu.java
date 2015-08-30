@@ -184,7 +184,12 @@ class ActionMenu implements SupportMenu {
     }
 
     public MenuItem findItem(int id) {
-        return mItems.get(findItemIndex(id));
+        final int index = findItemIndex(id);
+        if (index < 0) {
+            return null;
+        }
+
+        return mItems.get(index);
     }
 
     public MenuItem getItem(int index) {
@@ -258,7 +263,12 @@ class ActionMenu implements SupportMenu {
     }
 
     public void removeItem(int id) {
-        mItems.remove(findItemIndex(id));
+        final int index = findItemIndex(id);
+        if (index < 0) {
+            return;
+        }
+
+        mItems.remove(index);
     }
 
     public void setGroupCheckable(int group, boolean checkable,
