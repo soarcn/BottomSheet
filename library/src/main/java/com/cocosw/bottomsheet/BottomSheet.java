@@ -66,7 +66,6 @@ import java.util.ArrayList;
 @SuppressWarnings("unused")
 public class BottomSheet extends Dialog implements DialogInterface {
 
-
     private final SparseIntArray hidden = new SparseIntArray();
     private TranslucentHelper helper;
     private String moreText;
@@ -86,6 +85,7 @@ public class BottomSheet extends Dialog implements DialogInterface {
     private ActionMenu menuItem;
     private ActionMenu actions;
     private OnDismissListener dismissListener;
+    private OnShowListener showListener;
 
     BottomSheet(Context context) {
         super(context, R.style.BottomSheet_Dialog);
@@ -143,7 +143,7 @@ public class BottomSheet extends Dialog implements DialogInterface {
 
     @Override
     public void setOnShowListener(OnShowListener listener) {
-        super.setOnShowListener(listener);
+        this.showListener = listener;
     }
 
     private void init(final Context context) {
@@ -166,9 +166,11 @@ public class BottomSheet extends Dialog implements DialogInterface {
             }
         });
 
-        this.setOnShowListener(new OnShowListener() {
+        super.setOnShowListener(new OnShowListener() {
             @Override
             public void onShow(DialogInterface dialogInterface) {
+                if (showListener != null)
+                    showListener.onShow(dialogInterface);
                 list.setAdapter(adapter);
                 list.startLayoutAnimation();
                 if (builder.icon == null)
