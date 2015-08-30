@@ -67,11 +67,15 @@ import java.util.ArrayList;
 public class BottomSheet extends Dialog implements DialogInterface {
 
     private final SparseIntArray hidden = new SparseIntArray();
+
     private TranslucentHelper helper;
     private String moreText;
     private Drawable close;
     private Drawable more;
     private int mHeaderLayoutId;
+    private int mListItemLayoutId;
+    private int mGridItemLayoutId;
+
     private boolean collapseListIcons;
     private GridView list;
     private SimpleSectionedGridAdapter adapter;
@@ -103,6 +107,8 @@ public class BottomSheet extends Dialog implements DialogInterface {
             moreText = a.getString(R.styleable.BottomSheet_bs_moreText);
             collapseListIcons = a.getBoolean(R.styleable.BottomSheet_bs_collapseListIcons, true);
             mHeaderLayoutId = a.getResourceId(R.styleable.BottomSheet_bs_headerLayout, R.layout.bs_header);
+            mListItemLayoutId = a.getResourceId(R.styleable.BottomSheet_bs_listItemLayout, R.layout.bs_list_entry);
+            mGridItemLayoutId = a.getResourceId(R.styleable.BottomSheet_bs_gridItemLayout, R.layout.bs_grid_entry);
         } finally {
             a.recycle();
         }
@@ -268,9 +274,9 @@ public class BottomSheet extends Dialog implements DialogInterface {
                     LayoutInflater inflater = (LayoutInflater) getContext()
                             .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
                     if (builder.grid)
-                        convertView = inflater.inflate(R.layout.bs_grid_entry, parent, false);
+                        convertView = inflater.inflate(mGridItemLayoutId, parent, false);
                     else
-                        convertView = inflater.inflate(R.layout.bs_list_entry, parent, false);
+                        convertView = inflater.inflate(mListItemLayoutId, parent, false);
                     holder = new ViewHolder();
                     holder.title = (TextView) convertView.findViewById(R.id.bs_list_title);
                     holder.image = (ImageView) convertView.findViewById(R.id.bs_list_image);
