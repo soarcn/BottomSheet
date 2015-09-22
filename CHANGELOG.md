@@ -1,6 +1,12 @@
 ChangeLog
 ============
 
+1.2.0
+--------
+
+- Defects fixing
+- Developers can fully customize the whole ui
+
 1.1.1
 -------
 - Defect fixing #35

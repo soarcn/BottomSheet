@@ -40,4 +40,9 @@
         <item name="bs_headerLayout">@layout/bs_header</item>
     </style>
 
+    <style name="BottomSheet.CustomizedDialog" parent="BottomSheet.StyleDialog">
+        <item name="bs_gridItemLayout">@layout/new_grid_entry</item>
+        <item name="bs_headerLayout">@layout/new_header</item>
+    </style>
+
 </resources>

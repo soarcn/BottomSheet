@@ -168,7 +168,7 @@ public class ListAcitivty extends AppCompatActivity implements AdapterView.OnIte
                 menu.setGroupVisible(android.R.id.empty,false);
                 break;
             case 9:
-                sheet = new BottomSheet.Builder(this, R.style.BottomSheet_StyleDialog).title("To " + adapter.getItem(position)).sheet(R.menu.list).listener(new DialogInterface.OnClickListener() {
+                sheet = new BottomSheet.Builder(this, R.style.BottomSheet_CustomizedDialog).grid().title("To " + adapter.getItem(position)).sheet(R.menu.list).listener(new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         ListAcitivty.this.onClick(adapter.getItem(position), which);
