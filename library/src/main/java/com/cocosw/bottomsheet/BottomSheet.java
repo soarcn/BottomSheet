@@ -80,6 +80,7 @@ public class BottomSheet extends Dialog implements DialogInterface {
     private GridView list;
     private SimpleSectionedGridAdapter adapter;
     private Builder builder;
+    private TextView title;
     private ImageView icon;
 
     private int limit = -1;
@@ -195,7 +196,7 @@ public class BottomSheet extends Dialog implements DialogInterface {
             mDialogView.getChildAt(0).setPadding(0, 0, 0, helper.mNavBarAvailable ? helper.getNavigationBarHeight(getContext()) + mDialogView.getPaddingBottom() : 0);
         }
 
-        final TextView title = (TextView) mDialogView.findViewById(R.id.bottom_sheet_title);
+        title = (TextView) mDialogView.findViewById(R.id.bottom_sheet_title);
         if (builder.title != null) {
             title.setVisibility(View.VISIBLE);
             title.setText(builder.title);
@@ -457,7 +458,9 @@ public class BottomSheet extends Dialog implements DialogInterface {
         getWindow().setAttributes(params);
     }
 
-
+    public TextView getTitle() {
+        return title;
+    }
 
     public Menu getMenu() {
         return builder.menu;
