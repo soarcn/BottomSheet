@@ -74,15 +74,15 @@ new BottomSheet.Builder(this).title("title").sheet(R.menu.list).listener(new Dia
 Action items manipulate
 ========
 
-You can get a menu object from bottomsheet instance from 1.1.0, and change it as you want, exactly like you manipulating android menu or actionbar actionitems.
-Please be aware that if you change the menu after showing the bottomsheet, you must call invalidate(), or no changes would be applied and your app might crash.
+You can get a menu object from bottomsheet instance from 1.1.0, and change it as you want, exactly like you're manipulating an android menu or actionbar actionitems.
+Please be aware that if you change the menu after showing the bottomsheet, you must call invalidate(), or no changes will be applied and your app might crash.
 Please check example application for more info.
 
 
 Style
 ========
 
-- Invoke darkTheme() to show build-in dark theme
+- Invoke darkTheme() to show the built-in dark theme
 - Or define your style in your application, and call bottomsheet by using new BottomSheet.Builder(this,R.style.BottomSheet_StyleDialog)....
 
 ```xml
