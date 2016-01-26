@@ -119,13 +119,7 @@ class SimpleSectionedGridAdapter extends BaseAdapter{
                 break;
 
             case GridView.STRETCH_SPACING:
-                mColumnWidth = requestedColumnWidth;
-                if (mNumColumns > 1) {
-                    mHorizontalSpacing = requestedHorizontalSpacing +
-                            spaceLeftOver / (mNumColumns - 1);
-                } else {
-                    mHorizontalSpacing = requestedHorizontalSpacing + spaceLeftOver;
-                }
+                caseGridViewStretchSpacing(spaceLeftOver);
                 break;
 
             case GridView.STRETCH_SPACING_UNIFORM:
@@ -136,6 +130,16 @@ class SimpleSectionedGridAdapter extends BaseAdapter{
         }
         mHeaderWidth = mWidth + ((mNumColumns - 1) * (mColumnWidth + mHorizontalSpacing)) ;
         return mHeaderWidth;
+    }
+
+    private void caseGridViewStretchSpacing(int spaceLeftOver) {
+        mColumnWidth = requestedColumnWidth;
+        if (mNumColumns > 1) {
+            mHorizontalSpacing = requestedHorizontalSpacing +
+                    spaceLeftOver / (mNumColumns - 1);
+        } else {
+            mHorizontalSpacing = requestedHorizontalSpacing + spaceLeftOver;
+        }
     }
 
 
