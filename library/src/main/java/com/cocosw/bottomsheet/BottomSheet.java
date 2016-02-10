@@ -203,7 +203,7 @@ public class BottomSheet extends Dialog implements DialogInterface {
             public void onShow(DialogInterface dialogInterface) {
                 if (showListener != null)
                     showListener.onShow(dialogInterface);
-                ((GridView)list).setAdapter(adapter);
+                list.setAdapter(adapter);
                 list.startLayoutAnimation();
                 if (builder.icon == null)
                     icon.setVisibility(View.GONE);
