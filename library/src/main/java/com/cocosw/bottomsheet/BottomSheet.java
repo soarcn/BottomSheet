@@ -233,7 +233,8 @@ public class BottomSheet extends Dialog implements DialogInterface {
             list = (GridView) mDialogView.findViewById(R.id.bottom_sheet_gridview);
         mDialogView.mTarget = list;
         if (!builder.grid) {
-            ((GridView)list).setNumColumns(1);
+            if (list instanceof GridView)
+                ((GridView)list).setNumColumns(1);
         }
 
         if (builder.grid) {
