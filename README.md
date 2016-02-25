@@ -104,7 +104,7 @@ Style
 
 ```xml
     <style name="StyleTheme" parent="Theme.AppCompat">
-        <item name="bottomSheetStyle">@style/BottomSheet.StyleDialog</item>
+        <item name="bs_bottomSheetStyle">@style/BottomSheet.StyleDialog</item>
     </style>
 ```
 
