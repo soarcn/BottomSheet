@@ -2,6 +2,8 @@ BottomSheet
 =======
 [![Build Status](https://travis-ci.org/soarcn/BottomSheet.svg)](https://travis-ci.org/soarcn/BottomSheet) [![Android Arsenal](https://img.shields.io/badge/Android%20Arsenal-BottomSheet-brightgreen.svg?style=flat)](https://android-arsenal.com/details/1/1044)
 
+**_Google introduced official bottomsheets implementation in Support library 23.2.0,thus this library is no longer activly being developed. I will continuely fix defects been found and accept good PR but No more new feature will be developed. Thanks for your support!_**
+
 One way to present a set of actions to a user is with bottom sheets, a sheet of paper that slides up from the bottom edge of the screen. Bottom sheets offer flexibility in the display of clear and simple actions that do not need explanation.
 
 https://www.google.com/design/spec/components/bottom-sheets.html
