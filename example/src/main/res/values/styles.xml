@@ -6,7 +6,7 @@
     </style>
 
     <style name="StyleTheme" parent="@style/AppTheme">
-        <item name="bottomSheetStyle">@style/BottomSheet.StyleDialog</item>
+        <item name="bs_bottomSheetStyle">@style/BottomSheet.StyleDialog</item>
     </style>
 
     <style name="BottomSheet.StyleDialog" parent="BottomSheet.Dialog">
