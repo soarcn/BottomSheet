@@ -1,23 +1,19 @@
-apply from: 'https://raw.githubusercontent.com/soarcn/gradle/master/android.gradle'
+apply plugin: 'com.android.application'
 
 dependencies {
     compile project(':library')
     compile 'com.cocosw:query:0.2.2'
     compile 'com.android.support:appcompat-v7:23.2.0'
     compile 'com.android.support:design:23.2.0'
-
-//    androidTestCompile ('com.android.support.test.espresso:espresso-core:+') {
-//        exclude module: 'support-annotations'
-//    }
-//    androidTestCompile ('com.android.support.test:testing-support-lib:+') {
-//        exclude module: 'support-annotations'
-//    }
 }
 
 
 android {
-
+    compileSdkVersion 23
+    buildToolsVersion '23.0.2'
+    compileOptions.encoding = "UTF-8"
     defaultConfig {
+        vectorDrawables.useSupportLibrary = true
         minSdkVersion 9
   //      testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }

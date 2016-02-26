@@ -1,6 +1,13 @@
 ChangeLog
 ============
 
+1.3.0
+-------
+- Defects fixing
+- API break
+    - change style attribute "bottomSheetStyle" to "bs_bottomSheetStyle" #108
+    
+
 1.2.0
 --------
 
