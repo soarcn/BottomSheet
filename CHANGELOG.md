@@ -1,6 +1,12 @@
 ChangeLog
 ============
 
+1.3.0
+--------
+
+- Defects fixing
+- Change attribute "bottomSheetStyle" to "bs_bottomSheetStyle" for latest support library. 
+
 1.2.0
 --------
 
