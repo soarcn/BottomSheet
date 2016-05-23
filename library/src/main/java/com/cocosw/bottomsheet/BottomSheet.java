@@ -76,6 +76,7 @@ public class BottomSheet extends Dialog implements DialogInterface {
     private int mListItemLayoutId;
     private int mGridItemLayoutId;
 
+    private boolean dismissOnItemClick;
     private boolean collapseListIcons;
     private GridView list;
     private SimpleSectionedGridAdapter adapter;
@@ -109,6 +110,7 @@ public class BottomSheet extends Dialog implements DialogInterface {
             mHeaderLayoutId = a.getResourceId(R.styleable.BottomSheet_bs_headerLayout, R.layout.bs_header);
             mListItemLayoutId = a.getResourceId(R.styleable.BottomSheet_bs_listItemLayout, R.layout.bs_list_entry);
             mGridItemLayoutId = a.getResourceId(R.styleable.BottomSheet_bs_gridItemLayout, R.layout.bs_grid_entry);
+            dismissOnItemClick = a.getBoolean(R.styleable.BottomSheet_bs_dismissOnItemClick, true);
         } finally {
             a.recycle();
         }
@@ -331,7 +333,8 @@ public class BottomSheet extends Dialog implements DialogInterface {
                     else if (builder.listener != null)
                         builder.listener.onClick(BottomSheet.this, ((MenuItem) adapter.getItem(position)).getItemId());
                 }
-                dismiss();
+                if (dismissOnItemClick)
+                    dismiss();
             }
         });
 
@@ -456,7 +459,6 @@ public class BottomSheet extends Dialog implements DialogInterface {
         });
         getWindow().setAttributes(params);
     }
-
 
 
     public Menu getMenu() {

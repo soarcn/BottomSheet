@@ -17,6 +17,7 @@
         <attr name="bs_listItemLayout" format="reference" />
         <attr name="bs_gridItemLayout" format="reference" />
         <attr name="bs_headerLayout" format="reference" />
+        <attr name="bs_dismissOnItemClick" format="boolean" />
     </declare-styleable>
 
 </resources>
