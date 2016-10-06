@@ -156,7 +156,13 @@ public class BottomSheet extends Dialog implements DialogInterface {
         setCanceledOnTouchOutside(cancelOnTouchOutside);
         final ClosableSlidingLayout mDialogView = (ClosableSlidingLayout) View.inflate(context, R.layout.bottom_sheet_dialog, null);
         LinearLayout mainLayout = (LinearLayout) mDialogView.findViewById(R.id.bs_main);
-        mainLayout.addView(View.inflate(context, mHeaderLayoutId, null), 0);
+        View headerLayout = View.inflate(context, mHeaderLayoutId, null);
+        mainLayout.addView(headerLayout, 0);
+        if (builder.sheetCustomView != null) {
+            mainLayout.addView(builder.sheetCustomView);
+            headerLayout.setVisibility(View.GONE);
+            mDialogView.findViewById(R.id.bottom_sheet_gridview).setVisibility(View.GONE);
+        }
         setContentView(mDialogView);
         if (!cancelOnSwipeDown)
             mDialogView.swipeable = cancelOnSwipeDown;
@@ -458,7 +464,6 @@ public class BottomSheet extends Dialog implements DialogInterface {
     }
 
 
-
     public Menu getMenu() {
         return builder.menu;
     }
@@ -492,6 +497,7 @@ public class BottomSheet extends Dialog implements DialogInterface {
         private Drawable icon;
         private int limit = -1;
         private MenuItem.OnMenuItemClickListener menulistener;
+        private View sheetCustomView;
 
 
         /**
@@ -584,6 +590,18 @@ public class BottomSheet extends Dialog implements DialogInterface {
          */
         public Builder sheet(int id, @NonNull CharSequence text) {
             menu.add(0, id, 0, text);
+            return this;
+        }
+
+        /**
+         * Add a custom view into BottomSheet. If this is set, the other components
+         * of the BottomSheet will be hided like title, icon, etc.
+         *
+         * @param customView the custom view to add into BottomSheet.
+         * @return This Builder object to allow for chaining of calls to set methods
+         */
+        public Builder sheet(View customView) {
+            this.sheetCustomView = customView;
             return this;
         }
 
