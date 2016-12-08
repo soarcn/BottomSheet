@@ -2,6 +2,6 @@ apply from: 'https://raw.githubusercontent.com/soarcn/gradle/master/android-libr
 apply from: 'https://raw.githubusercontent.com/soarcn/gradle/master/maven_push.gradle'
 
 dependencies {
-    compile 'com.android.support:support-v4:25.0.1'
+    compile 'com.android.support:support-v4:22.2.0'
 }
 
