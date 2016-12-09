@@ -44,11 +44,13 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
 import android.view.WindowManager;
+import android.widget.AbsListView;
 import android.widget.AdapterView;
 import android.widget.BaseAdapter;
 import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.ListView;
 import android.widget.TextView;
 
 import java.lang.reflect.Field;
@@ -77,7 +79,7 @@ public class BottomSheet extends Dialog implements DialogInterface {
     private int mGridItemLayoutId;
 
     private boolean collapseListIcons;
-    private GridView list;
+    private AbsListView list;
     private SimpleSectionedGridAdapter adapter;
     private Builder builder;
     private ImageView icon;
@@ -90,6 +92,28 @@ public class BottomSheet extends Dialog implements DialogInterface {
     private ActionMenu actions;
     private OnDismissListener dismissListener;
     private OnShowListener showListener;
+    private ClosableSlidingLayout mDialogView;
+    private LinearLayout mainLayout;
+
+    public void setIcon(ImageView icon)
+    {
+        this.icon = icon;
+    }
+
+    public void setList(AbsListView list)
+    {
+        this.list = list;
+    }
+
+    public void setMainLayout(LinearLayout mainLayout)
+    {
+        this.mainLayout = mainLayout;
+    }
+
+    public void setDialogView(ClosableSlidingLayout mDialogView)
+    {
+        this.mDialogView = mDialogView;
+    }
 
     BottomSheet(Context context) {
         super(context, R.style.BottomSheet_Dialog);
@@ -154,8 +178,10 @@ public class BottomSheet extends Dialog implements DialogInterface {
 
     private void init(final Context context) {
         setCanceledOnTouchOutside(cancelOnTouchOutside);
-        final ClosableSlidingLayout mDialogView = (ClosableSlidingLayout) View.inflate(context, R.layout.bottom_sheet_dialog, null);
-        LinearLayout mainLayout = (LinearLayout) mDialogView.findViewById(R.id.bs_main);
+        if (mDialogView == null)
+            mDialogView = (ClosableSlidingLayout) View.inflate(context, R.layout.bottom_sheet_dialog, null);
+        if (mainLayout == null)
+            mainLayout = (LinearLayout) mDialogView.findViewById(R.id.bs_main);
         mainLayout.addView(View.inflate(context, mHeaderLayoutId, null), 0);
         setContentView(mDialogView);
         if (!cancelOnSwipeDown)
@@ -201,11 +227,14 @@ public class BottomSheet extends Dialog implements DialogInterface {
             title.setText(builder.title);
         }
 
-        icon = (ImageView) mDialogView.findViewById(R.id.bottom_sheet_title_image);
-        list = (GridView) mDialogView.findViewById(R.id.bottom_sheet_gridview);
+        if (icon == null)
+            icon = (ImageView) mDialogView.findViewById(R.id.bottom_sheet_title_image);
+        if (list == null)
+            list = (GridView) mDialogView.findViewById(R.id.bottom_sheet_gridview);
         mDialogView.mTarget = list;
         if (!builder.grid) {
-            list.setNumColumns(1);
+            if (list instanceof GridView)
+                ((GridView)list).setNumColumns(1);
         }
 
         if (builder.grid) {
@@ -312,9 +341,12 @@ public class BottomSheet extends Dialog implements DialogInterface {
             }
         };
 
-        adapter = new SimpleSectionedGridAdapter(context, baseAdapter, R.layout.bs_list_divider, R.id.headerlayout, R.id.header);
-        list.setAdapter(adapter);
-        adapter.setGridView(list);
+        if (list instanceof GridView){
+            GridView gridView = (GridView) list;
+            adapter = new SimpleSectionedGridAdapter(context, baseAdapter, R.layout.bs_list_divider, R.id.headerlayout, R.id.header);
+            gridView.setAdapter(adapter);
+            adapter.setGridView((GridView) list);
+        }
 
         list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
