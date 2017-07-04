@@ -331,7 +331,8 @@ public class BottomSheet extends Dialog implements DialogInterface {
                     else if (builder.listener != null)
                         builder.listener.onClick(BottomSheet.this, ((MenuItem) adapter.getItem(position)).getItemId());
                 }
-                dismiss();
+                //Stop bottom sheet from closing when the user clicks on any item
+                //dismiss();
             }
         });
 
