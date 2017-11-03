@@ -21,7 +21,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
-import android.support.v4.internal.view.SupportMenu;
 import android.view.KeyEvent;
 import android.view.MenuItem;
 import android.view.SubMenu;
@@ -30,7 +29,7 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
-class ActionMenu implements SupportMenu {
+class ActionMenu implements android.view.Menu {
     private static final int[] sCategoryToOrder = new int[]{
             1, /* No category */
             4, /* CONTAINER */
@@ -39,11 +38,27 @@ class ActionMenu implements SupportMenu {
             2, /* ALTERNATIVE */
             0, /* SELECTED_ALTERNATIVE */
     };
+    /**
+     * This is the part of an order integer that the user can provide.
+     */
+    private static final int USER_MASK = 0x0000ffff;
+    /**
+     * Bit shift of the user portion of the order integer.
+     */
+    private static final int USER_SHIFT = 0;
+    /**
+     * This is the part of an order integer that supplies the category of the item.
+     */
+    private static final int CATEGORY_MASK = 0xffff0000;
+    /**
+     * Bit shift of the category portion of the order integer.
+     */
+    private static final int CATEGORY_SHIFT = 16;
     private Context mContext;
     private boolean mIsQwerty;
     private ArrayList<ActionMenuItem> mItems;
 
-    public ActionMenu(Context context) {
+    ActionMenu(Context context) {
         mContext = context;
         mItems = new ArrayList<>();
     }

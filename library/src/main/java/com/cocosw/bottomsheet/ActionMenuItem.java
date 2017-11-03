@@ -18,6 +18,8 @@ package com.cocosw.bottomsheet;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.res.ColorStateList;
+import android.graphics.PorterDuff;
 import android.graphics.drawable.Drawable;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.internal.view.SupportMenuItem;
@@ -31,32 +33,26 @@ import android.view.View;
  class ActionMenuItem implements SupportMenuItem {
 
 
-     private final int mId;
-     private final int mGroup;
-     private final int mCategoryOrder;
-     private final int mOrdering;
-
-     private CharSequence mTitle;
-     private CharSequence mTitleCondensed;
-     private Intent mIntent;
-     private char mShortcutNumericChar;
-     private char mShortcutAlphabeticChar;
-
-     private Drawable mIconDrawable;
-     private int mIconResId = NO_ICON;
-
-     private Context mContext;
-
-     private SupportMenuItem.OnMenuItemClickListener mClickListener;
-
      private static final int NO_ICON = 0;
-
-     private int mFlags = ENABLED;
      private static final int CHECKABLE = 0x00000001;
      private static final int CHECKED = 0x00000002;
      private static final int EXCLUSIVE = 0x00000004;
      private static final int HIDDEN = 0x00000008;
      private static final int ENABLED = 0x00000010;
+     private final int mId;
+     private final int mGroup;
+     private final int mCategoryOrder;
+     private final int mOrdering;
+     private CharSequence mTitle;
+     private CharSequence mTitleCondensed;
+     private Intent mIntent;
+     private char mShortcutNumericChar;
+     private char mShortcutAlphabeticChar;
+     private Drawable mIconDrawable;
+     private int mIconResId = NO_ICON;
+     private Context mContext;
+     private SupportMenuItem.OnMenuItemClickListener mClickListener;
+     private int mFlags = ENABLED;
 
      public ActionMenuItem(Context context, int group, int id, int categoryOrder, int ordering,
                            CharSequence title) {
@@ -291,5 +287,70 @@ import android.view.View;
      public SupportMenuItem setSupportOnActionExpandListener(MenuItemCompat.OnActionExpandListener listener) {
          // No need to save the listener; ActionMenuItem does not support collapsing items.
          return this;
+     }
+
+     @Override
+     public SupportMenuItem setContentDescription(CharSequence contentDescription) {
+         return this;
+     }
+
+     @Override
+     public CharSequence getContentDescription() {
+         return null;
+     }
+
+     @Override
+     public SupportMenuItem setTooltipText(CharSequence tooltipText) {
+         return this;
+     }
+
+     @Override
+     public CharSequence getTooltipText() {
+         return null;
+     }
+
+     @Override
+     public MenuItem setShortcut(char numericChar, char alphaChar, int numericModifiers, int alphaModifiers) {
+         return this;
+     }
+
+     @Override
+     public MenuItem setNumericShortcut(char numericChar, int numericModifiers) {
+         return this;
+     }
+
+     @Override
+     public int getNumericModifiers() {
+         return 0;
+     }
+
+     @Override
+     public MenuItem setAlphabeticShortcut(char alphaChar, int alphaModifiers) {
+         return this;
+     }
+
+     @Override
+     public int getAlphabeticModifiers() {
+         return 0;
+     }
+
+     @Override
+     public MenuItem setIconTintList(ColorStateList tint) {
+         return this;
+     }
+
+     @Override
+     public ColorStateList getIconTintList() {
+         return null;
+     }
+
+     @Override
+     public MenuItem setIconTintMode(PorterDuff.Mode tintMode) {
+         return this;
+     }
+
+     @Override
+     public PorterDuff.Mode getIconTintMode() {
+         return null;
      }
  }
