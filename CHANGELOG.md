@@ -5,12 +5,12 @@ ChangeLog
 -------
 - Fix crash on Android O
 
+
 1.3.0
--------
+--------
+
 - Defects fixing
-- API break
-    - change style attribute "bottomSheetStyle" to "bs_bottomSheetStyle" #108
-    
+- Change attribute "bottomSheetStyle" to "bs_bottomSheetStyle" for latest support library.
 
 1.2.0
 --------
