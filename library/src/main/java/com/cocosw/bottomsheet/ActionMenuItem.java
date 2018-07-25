@@ -292,4 +292,68 @@ import android.view.View;
          // No need to save the listener; ActionMenuItem does not support collapsing items.
          return this;
      }
+     @Override
+    public SupportMenuItem setContentDescription(CharSequence contentDescription) {
+        return this;
+    }
+
+    @Override
+    public CharSequence getContentDescription() {
+        return null;
+    }
+
+    @Override
+    public SupportMenuItem setTooltipText(CharSequence tooltipText) {
+        return this;
+    }
+
+    @Override
+    public CharSequence getTooltipText() {
+        return null;
+    }
+
+    @Override
+    public MenuItem setShortcut(char numericChar, char alphaChar, int numericModifiers, int alphaModifiers) {
+        return this;
+    }
+
+    @Override
+    public MenuItem setNumericShortcut(char numericChar, int numericModifiers) {
+        return this;
+    }
+
+    @Override
+    public int getNumericModifiers() {
+        return 0;
+    }
+
+    @Override
+    public MenuItem setAlphabeticShortcut(char alphaChar, int alphaModifiers) {
+        return this;
+    }
+
+    @Override
+    public int getAlphabeticModifiers() {
+        return 0;
+    }
+
+    @Override
+    public MenuItem setIconTintList(ColorStateList tint) {
+        return this;
+    }
+
+    @Override
+    public ColorStateList getIconTintList() {
+        return null;
+    }
+
+    @Override
+    public MenuItem setIconTintMode(PorterDuff.Mode tintMode) {
+        return this;
+    }
+
+    @Override
+    public PorterDuff.Mode getIconTintMode() {
+        return null;
+    }
  }
