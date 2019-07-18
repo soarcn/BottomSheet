@@ -16,12 +16,12 @@
 
 buildscript {
     repositories {
-        jcenter()
         google()
+        jcenter()
     }
 
     dependencies {
-        classpath 'com.android.tools.build:gradle:3.0.0'
+        classpath 'com.android.tools.build:gradle:3.4.2'
     }
 }
 
@@ -30,18 +30,13 @@ allprojects {
     version = POM_VERSION
 
     repositories {
-        jcenter()
         google()
+        jcenter()
     }
 
     tasks.withType(JavaCompile) {
         options.encoding = "UTF-8"
     }
-}
-
-
-task wrapper(type: Wrapper) {
-    gradleVersion = '4.0.0'
 }
 
 

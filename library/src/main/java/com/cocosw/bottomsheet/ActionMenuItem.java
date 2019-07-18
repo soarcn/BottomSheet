@@ -284,12 +284,6 @@ import android.view.View;
      }
 
      @Override
-     public SupportMenuItem setSupportOnActionExpandListener(MenuItemCompat.OnActionExpandListener listener) {
-         // No need to save the listener; ActionMenuItem does not support collapsing items.
-         return this;
-     }
-
-     @Override
      public SupportMenuItem setContentDescription(CharSequence contentDescription) {
          return this;
      }
