@@ -3,14 +3,13 @@ apply plugin: 'com.android.application'
 dependencies {
     compile project(':library')
     compile 'com.cocosw:query:0.2.2'
-    compile 'com.android.support:appcompat-v7:27.0.0'
-    compile 'com.android.support:design:27.0.0'
+    compile 'com.android.support:appcompat-v7:28.0.0'
+    compile 'com.android.support:design:28.0.0'
 }
 
 
 android {
-    compileSdkVersion 27
-    buildToolsVersion '27.0.0'
+    compileSdkVersion 28
     compileOptions.encoding = "UTF-8"
     defaultConfig {
         vectorDrawables.useSupportLibrary = true
