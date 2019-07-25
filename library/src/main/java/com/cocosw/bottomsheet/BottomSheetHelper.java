@@ -7,13 +7,14 @@ import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
-import android.support.annotation.NonNull;
+
+import androidx.annotation.NonNull;
 
 import java.util.List;
 
 /**
  * A helper class,
- * <p/>
+ *
  * Project: BottomSheet
  * Created by LiaoKai(soarcn) on 2015/7/18.
  */
@@ -23,7 +24,7 @@ public class BottomSheetHelper {
     /**
      * Create a BottomSheet Builder for creating share intent chooser.
      * You still need to call show() to display it like:
-     * <p/>
+     *
      * Intent sharingIntent = new Intent(Intent.ACTION_SEND);
      * shareIntent.setType("text/plain");
      * shareIntent.putExtra(Intent.EXTRA_TEXT, "hello");

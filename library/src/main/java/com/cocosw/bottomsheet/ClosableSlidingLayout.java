@@ -3,15 +3,14 @@ package com.cocosw.bottomsheet;
 import android.annotation.TargetApi;
 import android.content.Context;
 import android.os.Build;
-import android.support.annotation.NonNull;
-import android.support.v4.view.MotionEventCompat;
-import android.support.v4.view.ViewCompat;
-import android.support.v4.widget.ViewDragHelper;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
 import android.view.View;
-import android.widget.AbsListView;
 import android.widget.FrameLayout;
+
+import androidx.annotation.NonNull;
+import androidx.core.view.ViewCompat;
+import androidx.customview.widget.ViewDragHelper;
 
 /**
  * Project: gradle
@@ -50,7 +49,7 @@ class ClosableSlidingLayout extends FrameLayout {
 
     @Override
     public boolean onInterceptTouchEvent(@NonNull MotionEvent event) {
-        final int action = MotionEventCompat.getActionMasked(event);
+        final int action = event.getActionMasked();
 
         if (!isEnabled() || canChildScrollUp()) {
             // Fail fast if we're not in a state where a swipe is possible
@@ -71,7 +70,7 @@ class ClosableSlidingLayout extends FrameLayout {
             case MotionEvent.ACTION_DOWN:
                 height = getChildAt(0).getHeight();
                 top = getChildAt(0).getTop();
-                mActivePointerId = MotionEventCompat.getPointerId(event, 0);
+                mActivePointerId = event.getPointerId(0);
                 mIsBeingDragged = false;
                 final float initialMotionY = getMotionEventY(event, mActivePointerId);
                 if (initialMotionY == -1) {
@@ -109,26 +108,15 @@ class ClosableSlidingLayout extends FrameLayout {
      * scroll up. Override this if the child view is a custom view.
      */
     private boolean canChildScrollUp() {
-        if (android.os.Build.VERSION.SDK_INT < 14) {
-            if (mTarget instanceof AbsListView) {
-                final AbsListView absListView = (AbsListView) mTarget;
-                return absListView.getChildCount() > 0
-                        && (absListView.getFirstVisiblePosition() > 0 || absListView.getChildAt(0)
-                        .getTop() < absListView.getPaddingTop());
-            } else {
-                return mTarget.getScrollY() > 0;
-            }
-        } else {
-            return ViewCompat.canScrollVertically(mTarget, -1);
-        }
+        return mTarget.canScrollVertically(-1);
     }
 
     private float getMotionEventY(MotionEvent ev, int activePointerId) {
-        final int index = MotionEventCompat.findPointerIndex(ev, activePointerId);
+        final int index = ev.findPointerIndex(activePointerId);
         if (index < 0) {
             return -1;
         }
-        return MotionEventCompat.getY(ev, index);
+        return ev.getY(index);
     }
 
     @Override
@@ -207,9 +195,6 @@ class ClosableSlidingLayout extends FrameLayout {
 
         @Override
         public void onViewPositionChanged(View changedView, int left, int top, int dx, int dy) {
-            if (Build.VERSION.SDK_INT < Build.VERSION_CODES.HONEYCOMB) {
-                invalidate();
-            }
             if (height - top < 1 && mListener != null) {
                 mDragHelper.cancel();
                 mListener.onClosed();

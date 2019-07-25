@@ -25,12 +25,6 @@ import android.content.res.TypedArray;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.os.Bundle;
-import android.support.annotation.DrawableRes;
-import android.support.annotation.IntegerRes;
-import android.support.annotation.MenuRes;
-import android.support.annotation.NonNull;
-import android.support.annotation.StringRes;
-import android.support.annotation.StyleRes;
 import android.transition.ChangeBounds;
 import android.transition.Transition;
 import android.transition.TransitionManager;
@@ -51,15 +45,21 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import androidx.annotation.DrawableRes;
+import androidx.annotation.IntegerRes;
+import androidx.annotation.MenuRes;
+import androidx.annotation.NonNull;
+import androidx.annotation.StringRes;
+import androidx.annotation.StyleRes;
+
 import java.lang.reflect.Field;
 import java.util.ArrayList;
 
 
 /**
  * One way to present a set of actions to a user is with bottom sheets, a sheet of paper that slides up from the bottom edge of the screen. Bottom sheets offer flexibility in the display of clear and simple actions that do not need explanation.
- * <p/>
  * https://www.google.com/design/spec/components/bottom-sheets.html
- * <p/>
+ *
  * Project: BottomSheet
  * Created by Kai Liao on 2014/9/21.
  */
@@ -155,7 +155,7 @@ public class BottomSheet extends Dialog implements DialogInterface {
     private void init(final Context context) {
         setCanceledOnTouchOutside(cancelOnTouchOutside);
         final ClosableSlidingLayout mDialogView = (ClosableSlidingLayout) View.inflate(context, R.layout.bottom_sheet_dialog, null);
-        LinearLayout mainLayout = (LinearLayout) mDialogView.findViewById(R.id.bs_main);
+        LinearLayout mainLayout = mDialogView.findViewById(R.id.bs_main);
         mainLayout.addView(View.inflate(context, mHeaderLayoutId, null), 0);
         setContentView(mDialogView);
         if (!cancelOnSwipeDown)
@@ -195,14 +195,14 @@ public class BottomSheet extends Dialog implements DialogInterface {
             mDialogView.getChildAt(0).setPadding(0, 0, 0, helper.mNavBarAvailable ? helper.getNavigationBarHeight(getContext()) + mDialogView.getPaddingBottom() : 0);
         }
 
-        final TextView title = (TextView) mDialogView.findViewById(R.id.bottom_sheet_title);
+        final TextView title = mDialogView.findViewById(R.id.bottom_sheet_title);
         if (builder.title != null) {
             title.setVisibility(View.VISIBLE);
             title.setText(builder.title);
         }
 
-        icon = (ImageView) mDialogView.findViewById(R.id.bottom_sheet_title_image);
-        list = (GridView) mDialogView.findViewById(R.id.bottom_sheet_gridview);
+        icon = mDialogView.findViewById(R.id.bottom_sheet_title_image);
+        list = mDialogView.findViewById(R.id.bottom_sheet_gridview);
         mDialogView.mTarget = list;
         if (!builder.grid) {
             list.setNumColumns(1);
@@ -278,8 +278,8 @@ public class BottomSheet extends Dialog implements DialogInterface {
                     else
                         convertView = inflater.inflate(mListItemLayoutId, parent, false);
                     holder = new ViewHolder();
-                    holder.title = (TextView) convertView.findViewById(R.id.bs_list_title);
-                    holder.image = (ImageView) convertView.findViewById(R.id.bs_list_image);
+                    holder.title = convertView.findViewById(R.id.bs_list_title);
+                    holder.image = convertView.findViewById(R.id.bs_list_image);
                     convertView.setTag(holder);
                 } else {
                     holder = (ViewHolder) convertView.getTag();

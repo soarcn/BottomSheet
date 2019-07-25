@@ -21,16 +21,15 @@ import android.content.Intent;
 import android.content.res.ColorStateList;
 import android.graphics.PorterDuff;
 import android.graphics.drawable.Drawable;
-import android.support.v4.content.ContextCompat;
-import android.support.v4.internal.view.SupportMenuItem;
-import android.support.v4.view.MenuItemCompat;
 import android.view.ContextMenu;
 import android.view.MenuItem;
 import android.view.SubMenu;
 import android.view.View;
 
+import androidx.core.content.ContextCompat;
 
- class ActionMenuItem implements SupportMenuItem {
+
+class ActionMenuItem implements MenuItem {
 
 
      private static final int NO_ICON = 0;
@@ -51,7 +50,7 @@ import android.view.View;
      private Drawable mIconDrawable;
      private int mIconResId = NO_ICON;
      private Context mContext;
-     private SupportMenuItem.OnMenuItemClickListener mClickListener;
+    private MenuItem.OnMenuItemClickListener mClickListener;
      private int mFlags = ENABLED;
 
      public ActionMenuItem(Context context, int group, int id, int categoryOrder, int ordering,
@@ -224,7 +223,7 @@ import android.view.View;
          // Do nothing. ActionMenuItems always show as action buttons.
      }
 
-     public SupportMenuItem setActionView(View actionView) {
+    public MenuItem setActionView(View actionView) {
          throw new UnsupportedOperationException();
      }
 
@@ -243,22 +242,13 @@ import android.view.View;
      }
 
      @Override
-     public SupportMenuItem setActionView(int resId) {
+     public MenuItem setActionView(int resId) {
          throw new UnsupportedOperationException();
      }
 
-     @Override
-     public android.support.v4.view.ActionProvider getSupportActionProvider() {
-         return null;
-     }
 
      @Override
-     public SupportMenuItem setSupportActionProvider(android.support.v4.view.ActionProvider actionProvider) {
-         throw new UnsupportedOperationException();
-     }
-
-     @Override
-     public SupportMenuItem setShowAsActionFlags(int actionEnum) {
+     public MenuItem setShowAsActionFlags(int actionEnum) {
          setShowAsAction(actionEnum);
          return this;
      }
@@ -284,7 +274,7 @@ import android.view.View;
      }
 
      @Override
-     public SupportMenuItem setContentDescription(CharSequence contentDescription) {
+     public MenuItem setContentDescription(CharSequence contentDescription) {
          return this;
      }
 
@@ -294,7 +284,7 @@ import android.view.View;
      }
 
      @Override
-     public SupportMenuItem setTooltipText(CharSequence tooltipText) {
+     public MenuItem setTooltipText(CharSequence tooltipText) {
          return this;
      }
 

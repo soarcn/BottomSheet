@@ -37,7 +37,7 @@ How to use this library
 </dependency>
 ```
 
-- Compile you project with android sdk v21+
+
 
 API
 =======
@@ -107,6 +107,7 @@ Style
         <item name="bs_bottomSheetStyle">@style/BottomSheet.StyleDialog</item>
     </style>
 ```
+
 
 Contribute
 =======
