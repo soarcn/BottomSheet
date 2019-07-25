@@ -8,7 +8,7 @@ One way to present a set of actions to a user is with bottom sheets, a sheet of 
 
 https://www.google.com/design/spec/components/bottom-sheets.html
 
-This library works on android 2.1+
+This library works on android api 14+
 
 ![Sample](https://github.com/soarcn/BottomSheet/blob/master/art/image.png?raw=true)
 ![Sample](https://github.com/soarcn/BottomSheet/blob/master/art/image1.png?raw=true)
@@ -37,7 +37,9 @@ How to use this library
 </dependency>
 ```
 
-
+- Version
+if you use Android support library - 1.4.0
+if you use Androidx - 1.5.0
 
 API
 =======
