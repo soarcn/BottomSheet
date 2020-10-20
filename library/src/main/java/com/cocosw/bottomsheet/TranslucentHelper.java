@@ -9,6 +9,8 @@ import android.content.res.Resources;
 import android.content.res.TypedArray;
 import android.os.Build;
 import android.util.DisplayMetrics;
+import android.view.KeyCharacterMap;
+import android.view.KeyEvent;
 import android.view.ViewConfiguration;
 import android.view.Window;
 import android.view.WindowManager;
@@ -101,40 +103,34 @@ class TranslucentHelper {
         return Math.min(widthDp, heightDp);
     }
 
-    int getNavigationBarHeight(Context context) {
-        Resources res = context.getResources();
-        int result = 0;
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.ICE_CREAM_SANDWICH) {
-            if (hasNavBar(context)) {
-                String key;
-                if (mInPortrait) {
-                    key = NAV_BAR_HEIGHT_RES_NAME;
-                } else {
-                    if (!isNavigationAtBottom())
-                        return 0;
-                    key = NAV_BAR_HEIGHT_LANDSCAPE_RES_NAME;
-                }
-                return getInternalDimensionSize(res, key);
-            }
+    public int getNavigationBarHeight(Context context) {
+        return getNavigationBarHeight(context, false);
+    }
+
+    public int getNavigationBarHeight(Context context, boolean skipRequirement) {
+        int resourceId = context.getResources().getIdentifier(NAV_BAR_HEIGHT_RES_NAME, "dimen", "android");
+        if (resourceId > 0 && (skipRequirement || hasNavBar(context))) {
+            return context.getResources().getDimensionPixelSize(resourceId);
         }
-        return result;
+        return 0;
     }
 
     private boolean hasNavBar(Context context) {
-        Resources res = context.getResources();
-        int resourceId = res.getIdentifier(SHOW_NAV_BAR_RES_NAME, "bool", "android");
-        if (resourceId != 0) {
-            boolean hasNav = res.getBoolean(resourceId);
-            // check override flag (see static block)
-            if ("1".equals(sNavBarOverride)) {
-                hasNav = false;
-            } else if ("0".equals(sNavBarOverride)) {
-                hasNav = true;
-            }
-            return hasNav;
-        } else { // fallback
-            return !ViewConfiguration.get(context).hasPermanentMenuKey();
+        // Kitkat and less shows container above nav bar
+        if (android.os.Build.VERSION.SDK_INT <= Build.VERSION_CODES.KITKAT) {
+            return false;
         }
+        // Emulator
+        if (Build.FINGERPRINT.startsWith("generic")) {
+            return true;
+        }
+        boolean hasMenuKey = ViewConfiguration.get(context).hasPermanentMenuKey();
+        boolean hasBackKey = KeyCharacterMap.deviceHasKey(KeyEvent.KEYCODE_BACK);
+        boolean hasNoCapacitiveKeys = !hasMenuKey && !hasBackKey;
+        Resources resources = context.getResources();
+        int id = resources.getIdentifier(SHOW_NAV_BAR_RES_NAME, "bool", "android");
+        boolean hasOnScreenNavBar = id > 0 && resources.getBoolean(id);
+        return hasOnScreenNavBar || hasNoCapacitiveKeys || getNavigationBarHeight(context, true) > 0;
     }
 
     private int getInternalDimensionSize(Resources res, String key) {
