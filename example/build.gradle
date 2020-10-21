@@ -3,8 +3,8 @@ apply plugin: 'com.android.application'
 dependencies {
     implementation project(':library')
     implementation 'com.cocosw:query:0.2.2'
-    implementation 'androidx.appcompat:appcompat:1.0.2'
-    implementation 'com.google.android.material:material:1.0.0'
+    implementation 'androidx.appcompat:appcompat:1.2.0'
+    implementation 'com.google.android.material:material:1.2.1'
 }
 
 
