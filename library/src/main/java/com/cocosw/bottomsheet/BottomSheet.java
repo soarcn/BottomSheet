@@ -532,6 +532,21 @@ public class BottomSheet extends Dialog implements DialogInterface {
             return this;
         }
 
+        /**
+         * Add one item into BottomSheet
+         *
+         * @param group   ID of group
+         * @param id      ID of item
+         * @param iconRes icon resource
+         * @param textRes icon resource
+         * @return This Builder object to allow for chaining of calls to set methods
+         */
+        public Builder sheet(int group, int id, @DrawableRes int iconRes, @StringRes int textRes) {
+            ActionMenuItem item = new ActionMenuItem(context, group, id, 0, 0, context.getText(textRes));
+            item.setIcon(iconRes);
+            menu.add(item);
+            return this;
+        }
 
         /**
          * Add one item into BottomSheet
