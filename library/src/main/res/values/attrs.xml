@@ -6,6 +6,7 @@
         <attr name="bs_dialogBackground" format="color|reference" />
         <attr name="bs_listStyle" format="reference"/>
         <attr name="bs_dividerColor" format="color|reference" />
+        <attr name="bs_checkColor" format="color|reference" />
         <attr name="bs_numColumns" format="integer"/>
         <attr name="bs_titleTextAppearance" format="reference" />
         <attr name="bs_listItemTitleTextAppearance" format="reference" />
