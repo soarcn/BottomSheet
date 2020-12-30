@@ -1,19 +1,34 @@
 <?xml version="1.0" encoding="utf-8"?>
-
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     style="@style/BottomSheet.ListItem"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="horizontal"
+    android:layout_height="wrap_content"
     tools:ignore="UseCompoundDrawables">
 
     <ImageView
         android:id="@id/bs_list_image"
         style="@style/BottomSheet.ListItemImage"
+        android:layout_centerVertical="true"
+        android:layout_alignParentLeft="true"
+        tools:ignore="ContentDescription" />
+
+    <ImageView
+        android:id="@+id/bs_list_check"
+        android:layout_centerVertical="true"
+        android:layout_alignParentRight="true"
+        style="@style/BottomSheet.GridItemCheck"
+        android:src="@drawable/bs_ic_check"
         tools:ignore="ContentDescription" />
 
     <TextView
         android:id="@id/bs_list_title"
-        style="@style/BottomSheet.ListItemTitle" />
-</LinearLayout>
+        android:layout_centerVertical="true"
+        android:layout_toRightOf="@id/bs_list_image"
+        android:layout_toLeftOf="@id/bs_list_check"
+        android:layout_alignWithParentIfMissing="true"
+        style="@style/BottomSheet.ListItemTitle"
+        tools:text="Title"/>
+
+
+</RelativeLayout>

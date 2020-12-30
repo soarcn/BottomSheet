@@ -20,6 +20,7 @@
         <item name="android:textColorHint">#42000000</item>
         <item name="bs_dialogBackground">@android:color/background_light</item>
         <item name="bs_dividerColor">@color/bs_divider_color</item>
+        <item name="bs_checkColor">@color/bs_check_color</item>
         <item name="bs_numColumns">@integer/bs_grid_colum</item>
         <item name="bs_titleTextAppearance">@style/Text.Headline</item>
         <item name="bs_listItemTitleTextAppearance">@style/Text.Title</item>
@@ -40,6 +41,7 @@
         <item name="android:textColorHint">#42ffffff</item>
         <item name="bs_dialogBackground">@android:color/background_dark</item>
         <item name="bs_dividerColor">@color/bs_dark_divider_color</item>
+        <item name="bs_checkColor">@color/bs_dark_check_color</item>
         <item name="bs_listStyle">@style/BottomSheet.List.Dark</item>
         <item name="bs_closeDrawable">@drawable/bs_ic_clear</item>
         <item name="bs_moreDrawable">@drawable/bs_ic_more</item>
@@ -108,7 +110,6 @@
     <style name="BottomSheet.ListItem">
         <item name="android:layoutDirection" tools:ignore="NewApi">locale</item>
         <item name="android:minHeight">48dp</item>
-        <item name="android:gravity">center_vertical</item>
         <item name="android:layoutAnimation">@null</item>
     </style>
 
@@ -141,6 +142,14 @@
         <item name="android:layout_height">48dp</item>
         <item name="android:layout_width">48dp</item>
         <item name="android:layout_margin">8dp</item>
+        <item name="android:padding">0dp</item>
+    </style>
+
+    <style name="BottomSheet.GridItemCheck">
+        <item name="android:layout_height">24dp</item>
+        <item name="android:layout_width">24dp</item>
+        <item name="android:layout_marginRight">16dp</item>
+        <item name="android:layout_marginLeft">16dp</item>
         <item name="android:padding">0dp</item>
     </style>
 

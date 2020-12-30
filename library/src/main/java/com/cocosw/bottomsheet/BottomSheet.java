@@ -280,6 +280,7 @@ public class BottomSheet extends Dialog implements DialogInterface {
                     holder = new ViewHolder();
                     holder.title = convertView.findViewById(R.id.bs_list_title);
                     holder.image = convertView.findViewById(R.id.bs_list_image);
+                    holder.check = convertView.findViewById(R.id.bs_list_check);
                     convertView.setTag(holder);
                 } else {
                     holder = (ViewHolder) convertView.getTag();
@@ -303,12 +304,17 @@ public class BottomSheet extends Dialog implements DialogInterface {
                 holder.image.setEnabled(item.isEnabled());
                 holder.title.setEnabled(item.isEnabled());
 
+                if (holder.check != null) {
+                    holder.check.setVisibility(item.isChecked() ? View.VISIBLE : View.GONE);
+                }
+
                 return convertView;
             }
 
             class ViewHolder {
                 private TextView title;
                 private ImageView image;
+                private ImageView check;
             }
         };
 
